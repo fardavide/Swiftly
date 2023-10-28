@@ -7,7 +7,6 @@
 
 import CommonProvider
 import ConverterPresentation
-import CurrencyApi
 import CurrencyData
 
 final class SwiftlyModule : Module {  
@@ -15,7 +14,6 @@ final class SwiftlyModule : Module {
 
   var dependencies: [Module.Type] = [
     ConverterPresentionModule.self,
-    CurrencyApiModule.self,
-    CurrencyDataModule.self
+    CurrencyDataModule.self,
   ]
 }

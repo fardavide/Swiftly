@@ -19,6 +19,7 @@ let package = Package(
     ),
   ],
   dependencies: [
+    .package(name: "CommonProvider", path: "../Common/CommonProvider"),
     .package(name: "CommonUtils", path: "../Common/CommonUtils")
   ],
   targets: [
@@ -27,6 +28,7 @@ let package = Package(
     .target(
       name: "CurrencyDomain",
       dependencies: [
+        "CommonProvider",
         "CommonUtils"
       ]
     ),

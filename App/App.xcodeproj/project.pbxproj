@@ -10,7 +10,6 @@
 		6B904D912AEB908900072057 /* ConverterPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = 6B904D902AEB908900072057 /* ConverterPresentation */; };
 		6B994AE62AEC67C900A8E980 /* CommonProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 6B994AE52AEC67C900A8E980 /* CommonProvider */; };
 		6B994AE82AEC6AA600A8E980 /* CurrencyData in Frameworks */ = {isa = PBXBuildFile; productRef = 6B994AE72AEC6AA600A8E980 /* CurrencyData */; };
-		6B994AEA2AEC6C3200A8E980 /* CurrencyApi in Frameworks */ = {isa = PBXBuildFile; productRef = 6B994AE92AEC6C3200A8E980 /* CurrencyApi */; };
 		6B994AED2AECF9D300A8E980 /* SwiftlyModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B994AEC2AECF9D300A8E980 /* SwiftlyModule.swift */; };
 		6BDF20132AE570F500F97DA5 /* SwiftlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDF20122AE570F500F97DA5 /* SwiftlyApp.swift */; };
 		6BDF20172AE570F600F97DA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BDF20162AE570F600F97DA5 /* Assets.xcassets */; };
@@ -44,6 +43,8 @@
 		6B994ADE2AEC610100A8E980 /* CommonNetwork */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CommonNetwork; path = ../../CommonNetwork; sourceTree = "<group>"; };
 		6B994AE42AEC678E00A8E980 /* CommonProvider */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CommonProvider; path = ../../CommonProvider; sourceTree = "<group>"; };
 		6B994AEC2AECF9D300A8E980 /* SwiftlyModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftlyModule.swift; sourceTree = "<group>"; };
+		6B994AEE2AED141700A8E980 /* CurrencyStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyStorage; path = ../../../CurrencyStorage; sourceTree = "<group>"; };
+		6B994AF32AED1BC600A8E980 /* CommonStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CommonStorage; path = ../../CommonStorage; sourceTree = "<group>"; };
 		6BDD5DB92AEB822900B0FC32 /* CurrencyDomain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyDomain; path = ../../CurrencyDomain; sourceTree = "<group>"; };
 		6BDD5DBD2AEB82C300B0FC32 /* CurrencyApi */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyApi; path = ../../../CurrencyApi; sourceTree = "<group>"; };
 		6BDD5DBE2AEB82E700B0FC32 /* CurrencyData */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyData; path = ../../../CurrencyData; sourceTree = "<group>"; };
@@ -64,7 +65,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B994AEA2AEC6C3200A8E980 /* CurrencyApi in Frameworks */,
 				6B994AE62AEC67C900A8E980 /* CommonProvider in Frameworks */,
 				6B904D912AEB908900072057 /* ConverterPresentation in Frameworks */,
 				6B994AE82AEC6AA600A8E980 /* CurrencyData in Frameworks */,
@@ -100,6 +100,7 @@
 		6B994ADC2AEC5CEF00A8E980 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6B994AF32AED1BC600A8E980 /* CommonStorage */,
 				6B994AE42AEC678E00A8E980 /* CommonProvider */,
 				6B994ADE2AEC610100A8E980 /* CommonNetwork */,
 				6B994ADD2AEC5CFF00A8E980 /* CommonUtils */,
@@ -126,6 +127,7 @@
 		6BDD5DBC2AEB829B00B0FC32 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				6B994AEE2AED141700A8E980 /* CurrencyStorage */,
 				6BDD5DBE2AEB82E700B0FC32 /* CurrencyData */,
 				6BDD5DBD2AEB82C300B0FC32 /* CurrencyApi */,
 			);
@@ -213,7 +215,6 @@
 				6B904D902AEB908900072057 /* ConverterPresentation */,
 				6B994AE52AEC67C900A8E980 /* CommonProvider */,
 				6B994AE72AEC6AA600A8E980 /* CurrencyData */,
-				6B994AE92AEC6C3200A8E980 /* CurrencyApi */,
 			);
 			productName = App;
 			productReference = 6BDF200F2AE570F500F97DA5 /* App.app */;
@@ -710,10 +711,6 @@
 		6B994AE72AEC6AA600A8E980 /* CurrencyData */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CurrencyData;
-		};
-		6B994AE92AEC6C3200A8E980 /* CurrencyApi */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CurrencyApi;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

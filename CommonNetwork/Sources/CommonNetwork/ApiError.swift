@@ -9,7 +9,7 @@ import Foundation
 
 public enum ApiError: Error {
   case jsonError(JsonError)
-  case unknown(Error)
+  case unknown
 }
 
 public extension URLSession {
@@ -20,7 +20,7 @@ public extension URLSession {
       return JSONDecoder().resultDecode(T.self, from: data)
         .mapError { .jsonError($0) }
     } catch {
-      return .failure(.unknown(error))
+      return .failure(.unknown)
     }
   }
 }

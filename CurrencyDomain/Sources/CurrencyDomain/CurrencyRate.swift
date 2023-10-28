@@ -21,13 +21,17 @@ public struct CurrencyRate: Equatable, Hashable, Identifiable {
   }
 }
 
-extension CurrencyRate {
+public extension CurrencyRate {
   static let samples = CurrencyWeightSamples()
 }
 
-struct CurrencyWeightSamples {
+public struct CurrencyWeightSamples {
   let eur = CurrencyRate(currency: .eur, rate: 1)
   let usd = CurrencyRate(currency: .usd, rate: 0.7)
+  
+  public func all() -> [CurrencyRate] {
+    [eur, usd]
+  }
   
   func of(_ currency: Currency) -> CurrencyRate {
     switch currency {

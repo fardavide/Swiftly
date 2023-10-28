@@ -9,5 +9,6 @@ import Foundation
 
 public enum DataError: Error {
   case network
+  case storage
   case unknown
 }

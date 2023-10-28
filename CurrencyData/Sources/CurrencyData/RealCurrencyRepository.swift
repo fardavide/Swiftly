@@ -9,13 +9,19 @@ import CommonNetwork
 import CommonUtils
 import CurrencyApi
 import CurrencyDomain
+import CurrencyStorage
 
 public final class RealCurrencyRepository: CurrencyRepository {
   
   let api: CurrencyApi
+  let storage: CurrencyStorage
   
-  init(api: CurrencyApi) {
+  init(
+    api: CurrencyApi,
+    storage: CurrencyStorage
+  ) {
     self.api = api
+    self.storage = storage
   }
   
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
@@ -35,16 +41,5 @@ public final class RealCurrencyRepository: CurrencyRepository {
         return .failure(.network)
       }
     }
-  }
-}
-
-private extension CurrencyRatesDto {
-  func toDomainModels() -> [CurrencyRate] {
-    self.data
-      .filter { code, _ in Currency.from(code: code) != nil }
-      .map { code, currencyDto in
-        let currency = Currency.from(code: code)!
-        return CurrencyRate(currency: currency, rate: currencyDto.value)
-      }
   }
 }

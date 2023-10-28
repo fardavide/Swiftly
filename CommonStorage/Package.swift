@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "CurrencyApi",
+  name: "CommonStorage",
   platforms: [
     .iOS(.v17),
     .macOS(.v14),
@@ -14,29 +14,19 @@ let package = Package(
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
-      name: "CurrencyApi",
-      targets: ["CurrencyApi"]
+      name: "CommonStorage",
+      targets: ["CommonStorage"]
     ),
-  ],
-  dependencies: [
-    .package(name: "CommonNetwork", path: "../Common/CommonNetwork"),
-    .package(name: "CommonProvider", path: "../Common/CommonProvider"),
-    .package(name: "CurrencyDomain", path: "../Currency/CurrencyDomain")
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .target(
-      name: "CurrencyApi",
-      dependencies: [
-        "CommonNetwork",
-        "CommonProvider",
-        "CurrencyDomain"
-      ]
+      name: "CommonStorage"
     ),
     .testTarget(
-      name: "CurrencyApiTests",
-      dependencies: ["CurrencyApi"]
+      name: "CommonStorageTests",
+      dependencies: ["CommonStorage"]
     ),
   ]
 )

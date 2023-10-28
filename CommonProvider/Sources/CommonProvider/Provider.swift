@@ -33,7 +33,7 @@ final public class Provider {
   }
   
   public func get<T>() -> T {
-    return get(T.self)
+    get(T.self)
   }
 }
 
