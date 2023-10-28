@@ -2,7 +2,7 @@ import XCTest
 @testable import CommonProvider
 
 final class ProviderTests: XCTestCase {
-  private let provider = Provider.instance
+  private let provider = Provider()
   
   func test_whenNotRegistered_errorWithType() throws {
     // when
@@ -43,6 +43,6 @@ final class ProviderTests: XCTestCase {
   }
 }
 
-protocol TestParent {
+private protocol TestParent {
   var value: String { get }
 }

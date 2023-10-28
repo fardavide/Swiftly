@@ -45,9 +45,41 @@ public extension Module {
   func register(on provider: Provider) {}
   
   func start(with provider: Provider) {
-    for dependency in dependencies {
-      dependency.init().register(on: provider)
+    let uniqueModules = ModuleRegistry.instance.findAllModulesRecursively(from: dependencies)
+    for module in uniqueModules {
+      module.register(on: provider)
     }
     register(on: provider)
+  }
+}
+
+private class ModuleRegistry {
+  static let instance = ModuleRegistry()
+  
+  private var modules = [ObjectIdentifier: Module]()
+  
+  private init() {}
+  
+  func findAllModulesRecursively(from modules: [Module.Type]) -> [Module] {
+    var allModules: [Module] = []
+    
+    for moduleType in modules {
+      let module = instantiate(moduleType)
+      allModules.append(module)
+      let dependentModules = findAllModulesRecursively(from: module.dependencies)
+      allModules += dependentModules
+    }
+    
+    return allModules
+  }
+  
+  private func instantiate<T: Module>(_ moduleType: T.Type) -> T {
+    if let existingModule = modules[ObjectIdentifier(moduleType)] as? T {
+      return existingModule
+    } else {
+      let newModule = moduleType.init()
+      modules[ObjectIdentifier(moduleType)] = newModule
+      return newModule
+    }
   }
 }

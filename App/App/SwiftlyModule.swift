@@ -10,7 +10,7 @@ import ConverterPresentation
 import CurrencyApi
 import CurrencyData
 
-final class SwiftlyModule : Module {
+final class SwiftlyModule : Module {  
   init() {}
 
   var dependencies: [Module.Type] = [
