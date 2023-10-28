@@ -45,11 +45,11 @@ private struct ContentView: View {
   let onCurrencyValueChange: (CurrencyValue) -> ()
   
   var body: some View {
-    List(values, id: \.currencyRate) { value in
+    List(values, id: \.currencyWeight) { value in
       CurrencyRow(
         value: value,
         onValueChange: { newValue in
-          onCurrencyValueChange(newValue.of(value.currencyRate))
+          onCurrencyValueChange(newValue.of(value.currencyWeight))
         }
       )
       .swipeActions(edge: .trailing) {
@@ -75,7 +75,7 @@ struct CurrencyRow: View {
   let onValueChange: (Double) -> ()
   
   var body: some View {
-    let currency = value.currencyRate.currency
+    let currency = value.currencyWeight.currency
     let textFieldBinding = Binding(get: { value.value }, set: onValueChange)
     
     HStack {

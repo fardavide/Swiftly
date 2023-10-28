@@ -7,7 +7,7 @@
 
 public struct CurrencyRatesDto: Codable {
   let meta: Meta
-  public let data: [String: CurrencyRateDto]
+  let data: [String: Currency]
   
   struct Meta: Codable {
     let lastUpdatedAt: String
@@ -17,9 +17,9 @@ public struct CurrencyRatesDto: Codable {
     }
   }
   
-  public struct CurrencyRateDto: Codable {
+  struct Currency: Codable {
     let code: String
-    public let value: Double
+    let value: Double
   }
 }
 
@@ -29,11 +29,11 @@ public extension CurrencyRatesDto {
       lastUpdatedAt: "now"
     ),
     data: [
-      "EUR": CurrencyRatesDto.CurrencyRateDto(
+      "EUR": CurrencyRatesDto.Currency(
         code: "EUR",
         value: 1
       ),
-      "USD": CurrencyRatesDto.CurrencyRateDto(
+      "USD": CurrencyRatesDto.Currency(
         code: "USD",
         value: 0.7
       ),

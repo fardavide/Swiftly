@@ -30,11 +30,11 @@ public class ConverterViewModel: ViewModel {
     case let .update(currencyValue):
       state.values = state.values.map { v in
         // TODO: extract
-        v.currencyRate.currency == currencyValue.currencyRate.currency
+        v.currencyWeight.currency == currencyValue.currencyWeight.currency
         ? currencyValue
         : CurrencyValue(
-          value: currencyValue.value * (v.currencyRate.rate / currencyValue.currencyRate.rate),
-          currencyRate: v.currencyRate
+          value: currencyValue.value * (v.currencyWeight.weigth / currencyValue.currencyWeight.weigth),
+          currencyWeight: v.currencyWeight
         )
       }
     }
@@ -56,9 +56,9 @@ public class ConverterViewModel: ViewModel {
           .map { currencyRate in
             CurrencyValue(
               value: 0,
-              currencyRate: CurrencyRate(
+              currencyWeight: CurrencyWeight(
                 currency: Currency.from(code: currencyRate.currency.code)!,
-                rate: currencyRate.rate
+                weigth: currencyRate.weigth
               )
             )
           }

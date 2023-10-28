@@ -53,7 +53,7 @@ public extension CurrencyProtocol {
     "\(self.longName) \(self.symbol)"
   }
 
-  public static func from(code: String) -> Currency? {
+  static func from(code: String) -> Currency? {
     switch code {
     case Currency.eur.code:
       return .eur

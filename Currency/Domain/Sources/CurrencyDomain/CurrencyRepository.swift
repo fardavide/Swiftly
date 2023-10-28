@@ -10,19 +10,19 @@ import Foundation
 
 public protocol CurrencyRepository {
   
-  func getLatestRates() async -> Result<[CurrencyRate], DataError>
+  func getLatestRates() async -> Result<[CurrencyWeight], DataError>
 }
 
 public class FakeCurrencyRepository: CurrencyRepository {
-  let result: Result<[CurrencyRate], DataError>
+  let result: Result<[CurrencyWeight], DataError>
   
   public init(
-    result: Result<[CurrencyRate], DataError> = .failure(.unknown)
+    result: Result<[CurrencyWeight], DataError> = .failure(.unknown)
   ) {
     self.result = result
   }
   
-  public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
+  public func getLatestRates() async -> Result<[CurrencyWeight], DataError> {
     result
   }
 }
