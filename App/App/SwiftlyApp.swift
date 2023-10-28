@@ -11,14 +11,13 @@ import CurrencyApi
 import CurrencyData
 import SwiftUI
 
+private let provider = Provider()
+
 @main
-struct AppApp: App {
-  private let provider = Provider.instance
+struct SwiftlyApp: App {
   
   init() {
-    converterPresentationRegistry(provider: provider)
-    currencyApiRegistry(provider: provider)
-    currencyDataRegistry(provider: provider)
+    SwiftlyModule().start(with: provider)
   }
   
   var body: some Scene {

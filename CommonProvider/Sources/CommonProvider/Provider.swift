@@ -2,10 +2,13 @@ import CommonUtils
 
 final public class Provider {
   
-  public static let instance = Provider()
-  private var registry: [String: () -> Any] = [:]
+  private var registry: [String: () -> Any]
   
-  private init() {}
+  public init(
+    registry: [String : () -> Any] = [:]
+  ) {
+    self.registry = registry
+  }
   
   @discardableResult
   public func register<T>(_ provider: @escaping () -> T) -> Provider {
