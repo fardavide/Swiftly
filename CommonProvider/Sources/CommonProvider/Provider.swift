@@ -1,12 +1,8 @@
-import CommonUtils
-
 final public class Provider {
   
   private var registry: [String: () -> Any]
   
-  public init(
-    registry: [String : () -> Any] = [:]
-  ) {
+  init(registry: [String : () -> Any]) {
     self.registry = registry
   }
   
@@ -27,8 +23,10 @@ final public class Provider {
   }
   
   public func get<T>(_ type: T.Type) -> T {
-    safeGet(type).getOr { error in
-      fatalError("key '\(error.key)' not registered")
+    let result = safeGet(type)
+    switch result {
+    case let .success(success): return success
+    case let .failure(error): fatalError("key '\(error.key)' not registered")
     }
   }
   
@@ -39,4 +37,37 @@ final public class Provider {
 
 public struct ProviderError: Error, Equatable {
   let key: String
+}
+
+public func getProvider() -> Provider {
+  Provider.require()
+}
+
+public extension Provider {
+  private static var instance: Provider?
+
+  static func require() -> Provider {
+    if let safeInstance = instance {
+      safeInstance
+    } else {
+      fatalError("Provider not initialized")
+    }
+  }
+  
+  static func start(registry: [String : () -> Any] = [:]) -> Provider {
+    if instance == nil {
+      instance = Provider(registry: registry)
+      return instance!
+    } else {
+      fatalError("Provider already initialized")
+    }
+  }
+}
+
+extension Provider {
+  
+  static func test(registry: [String : () -> Any] = [:]) -> Provider {
+    instance = Provider(registry: registry)
+    return instance!
+  }
 }

@@ -4,35 +4,35 @@ import Foundation
 public class FakeCurrencyStorage: CurrencyStorage {
   
   private let fetchAllRatesResult: Result<[CurrencyRateStorageModel], StorageError>
-  private let fetchDate: FetchDateStorageModel
+  private let updateDate: CurrencyDateStorageModel
   
   public init(
     fetchAllRatesResult: Result<[CurrencyRateStorageModel], StorageError> = .failure(.unknown),
-    fetchDate: FetchDateStorageModel = FetchDateStorageModel.distantPast
+    updateDate: CurrencyDateStorageModel = CurrencyDateStorageModel.distantPast
   ) {
     self.fetchAllRatesResult = fetchAllRatesResult
-    self.fetchDate = fetchDate
+    self.updateDate = updateDate
   }
   
   public convenience init(
     fetchAllRatesModels: [CurrencyRateStorageModel],
-    fetchDate: FetchDateStorageModel = FetchDateStorageModel.distantPast
+    updateDate: CurrencyDateStorageModel = CurrencyDateStorageModel.distantPast
   ) {
     self.init(
       fetchAllRatesResult: .success(fetchAllRatesModels),
-      fetchDate: fetchDate
+      updateDate: updateDate
     )
   }
   
   public func insertAllRates(_ models: [CurrencyRateStorageModel]) async {}
   
-  public func insertFetchDate(_ model: FetchDateStorageModel) async {}
+  public func insertUpdateDate(_ model: CurrencyDateStorageModel) async {}
   
   public func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError> {
     fetchAllRatesResult
   }
   
-  public func getInsertDate() async -> FetchDateStorageModel {
-    fetchDate
+  public func getUpdateDate() async -> CurrencyDateStorageModel {
+    updateDate
   }
 }

@@ -10,7 +10,7 @@ import CurrencyDomain
 import SwiftUI
 
 public struct ConverterView: View {
-  @StateObject var viewModel: ConverterViewModel = Provider.instance.get()
+  @StateObject var viewModel: ConverterViewModel = getProvider().get()
   
   public init() {}
   

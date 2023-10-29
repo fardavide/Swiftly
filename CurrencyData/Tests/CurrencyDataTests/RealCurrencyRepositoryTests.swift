@@ -1,5 +1,6 @@
 import XCTest
 
+import CommonDate
 import CommonNetwork
 import CommonStorage
 import CurrencyApi
@@ -12,7 +13,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
   func test_whenEmptyCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
-      latestApiModel: CurrencyRatesApiModel.sample,
+      latestApiModel: CurrencyRatesApiModel.samples.all,
       fetchAllRatesStorageModels: []
     )
     
@@ -26,7 +27,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
   func test_whenEmptyCache_returnsResultFromApi() async throws {
     // given
     let scenario = Scenario(
-      latestApiModel: CurrencyRatesApiModel.sample,
+      latestApiModel: CurrencyRatesApiModel.samples.eurOnly,
       fetchAllRatesStorageModels: []
     )
     
@@ -34,14 +35,15 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates()
     
     // then
-    XCTAssertEqual(result, .success(CurrencyRate.samples.all()))
+    XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
   }
   
   func test_whenErrorFromCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
-      latestApiResult: .success(CurrencyRatesApiModel.sample),
-      fetchAllRatesStorageResult: .failure(.unknown)
+      latestApiResult: .success(CurrencyRatesApiModel.samples.all),
+      fetchAllRatesStorageResult: .failure(.unknown),
+      updateDate: currentDate - 2.hours()
     )
     
     // when
@@ -54,22 +56,24 @@ final class RealCurrencyRepositoryTests: XCTestCase {
   func test_whenErrorFromCache_returnsResultFromApi() async throws {
     // given
     let scenario = Scenario(
-      latestApiResult: .success(CurrencyRatesApiModel.sample),
-      fetchAllRatesStorageResult: .failure(.unknown)
+      latestApiResult: .success(CurrencyRatesApiModel.samples.eurOnly),
+      fetchAllRatesStorageResult: .failure(.unknown),
+      updateDate: currentDate - 2.hours()
     )
     
     // when
     let result = await scenario.sut.getLatestRates()
     
     // then
-    XCTAssertEqual(result, .success(CurrencyRate.samples.all()))
+    XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
   }
   
-  func test_whenCache_dontFetchFromApi() async throws {
+  func test_whenCacheNotExpired_dontFetchFromApi() async throws {
     // given
     let scenario = Scenario(
-      latestApiModel: CurrencyRatesApiModel.sample,
-      fetchAllRatesStorageModels: CurrencyRateStorageModel.samples.all()
+      latestApiModel: CurrencyRatesApiModel.samples.all,
+      fetchAllRatesStorageModels: CurrencyRateStorageModel.samples.all(),
+      updateDate: currentDate - 2.hours()
     )
     
     // when
@@ -79,24 +83,57 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     XCTAssertFalse(scenario.api.didFetch)
   }
   
-  func test_whenCache_returnsResultFromStorage() async throws {
+  func test_whenCacheNotExpired_returnsResultFromStorage() async throws {
     // given
     let scenario = Scenario(
-      latestApiModel: CurrencyRatesApiModel.sample,
-      fetchAllRatesStorageModels: CurrencyRateStorageModel.samples.all()
+      latestApiModel: CurrencyRatesApiModel.samples.all,
+      fetchAllRatesStorageModels: [CurrencyRateStorageModel.samples.eur],
+      updateDate: currentDate - 2.hours()
     )
     
     // when
     let result = await scenario.sut.getLatestRates()
     
     // then
-    XCTAssertEqual(result, .success(CurrencyRate.samples.all()))
+    XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
+  }
+  
+  func test_whenCacheExpired_fetchFromApi() async throws {
+    // given
+    let scenario = Scenario(
+      latestApiModel: CurrencyRatesApiModel.samples.all,
+      fetchAllRatesStorageModels: [CurrencyRateStorageModel.samples.eur],
+      updateDate: currentDate - 3.days()
+    )
+    
+    // when
+    _ = await scenario.sut.getLatestRates()
+    
+    // then
+    XCTAssertTrue(scenario.api.didFetch)
+  }
+  
+  func test_whenCacheExpired_returnsResultFromApi() async throws {
+    // given
+    let scenario = Scenario(
+      latestApiModel: CurrencyRatesApiModel.samples.eurOnly,
+      fetchAllRatesStorageModels: [CurrencyRateStorageModel.samples.usd],
+      updateDate: currentDate - 3.days()
+    )
+    
+    // when
+    let result = await scenario.sut.getLatestRates()
+    
+    // then
+    XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
   }
 }
 
+private let currentDate = Date.samples.xmas2023noon
+
 private final class Scenario {
-  let sut: RealCurrencyRepository
   let api: FakeCurrencyApi
+  let sut: RealCurrencyRepository
   
   init(
     api: FakeCurrencyApi = FakeCurrencyApi(),
@@ -104,6 +141,7 @@ private final class Scenario {
   ) {
     self.sut = RealCurrencyRepository(
       api: api,
+      getCurrentDate: FakeGetCurrentDate(date: currentDate),
       storage: storage
     )
     self.api = api
@@ -112,13 +150,13 @@ private final class Scenario {
   convenience init(
     latestApiResult: Result<CurrencyRatesApiModel, ApiError>,
     fetchAllRatesStorageResult: Result<[CurrencyRateStorageModel], StorageError>,
-    fetchDate: FetchDateStorageModel = FetchDateStorageModel.distantPast
+    updateDate: Date = Date.distantPast
   ) {
     self.init(
       api: FakeCurrencyApi(latestResult: latestApiResult),
       storage: FakeCurrencyStorage(
         fetchAllRatesResult: fetchAllRatesStorageResult,
-        fetchDate: fetchDate
+        updateDate: updateDate.toCurrencyDateStorageModel()
       )
     )
   }
@@ -126,14 +164,14 @@ private final class Scenario {
   convenience init(
     latestApiModel: CurrencyRatesApiModel? = nil,
     fetchAllRatesStorageModels: [CurrencyRateStorageModel]? = nil,
-    fetchDate: FetchDateStorageModel = FetchDateStorageModel.distantPast
+    updateDate: Date = Date.distantPast
 ) {
     self.init(
       latestApiResult: 
         latestApiModel != nil ? .success(latestApiModel!) : .failure(.unknown),
       fetchAllRatesStorageResult:
         fetchAllRatesStorageModels != nil ? .success(fetchAllRatesStorageModels!) : .failure(.unknown),
-      fetchDate: fetchDate
+      updateDate: updateDate
     )
   }
 }

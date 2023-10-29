@@ -2,7 +2,7 @@ import XCTest
 @testable import CommonProvider
 
 final class ProviderTests: XCTestCase {
-  private let provider = Provider()
+  private let provider = Provider.test()
   
   func test_whenNotRegistered_errorWithType() throws {
     // when

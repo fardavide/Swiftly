@@ -26,8 +26,8 @@ public extension CurrencyRate {
 }
 
 public struct CurrencyWeightSamples {
-  let eur = CurrencyRate(currency: .eur, rate: 1)
-  let usd = CurrencyRate(currency: .usd, rate: 0.7)
+  public let eur = CurrencyRate(currency: .eur, rate: 1)
+  public let usd = CurrencyRate(currency: .usd, rate: 0.7)
   
   public func all() -> [CurrencyRate] {
     [eur, usd]

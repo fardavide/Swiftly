@@ -19,9 +19,10 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(path: "CurrencyDomain"),
+    .package(name: "CommonDate", path: "../Common/CommonDate"),
     .package(name: "CommonProvider", path: "../Common/CommonProvider"),
-    .package(name: "CommonStorage", path: "../Common/CommonStorage")
+    .package(name: "CommonStorage", path: "../Common/CommonStorage"),
+    .package(path: "CurrencyDomain")
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -29,8 +30,10 @@ let package = Package(
     .target(
       name: "CurrencyStorage",
       dependencies: [
+        "CommonDate",
         "CommonProvider",
-        "CommonStorage"
+        "CommonStorage",
+        "CurrencyDomain"
       ]
     ),
     .testTarget(

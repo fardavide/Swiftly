@@ -23,6 +23,7 @@ public final class CurrencyDataModule: Module {
       .register {
         RealCurrencyRepository(
           api: provider.get(),
+          getCurrentDate: provider.get(),
           storage: provider.get()
         ) as CurrencyRepository
       }

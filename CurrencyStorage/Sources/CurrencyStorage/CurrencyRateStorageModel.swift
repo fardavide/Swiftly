@@ -4,7 +4,8 @@
 //
 //  Created by Davide Giuseppe Farella on 28/10/23.
 //
-
+import CurrencyDomain
+import Foundation
 import SwiftData
 
 public struct CurrencyRateStorageModel {
@@ -29,11 +30,38 @@ public class CurrencyRateSwiftDataModel {
 public extension CurrencyRateStorageModel {
   static let samples = CurrencyRateStorageModelSamples()
   
+  func toDomainModelOrNull() -> CurrencyRate? {
+    guard let currency = Currency.from(code: code) else {
+      return nil
+    }
+    return CurrencyRate(
+      currency: currency,
+      rate: rate
+    )
+  }
+  
   func toSwiftDataModel() -> CurrencyRateSwiftDataModel {
     CurrencyRateSwiftDataModel(
       code: code,
       rate: rate
     )
+  }
+}
+
+public extension [CurrencyRateStorageModel] {
+  func toDomainModels() -> [CurrencyRate] {
+    compactMap { $0.toDomainModelOrNull() }
+  }
+}
+
+public extension [CurrencyRate] {
+  func toStorageModels() -> [CurrencyRateStorageModel] {
+    map { currencyRate in
+      CurrencyRateStorageModel(
+        code: currencyRate.currency.code,
+        rate: currencyRate.rate
+      )
+    }
   }
 }
 

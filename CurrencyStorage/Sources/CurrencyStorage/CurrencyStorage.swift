@@ -13,9 +13,9 @@ import SwiftData
 public protocol CurrencyStorage {
   
   func insertAllRates(_ models: [CurrencyRateStorageModel]) async
-  func insertFetchDate(_ model: FetchDateStorageModel) async
+  func insertUpdateDate(_ model: CurrencyDateStorageModel) async
   func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError>
-  func getInsertDate() async -> FetchDateStorageModel
+  func getUpdateDate() async -> CurrencyDateStorageModel
 }
 
 class RealCurrencyStorage: CurrencyStorage {
@@ -24,7 +24,7 @@ class RealCurrencyStorage: CurrencyStorage {
   private var container: ModelContainer {
     do {
       return try ModelContainer(
-        for: CurrencyRateSwiftDataModel.self, FetchDateSwitfDataModel.self,
+        for: CurrencyDateSwiftDataModel.self, CurrencyRateSwiftDataModel.self,
         configurations: configuration
       )
     } catch {
@@ -40,7 +40,7 @@ class RealCurrencyStorage: CurrencyStorage {
     }
   }
   
-  func insertFetchDate(_ model: FetchDateStorageModel) async {
+  func insertUpdateDate(_ model: CurrencyDateStorageModel) async {
     await withContext {
       $0.insert(model.toSwiftDataModel())
     }
@@ -57,10 +57,10 @@ class RealCurrencyStorage: CurrencyStorage {
     }
   }
   
-  func getInsertDate() async -> FetchDateStorageModel {
+  func getUpdateDate() async -> CurrencyDateStorageModel {
     return await withContext {
-      let result = $0.resultFetch(FetchDescriptor<FetchDateSwitfDataModel>())
-      let fetchDateSwiftDataModel = result.getOr(default: []).first ?? FetchDateSwitfDataModel.distantPast
+      let result = $0.resultFetch(FetchDescriptor<CurrencyDateSwiftDataModel>())
+      let fetchDateSwiftDataModel = result.getOr(default: []).first ?? CurrencyDateSwiftDataModel.distantPast
       return fetchDateSwiftDataModel.toStorageModel()
     }
   }

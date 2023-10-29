@@ -5,7 +5,7 @@ final class ModuleTest: XCTestCase {
   func test_onStart_modulesAreNotRegisteredMultipleTimes() throws {
     // given
     let module = ThirdTestModule()
-    let provider = Provider()
+    let provider = Provider.test()
     
     // when
     module.start(with: provider)

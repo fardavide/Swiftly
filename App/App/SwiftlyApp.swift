@@ -11,7 +11,7 @@ import CurrencyApi
 import CurrencyData
 import SwiftUI
 
-private let provider = Provider()
+private let provider = Provider.start()
 
 @main
 struct SwiftlyApp: App {
