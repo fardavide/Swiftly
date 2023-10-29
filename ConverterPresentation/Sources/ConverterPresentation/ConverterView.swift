@@ -105,9 +105,6 @@ struct CurrencyRow: View {
 }
 
 #Preview {
-  ConverterView(
-//    viewModel: ConverterViewModel(
-//      repository: FakeCurrencyRepository()
-//    )
-  )
+  Provider.setupPreview(viewModel: ConverterViewModel.samples.success)
+  return ConverterView()
 }

@@ -9,7 +9,7 @@ import CommonUtils
 import CurrencyDomain
 import Foundation
 
-public class ConverterViewModel: ViewModel {
+public final class ConverterViewModel: ViewModel {
   public typealias Action = ConverterAction
   public typealias State = ConverterState
   
@@ -68,4 +68,16 @@ public class ConverterViewModel: ViewModel {
       }
     }
   }
+}
+
+public extension ConverterViewModel {
+  static let samples = ConverterViewModelSamples()
+}
+
+public class ConverterViewModelSamples {
+  let success = ConverterViewModel(
+    repository: FakeCurrencyRepository(
+      currencyRates: CurrencyRate.samples.all()
+    )
+  )
 }

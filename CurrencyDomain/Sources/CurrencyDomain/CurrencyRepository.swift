@@ -22,6 +22,10 @@ public class FakeCurrencyRepository: CurrencyRepository {
     self.result = result
   }
   
+  public convenience init(currencyRates: [CurrencyRate]) {
+    self.init(result: .success(currencyRates))
+  }
+  
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
     result
   }

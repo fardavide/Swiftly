@@ -62,6 +62,11 @@ public extension Provider {
       fatalError("Provider already initialized")
     }
   }
+  
+  static func setupPreview<ViewModel>(viewModel: @escaping @autoclosure () -> ViewModel) {
+    let provider = start()
+    provider.register(viewModel)
+  }
 }
 
 extension Provider {

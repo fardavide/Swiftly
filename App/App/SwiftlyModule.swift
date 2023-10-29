@@ -16,6 +16,6 @@ final class SwiftlyModule : Module {
   var dependencies: [Module.Type] = [
     CommonDateModule.self,
     ConverterPresentionModule.self,
-    CurrencyDataModule.self,
+    CurrencyDataModule.self
   ]
 }
