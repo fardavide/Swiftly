@@ -9,27 +9,34 @@ import Foundation
 
 public struct CurrencyValue: Identifiable, Equatable {
   public let value: Double
-  public let currencyRate: CurrencyRate
+  public let currencyWithRate: CurrencyWithRate
   
-  public init(value: Double, currencyRate: CurrencyRate) {
+  public init(value: Double, currencyWithRate: CurrencyWithRate) {
     self.value = value
-    self.currencyRate = currencyRate
+    self.currencyWithRate = currencyWithRate
   }
   
   public var id: Currency {
-    currencyRate.currency
+    currencyWithRate.currency
   }
 }
 
 public extension CurrencyValue {
   static let samples = [
-    CurrencyValue(value: 123_456.071, currencyRate: CurrencyRate.samples.eur),
-    CurrencyValue(value: 234_567.8, currencyRate: CurrencyRate.samples.usd)
+    CurrencyValue(value: 123_456.071, currencyWithRate: CurrencyWithRate.samples.eur),
+    CurrencyValue(value: 234_567.8, currencyWithRate: CurrencyWithRate.samples.usd)
   ]
+  
+  var currency: Currency {
+    currencyWithRate.currency
+  }
+  var rate: Double {
+    currencyWithRate.rate
+  }
 }
 
 public extension Double {
-  func of(_ currencyWeight: CurrencyRate) -> CurrencyValue {
-    CurrencyValue(value: self, currencyRate: currencyWeight)
+  func of(_ currencyWithRate: CurrencyWithRate) -> CurrencyValue {
+    CurrencyValue(value: self, currencyWithRate: currencyWithRate)
   }
 }

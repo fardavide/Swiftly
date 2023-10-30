@@ -9,12 +9,22 @@ import Foundation
 
 public protocol CurrencyApi {
   
+  /// see: https://currencyapi.com/docs/currencies
+  func currencies() async -> Result<CurrenciesApiModel, ApiError>
+  
+  /// see: https://currencyapi.com/docs/latest
   func latestRates() async -> Result<CurrencyRatesApiModel, ApiError>
 }
 
 final class RealCurrencyApi: CurrencyApi {
-    
-  public func latestRates() async -> Result<CurrencyRatesApiModel, ApiError> {
+  
+  func currencies() async -> Result<CurrenciesApiModel, ApiError> {
+    await URLSession.shared.resultData(
+      from: Endpoint.currencties().url
+    )
+  }
+  
+  func latestRates() async -> Result<CurrencyRatesApiModel, ApiError> {
     await URLSession.shared.resultData(
       from: Endpoint.latestRates().url
     )
@@ -22,17 +32,28 @@ final class RealCurrencyApi: CurrencyApi {
 }
 
 public class FakeCurrencyApi: CurrencyApi {
-  public private(set) var didFetch = false
-  private let latestResult: Result<CurrencyRatesApiModel, ApiError>
+  
+  public private(set) var didFetchCurrencies = false
+  public private(set) var didFetchLatestRates = false
+  
+  private let currenciesResult: Result<CurrenciesApiModel, ApiError>
+  private let latestRatesResult: Result<CurrencyRatesApiModel, ApiError>
   
   public init(
-    latestResult: Result<CurrencyRatesApiModel, ApiError> = .failure(.unknown)
+    currenciesResult: Result<CurrenciesApiModel, ApiError> = .failure(.unknown),
+    latestRatesResult: Result<CurrencyRatesApiModel, ApiError> = .failure(.unknown)
   ) {
-    self.latestResult = latestResult
+    self.currenciesResult = currenciesResult
+    self.latestRatesResult = latestRatesResult
+  }
+  
+  public func currencies() async -> Result<CurrenciesApiModel, ApiError> {
+    didFetchCurrencies = true
+    return currenciesResult
   }
   
   public func latestRates() -> Result<CurrencyRatesApiModel, ApiError> {
-    didFetch = true
-    return latestResult
+    didFetchLatestRates = true
+    return latestRatesResult
   }
 }

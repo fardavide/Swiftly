@@ -52,4 +52,13 @@ public extension Result {
     case .failure: await handle()
     }
   }
+  
+  @inlinable func then<NewSuccess>(
+    _ transform: (Success) async -> Result<NewSuccess, Failure>
+  ) async -> Result<NewSuccess, Failure> {
+    switch self {
+    case let .success(success): await transform(success)
+    case let .failure(error): .failure(error)
+    }
+  }
 }

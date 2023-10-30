@@ -29,12 +29,11 @@ public final class ConverterViewModel: ViewModel {
     switch action {
     case let .update(currencyValue):
       state.values = state.values.map { v in
-        // TODO: extract
-        v.currencyRate.currency == currencyValue.currencyRate.currency
+        v.currency == currencyValue.currency
         ? currencyValue
         : CurrencyValue(
-          value: currencyValue.value * (v.currencyRate.rate / currencyValue.currencyRate.rate),
-          currencyRate: v.currencyRate
+          value: currencyValue.value * (v.rate / currencyValue.rate),
+          currencyWithRate: v.currencyWithRate
         )
       }
     }
@@ -45,23 +44,33 @@ public final class ConverterViewModel: ViewModel {
       self.state.isLoading = true
     }
     
-    let result = await repository.getLatestRates()
+    let currenciesResult = await repository.getCurrencies()
+    let ratesResult = await repository.getLatestRates()
+    
+    let result = await repository.getCurrencies()
+      .then { currencies in
+        await repository.getLatestRates().map { rates in
+          rates.compactMap { currencyRate in
+            if let currency = currencies.first(where: { $0.code == currencyRate.currencyCode }) {
+              CurrencyValue(
+                value: 0,
+                currencyWithRate: CurrencyWithRate(
+                  currency: currency,
+                  rate: currencyRate.rate
+                )
+              )
+            } else {
+              nil
+            }
+          }
+        }
+      }
     DispatchQueue.main.async {
       self.state.isLoading = false
       
       switch result {
       case let .success(rates):
         self.state.values = rates
-          .filter { rate in Currency.from(code: rate.currency.code) != nil }
-          .map { currencyRate in
-            CurrencyValue(
-              value: 0,
-              currencyRate: CurrencyRate(
-                currency: Currency.from(code: currencyRate.currency.code)!,
-                rate: currencyRate.rate
-              )
-            )
-          }
         self.state.error = nil
       case let .failure(error):
         self.state.error = "Something went wrong: \(error)"
@@ -82,12 +91,12 @@ public class ConverterViewModelSamples {
   )
   let networkError = ConverterViewModel(
     repository: FakeCurrencyRepository(
-      result: .failure(.network)
+      currenciesResult: .failure(.network)
     )
   )
   let storageError = ConverterViewModel(
     repository: FakeCurrencyRepository(
-      result: .failure(.storage)
+      currenciesResult: .failure(.storage)
     )
   )
 }

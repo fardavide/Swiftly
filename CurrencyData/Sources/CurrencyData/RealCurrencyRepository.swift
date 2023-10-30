@@ -28,17 +28,56 @@ public final class RealCurrencyRepository: CurrencyRepository {
     self.storage = storage
   }
   
+  public func getCurrencies() async -> Result<[Currency], DataError> {
+    await fetchCurrenciesFromStorage()
+      .recover(await fetchCurrenciesFromApi())
+  }
+  
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
     let updatedAt = await storage.getUpdateDate().updatedAt
     return if getCurrentDate.run() % updatedAt > 1.days() {
-      await fetchFromApi()
+      await fetchRatesFromApi()
     } else {
-      await fetchFromStorage()
-        .recover(await fetchFromApi())
+      await fetchRatesFromStorage()
+        .recover(await fetchRatesFromApi())
     }
   }
   
-  private func fetchFromApi() async -> Result<[CurrencyRate], DataError> {
+  private func fetchCurrenciesFromApi() async -> Result<[Currency], DataError> {
+    let currenciesApiModelResult = await api.currencies()
+    
+    switch currenciesApiModelResult {
+      
+    case let .success(apiModel):
+      let domainModels = apiModel.toDomainModels()
+      await storeCurrencies(currencies: domainModels)
+      return .success(domainModels)
+      
+    case let .failure(apiError):
+      return switch apiError {
+      case .unknown: .failure(.network)
+      case .jsonError: .failure(.network)
+      }
+    }
+  }
+  
+  private func fetchCurrenciesFromStorage() async -> Result<[Currency], DataError> {
+    await storage.fetchAllCurrencies()
+      .flatMap { storageModels in
+        switch storageModels.isEmpty {
+        case false: .success(storageModels.toDomainModels())
+        case true: .failure(.noCache)
+        }
+      }
+      .mapError { storageError in
+        switch storageError {
+        case .noCache: .storage
+        case .unknown: .storage
+        }
+      }
+  }
+  
+  private func fetchRatesFromApi() async -> Result<[CurrencyRate], DataError> {
     let ratesApiModelResult = await api.latestRates()
     
     switch ratesApiModelResult {
@@ -57,7 +96,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
     }
   }
   
-  private func fetchFromStorage() async -> Result<[CurrencyRate], DataError> {
+  private func fetchRatesFromStorage() async -> Result<[CurrencyRate], DataError> {
     await storage.fetchAllRates()
       .flatMap { storageModels in
         switch storageModels.isEmpty {
@@ -71,6 +110,10 @@ public final class RealCurrencyRepository: CurrencyRepository {
         case .unknown: .storage
         }
       }
+  }
+  
+  private func storeCurrencies(currencies: [Currency]) async {
+    await storage.insertAllCurrencies(currencies.toStorageModels())
   }
   
   private func storeRates(rates: [CurrencyRate], updatedAt: Date) async {

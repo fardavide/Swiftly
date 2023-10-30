@@ -12,8 +12,10 @@ import SwiftData
 
 public protocol CurrencyStorage {
   
+  func insertAllCurrencies(_ models: [CurrencyStorageModel]) async
   func insertAllRates(_ models: [CurrencyRateStorageModel]) async
   func insertUpdateDate(_ model: CurrencyDateStorageModel) async
+  func fetchAllCurrencies() async -> Result<[CurrencyStorageModel], StorageError>
   func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError>
   func getUpdateDate() async -> CurrencyDateStorageModel
 }
@@ -24,11 +26,19 @@ class RealCurrencyStorage: CurrencyStorage {
   private var container: ModelContainer {
     do {
       return try ModelContainer(
-        for: CurrencyDateSwiftDataModel.self, CurrencyRateSwiftDataModel.self,
+        for: CurrencyDateSwiftDataModel.self, CurrencyRateSwiftDataModel.self, CurrencySwiftDataModel.self,
         configurations: configuration
       )
     } catch {
       fatalError(error.localizedDescription)
+    }
+  }
+  
+  func insertAllCurrencies(_ models: [CurrencyStorageModel]) async {
+    await withContext {
+      for model in models {
+        $0.insert(model.toSwiftDataModel())
+      }
     }
   }
   
@@ -46,8 +56,19 @@ class RealCurrencyStorage: CurrencyStorage {
     }
   }
   
+  func fetchAllCurrencies() async -> Result<[CurrencyStorageModel], StorageError> {
+    await withContext {
+      $0.resultFetch(FetchDescriptor<CurrencySwiftDataModel>())
+        .map { result in
+          result.map { swiftDataModel in
+            swiftDataModel.toStorageModel()
+          }
+        }
+    }
+  }
+  
   func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError> {
-    return await withContext {
+    await withContext {
       $0.resultFetch(FetchDescriptor<CurrencyRateSwiftDataModel>())
         .map { result in
           result.map { swiftDataModel in
@@ -58,7 +79,7 @@ class RealCurrencyStorage: CurrencyStorage {
   }
   
   func getUpdateDate() async -> CurrencyDateStorageModel {
-    return await withContext {
+    await withContext {
       let result = $0.resultFetch(FetchDescriptor<CurrencyDateSwiftDataModel>())
       let fetchDateSwiftDataModel = result.getOr(default: []).first ?? CurrencyDateSwiftDataModel.distantPast
       return fetchDateSwiftDataModel.toStorageModel()

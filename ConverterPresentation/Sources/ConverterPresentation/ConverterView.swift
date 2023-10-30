@@ -45,11 +45,11 @@ private struct ContentView: View {
   let onCurrencyValueChange: (CurrencyValue) -> ()
   
   var body: some View {
-    List(values, id: \.currencyRate) { value in
+    List(values, id: \.currency) { value in
       CurrencyRow(
         value: value,
         onValueChange: { newValue in
-          onCurrencyValueChange(newValue.of(value.currencyRate))
+          onCurrencyValueChange(newValue.of(value.currencyWithRate))
         }
       )
       .swipeActions(edge: .trailing) {
@@ -75,7 +75,7 @@ struct CurrencyRow: View {
   let onValueChange: (Double) -> ()
   
   var body: some View {
-    let currency = value.currencyRate.currency
+    let currency = value.currency
     let textFieldBinding = Binding(get: { value.value }, set: onValueChange)
     
     HStack {
@@ -85,7 +85,7 @@ struct CurrencyRow: View {
         Text(currency.code)
       }
       .accessibilityElement(children: .ignore)
-      .accessibilityLabel("Currency: \(currency.longName)")
+      .accessibilityLabel("Currency: \(currency.name)")
       Spacer()
       VStack(alignment: .trailing) {
         TextField(
@@ -95,7 +95,7 @@ struct CurrencyRow: View {
         )
         .font(.title2)
         .multilineTextAlignment(.trailing)
-        Text(currency.longNameWithSymbol)
+        Text(currency.nameWithSymbol)
           .font(.caption)
       }
       .accessibilityElement(children: .ignore)

@@ -10,23 +10,36 @@ import Foundation
 
 public protocol CurrencyRepository {
   
+  func getCurrencies() async -> Result<[Currency], DataError>
   func getLatestRates() async -> Result<[CurrencyRate], DataError>
 }
 
 public class FakeCurrencyRepository: CurrencyRepository {
-  let result: Result<[CurrencyRate], DataError>
+  let currenciesResult: Result<[Currency], DataError>
+  let currencyRatesResult: Result<[CurrencyRate], DataError>
   
   public init(
-    result: Result<[CurrencyRate], DataError> = .failure(.unknown)
+    currenciesResult: Result<[Currency], DataError> = .failure(.unknown),
+    currencyRatesResult: Result<[CurrencyRate], DataError> = .failure(.unknown)
   ) {
-    self.result = result
+    self.currenciesResult = currenciesResult
+    self.currencyRatesResult = currencyRatesResult
   }
   
-  public convenience init(currencyRates: [CurrencyRate]) {
-    self.init(result: .success(currencyRates))
+  public convenience init(
+    currencies: [Currency]? = nil,
+    currencyRates: [CurrencyRate]? = nil
+  ) {
+    self.init(
+      currenciesResult: currencies != nil ? .success(currencies!) : .failure(.unknown),
+      currencyRatesResult: currencyRates != nil ? .success(currencyRates!) : .failure(.unknown)
+    )
   }
   
+  public func getCurrencies() async -> Result<[Currency], DataError> {
+    currenciesResult
+  }
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
-    result
+    currencyRatesResult
   }
 }

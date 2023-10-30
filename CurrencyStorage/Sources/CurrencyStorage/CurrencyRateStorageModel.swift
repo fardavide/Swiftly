@@ -30,12 +30,9 @@ public class CurrencyRateSwiftDataModel {
 public extension CurrencyRateStorageModel {
   static let samples = CurrencyRateStorageModelSamples()
   
-  func toDomainModelOrNull() -> CurrencyRate? {
-    guard let currency = Currency.from(code: code) else {
-      return nil
-    }
-    return CurrencyRate(
-      currency: currency,
+  func toDomainModel() -> CurrencyRate? {
+    CurrencyRate(
+      currencyCode: code,
       rate: rate
     )
   }
@@ -50,7 +47,7 @@ public extension CurrencyRateStorageModel {
 
 public extension [CurrencyRateStorageModel] {
   func toDomainModels() -> [CurrencyRate] {
-    compactMap { $0.toDomainModelOrNull() }
+    compactMap { $0.toDomainModel() }
   }
 }
 
@@ -58,7 +55,7 @@ public extension [CurrencyRate] {
   func toStorageModels() -> [CurrencyRateStorageModel] {
     map { currencyRate in
       CurrencyRateStorageModel(
-        code: currencyRate.currency.code,
+        code: currencyRate.currencyCode,
         rate: currencyRate.rate
       )
     }

@@ -47,14 +47,9 @@ public extension CurrencyRatesApiModel {
   )
   
   func toDomainModels() -> [CurrencyRate] {
-    self.data
-      .compactMap { code, currencyDto in
-        if let currency = Currency.from(code: code) {
-          CurrencyRate(currency: currency, rate: currencyDto.value)
-        } else {
-          nil
-        }
-      }
+    self.data.map { code, currencyApiModel in
+      CurrencyRate(currencyCode: code, rate: currencyApiModel.value)
+    }
   }
   
   func updatedAt() -> Date? {
