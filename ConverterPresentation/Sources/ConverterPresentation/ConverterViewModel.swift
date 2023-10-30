@@ -80,4 +80,14 @@ public class ConverterViewModelSamples {
       currencyRates: CurrencyRate.samples.all()
     )
   )
+  let networkError = ConverterViewModel(
+    repository: FakeCurrencyRepository(
+      result: .failure(.network)
+    )
+  )
+  let storageError = ConverterViewModel(
+    repository: FakeCurrencyRepository(
+      result: .failure(.storage)
+    )
+  )
 }

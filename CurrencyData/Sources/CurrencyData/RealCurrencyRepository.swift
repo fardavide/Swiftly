@@ -39,7 +39,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
   
   private func fetchFromApi() async -> Result<[CurrencyRate], DataError> {
-    let ratesApiModelResult = await api.latest()
+    let ratesApiModelResult = await api.latestRates()
     
     switch ratesApiModelResult {
       

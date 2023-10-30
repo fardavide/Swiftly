@@ -104,7 +104,17 @@ struct CurrencyRow: View {
   }
 }
 
-#Preview {
+#Preview("Success") {
   Provider.setupPreview(viewModel: ConverterViewModel.samples.success)
+  return ConverterView()
+}
+
+#Preview("Network error") {
+  Provider.setupPreview(viewModel: ConverterViewModel.samples.networkError)
+  return ConverterView()
+}
+
+#Preview("Storage error") {
+  Provider.setupPreview(viewModel: ConverterViewModel.samples.storageError)
   return ConverterView()
 }

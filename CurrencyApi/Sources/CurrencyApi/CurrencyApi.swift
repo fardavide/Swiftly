@@ -7,18 +7,17 @@
 import CommonNetwork
 import Foundation
 
-private let baseUrl = "https://api.currencyapi.com/v3/"
-
 public protocol CurrencyApi {
   
-  func latest() async -> Result<CurrencyRatesApiModel, ApiError>
+  func latestRates() async -> Result<CurrencyRatesApiModel, ApiError>
 }
 
 final class RealCurrencyApi: CurrencyApi {
-  
-  public func latest() async -> Result<CurrencyRatesApiModel, ApiError> {
-    let url = URL(string: "\(baseUrl)latest?apikey=\(apiKey)")!
-    return await URLSession.shared.resultData(from: url)
+    
+  public func latestRates() async -> Result<CurrencyRatesApiModel, ApiError> {
+    await URLSession.shared.resultData(
+      from: Endpoint.latestRates().url
+    )
   }
 }
 
@@ -32,7 +31,7 @@ public class FakeCurrencyApi: CurrencyApi {
     self.latestResult = latestResult
   }
   
-  public func latest() -> Result<CurrencyRatesApiModel, ApiError> {
+  public func latestRates() -> Result<CurrencyRatesApiModel, ApiError> {
     didFetch = true
     return latestResult
   }
