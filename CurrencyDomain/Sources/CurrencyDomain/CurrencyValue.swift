@@ -22,10 +22,7 @@ public struct CurrencyValue: Identifiable, Equatable {
 }
 
 public extension CurrencyValue {
-  static let samples = [
-    CurrencyValue(value: 123_456.071, currencyWithRate: CurrencyWithRate.samples.eur),
-    CurrencyValue(value: 234_567.8, currencyWithRate: CurrencyWithRate.samples.usd)
-  ]
+  static let samples = CurrencyValueSamples()
   
   var currency: Currency {
     currencyWithRate.currency
@@ -38,5 +35,14 @@ public extension CurrencyValue {
 public extension Double {
   func of(_ currencyWithRate: CurrencyWithRate) -> CurrencyValue {
     CurrencyValue(value: self, currencyWithRate: currencyWithRate)
+  }
+}
+
+public class CurrencyValueSamples {
+  public let eur = CurrencyValue(value: 123_456.071, currencyWithRate: CurrencyWithRate.samples.eur)
+  public let usd = CurrencyValue(value: 234_567.8, currencyWithRate: CurrencyWithRate.samples.usd)
+  
+  public func all() -> [CurrencyValue] {
+    [eur, usd]
   }
 }

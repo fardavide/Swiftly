@@ -29,9 +29,13 @@ public struct ConverterView: View {
         
       case .none:
         ContentView(
+          allCurrencies: state.allCurrencies,
           values: state.values,
           onCurrencyValueChange: { currencyValue in
-            viewModel.send(.update(currencyValue: currencyValue))
+            viewModel.send(.valueUpdate(currencyValue: currencyValue))
+          },
+          onCurrencyChange: { prev, new in
+            viewModel.send(.currencyChange(prev: prev, new: new))
           }
         )
       }
@@ -40,37 +44,47 @@ public struct ConverterView: View {
 }
 
 private struct ContentView: View {
+  let allCurrencies: [Currency]
   let values: [CurrencyValue]
   @State private var isShowingSheet = false
   let onCurrencyValueChange: (CurrencyValue) -> ()
+  let onCurrencyChange: (_ prev: Currency, _ new: Currency) -> ()
   
   var body: some View {
     List(values, id: \.currency) { value in
-      CurrencyRow(
+      CurrencyValueRow(
         value: value,
         onValueChange: { newValue in
           onCurrencyValueChange(newValue.of(value.currencyWithRate))
         }
       )
+      #if os(iOS)
       .swipeActions(edge: .trailing) {
         Button { isShowingSheet = true } label: {
           Label("Change currency", systemImage: "arrow.left.arrow.right")
             .tint(Color.accentColor)
         }
       }
+      #endif
       .contextMenu {
         Button("Change currency") {
           isShowingSheet = true
         }
       }
       .sheet(isPresented: $isShowingSheet) {
-        Text("Currencies here")
+        SelectCurrencySheet(
+          currencies: allCurrencies,
+          onCurrencySelected: { newCurrency in
+            onCurrencyChange(value.currency, newCurrency)
+            isShowingSheet = false
+          }
+        )
       }
     }
   }
 }
 
-struct CurrencyRow: View {
+private struct CurrencyValueRow: View {
   let value: CurrencyValue
   let onValueChange: (Double) -> ()
   

@@ -46,6 +46,7 @@
 		6B994AEE2AED141700A8E980 /* CurrencyStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyStorage; path = ../../../CurrencyStorage; sourceTree = "<group>"; };
 		6B994AF32AED1BC600A8E980 /* CommonStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CommonStorage; path = ../../CommonStorage; sourceTree = "<group>"; };
 		6B994AF42AEE61CC00A8E980 /* CommonDate */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CommonDate; path = ../../CommonDate; sourceTree = "<group>"; };
+		6BC44F542AF21ECE006B3187 /* CommonTest */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CommonTest; path = ../../Common/CommonTest; sourceTree = "<group>"; };
 		6BDD5DB92AEB822900B0FC32 /* CurrencyDomain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyDomain; path = ../../CurrencyDomain; sourceTree = "<group>"; };
 		6BDD5DBD2AEB82C300B0FC32 /* CurrencyApi */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyApi; path = ../../../CurrencyApi; sourceTree = "<group>"; };
 		6BDD5DBE2AEB82E700B0FC32 /* CurrencyData */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyData; path = ../../../CurrencyData; sourceTree = "<group>"; };
@@ -101,6 +102,7 @@
 		6B994ADC2AEC5CEF00A8E980 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6BC44F542AF21ECE006B3187 /* CommonTest */,
 				6B994AF42AEE61CC00A8E980 /* CommonDate */,
 				6B994AF32AED1BC600A8E980 /* CommonStorage */,
 				6B994AE42AEC678E00A8E980 /* CommonProvider */,

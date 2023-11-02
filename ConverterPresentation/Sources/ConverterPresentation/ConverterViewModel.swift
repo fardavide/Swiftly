@@ -27,53 +27,76 @@ public final class ConverterViewModel: ViewModel {
   
   public func send(_ action: ConverterAction) {
     switch action {
-    case let .update(currencyValue):
+      
+    case let .currencyChange(prev, new):
       state.values = state.values.map { v in
-        v.currency == currencyValue.currency
+        if v.currency == prev {
+          CurrencyValue(
+            value: 10,
+            currencyWithRate: state.values.first(where: { value in value.currency == new })!.currencyWithRate
+          )
+        } else if v.currency == new {
+          CurrencyValue(
+            value: 10,
+            currencyWithRate: state.values.first(where: { value in value.currency == prev })!.currencyWithRate
+          )
+        } else {
+          v
+        }
+      }
+      
+    case let .valueUpdate(currencyValue):
+      state.values = state.values.map { v in
+        v.currency != currencyValue.currency
         ? currencyValue
         : CurrencyValue(
           value: currencyValue.value * (v.rate / currencyValue.rate),
           currencyWithRate: v.currencyWithRate
         )
       }
+      
     }
   }
   
   private func load() async {
-    DispatchQueue.main.async {
+    emit {
       self.state.isLoading = true
     }
     
     let currenciesResult = await repository.getCurrencies()
-    let ratesResult = await repository.getLatestRates()
-    
-    let result = await repository.getCurrencies()
-      .then { currencies in
-        await repository.getLatestRates().map { rates in
-          rates.compactMap { currencyRate in
-            if let currency = currencies.first(where: { $0.code == currencyRate.currencyCode }) {
-              CurrencyValue(
-                value: 0,
-                currencyWithRate: CurrencyWithRate(
-                  currency: currency,
-                  rate: currencyRate.rate
-                )
-              )
-            } else {
-              nil
-            }
-          }
-        }
+    guard let currencies = currenciesResult.orNil() else {
+      emit {
+        self.state.isLoading = false
+        self.state.error = "Cannot load currencies: \(currenciesResult)"
       }
-    DispatchQueue.main.async {
+      return
+    }
+    
+    let ratesResult = await repository.getLatestRates()
+    guard let rates = ratesResult.orNil() else {
+      emit {
+        self.state.isLoading = false
+        self.state.error = "Cannot load rates: \(ratesResult)"
+      }
+      return
+    }
+    
+    emit {
       self.state.isLoading = false
-      
-      switch result {
-      case let .success(rates):
-        self.state.values = rates
-        self.state.error = nil
-      case let .failure(error):
-        self.state.error = "Something went wrong: \(error)"
+      self.state.error = nil
+      self.state.allCurrencies = currencies
+      self.state.values = rates.compactMap { currencyRate in
+        if let currency = currencies.first(where: { $0.code == currencyRate.currencyCode }) {
+          CurrencyValue(
+            value: 10,
+            currencyWithRate: CurrencyWithRate(
+              currency: currency,
+              rate: currencyRate.rate
+            )
+          )
+        } else {
+          nil
+        }
       }
     }
   }
@@ -86,6 +109,7 @@ public extension ConverterViewModel {
 public class ConverterViewModelSamples {
   let success = ConverterViewModel(
     repository: FakeCurrencyRepository(
+      currencies: Currency.samples.all(),
       currencyRates: CurrencyRate.samples.all()
     )
   )

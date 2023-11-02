@@ -14,3 +14,10 @@ public protocol ViewModel<Action, State>: ObservableObject {
   var state: State { get }
   func send(_ action: Action)
 }
+
+public extension ViewModel {
+  
+  func emit(block: @escaping () -> ()) {
+    DispatchQueue.main.async(execute: block)
+  }
+}
