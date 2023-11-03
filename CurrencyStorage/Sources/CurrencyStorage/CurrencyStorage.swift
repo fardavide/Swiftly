@@ -51,18 +51,26 @@ class RealCurrencyStorage: CurrencyStorage {
   
   func fetchAllCurrencies() async -> Result<[CurrencyStorageModel], StorageError> {
     await withContext {
-      $0.resultFetch(FetchDescriptor<CurrencySwiftDataModel>())
-        .map { result in
-          result.map { swiftDataModel in
-            swiftDataModel.toStorageModel()
-          }
+      $0.resultFetch(
+        FetchDescriptor<CurrencySwiftDataModel>(
+          sortBy: [SortDescriptor(\.code)]
+        )
+      )
+      .map { result in
+        result.map { swiftDataModel in
+          swiftDataModel.toStorageModel()
         }
+      }
     }
   }
   
   func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError> {
     await withContext {
-      $0.resultFetch(FetchDescriptor<CurrencyRateSwiftDataModel>())
+      $0.resultFetch(
+        FetchDescriptor<CurrencyRateSwiftDataModel>(
+          sortBy: [SortDescriptor(\.code)]
+        )
+      )
         .map { result in
           result.map { swiftDataModel in
             swiftDataModel.toStorageModel()

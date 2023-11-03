@@ -11,6 +11,8 @@ public final class ConverterViewModel: ViewModel {
   private let currencyRepository: CurrencyRepository
   @Published public var state: State
   
+  private var rates: [CurrencyRate] = []
+  
   public init(
     converterRepository: ConverterRepository,
     currencyRepository: CurrencyRepository,
@@ -26,19 +28,13 @@ public final class ConverterViewModel: ViewModel {
     switch action {
       
     case let .currencyChange(prev, new):
-      state.values = state.values.map { v in
-        if v.currency == prev {
-          CurrencyValue(
-            value: 10,
-            currencyWithRate: state.values.first(where: { value in value.currency == new })!.currencyWithRate
-          )
-        } else if v.currency == new {
-          CurrencyValue(
-            value: 10,
-            currencyWithRate: state.values.first(where: { value in value.currency == prev })!.currencyWithRate
-          )
+      state.values = state.values.map { currencyValue in
+        if currencyValue.currency == prev {
+          newCurrencyValue(for: new)
+        } else if currencyValue.currency == new {
+          newCurrencyValue(for: prev)
         } else {
-          v
+          currencyValue
         }
       }
       
@@ -86,6 +82,7 @@ public final class ConverterViewModel: ViewModel {
       }
       return
     }
+    self.rates = rates
     
     emit {
       self.state.isLoading = false
@@ -104,6 +101,17 @@ public final class ConverterViewModel: ViewModel {
       }
     }
   }
+  
+  private func newCurrencyValue(for currency: Currency) -> CurrencyValue {
+    let currencyWithRate = CurrencyWithRate(
+      currency: currency,
+      rate: rates.first(where: { $0.currencyCode == currency.code })!.rate
+    )
+    return CurrencyValue(
+      value: 10,
+      currencyWithRate: currencyWithRate
+    )
+  }
 }
 
 public extension ConverterViewModel {
@@ -112,20 +120,26 @@ public extension ConverterViewModel {
 
 public class ConverterViewModelSamples {
   let success = ConverterViewModel(
-    converterRepository: FakeConverterRepository(),
+    converterRepository: FakeConverterRepository(
+      favoriteCurrencies: .initial
+    ),
     currencyRepository: FakeCurrencyRepository(
       currencies: Currency.samples.all(),
       currencyRates: CurrencyRate.samples.all()
     )
   )
   let networkError = ConverterViewModel(
-    converterRepository: FakeConverterRepository(),
+    converterRepository: FakeConverterRepository(
+      favoriteCurrencies: .initial
+    ),
     currencyRepository: FakeCurrencyRepository(
       currenciesResult: .failure(.network)
     )
   )
   let storageError = ConverterViewModel(
-    converterRepository: FakeConverterRepository(),
+    converterRepository: FakeConverterRepository(
+      favoriteCurrencies: .initial
+    ),
     currencyRepository: FakeCurrencyRepository(
       currenciesResult: .failure(.storage)
     )

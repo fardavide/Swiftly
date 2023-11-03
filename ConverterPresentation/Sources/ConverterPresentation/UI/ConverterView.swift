@@ -50,6 +50,8 @@ private struct ContentView: View {
   let onCurrencyValueChange: (CurrencyValue) -> ()
   let onCurrencyChange: (_ prev: Currency, _ new: Currency) -> ()
   
+  @State var selectedCurrencyValue: CurrencyValue? = nil
+  
   var body: some View {
     List(values, id: \.currency) { value in
       CurrencyValueRow(
@@ -60,7 +62,10 @@ private struct ContentView: View {
       )
       #if os(iOS)
       .swipeActions(edge: .trailing) {
-        Button { isShowingSheet = true } label: {
+        Button {
+          selectedCurrencyValue = value
+          isShowingSheet = true
+        } label: {
           Label("Change currency", systemImage: "arrow.left.arrow.right")
             .tint(Color.accentColor)
         }
@@ -68,6 +73,7 @@ private struct ContentView: View {
       #endif
       .contextMenu {
         Button("Change currency") {
+          selectedCurrencyValue = value
           isShowingSheet = true
         }
       }
@@ -75,7 +81,7 @@ private struct ContentView: View {
         SelectCurrencySheet(
           currencies: allCurrencies,
           onCurrencySelected: { newCurrency in
-            onCurrencyChange(value.currency, newCurrency)
+            onCurrencyChange(selectedCurrencyValue!.currency, newCurrency)
             isShowingSheet = false
           }
         )

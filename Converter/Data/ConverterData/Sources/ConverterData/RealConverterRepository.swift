@@ -12,8 +12,8 @@ final class RealConverterRepository: ConverterRepository {
   
   func getFavoriteCurrencies() async -> Result<FavoriteCurrencies, DataError> {
     let result = await converterStorage.fetchFavoriteCurrencies()
-    return result
+    return await result
       .map { storageModel in storageModel.toDomainModel() }
-      .mapError { $0.toDataError() }
+      .recover(.success(.initial))
   }
 }
