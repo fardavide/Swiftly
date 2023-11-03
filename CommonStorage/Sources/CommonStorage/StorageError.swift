@@ -1,8 +1,15 @@
+import CommonUtils
 import SwiftData
 
 public enum StorageError: Error {
   case noCache
   case unknown
+}
+
+public extension StorageError {
+  func toDataError() -> DataError {
+    .storage
+  }
 }
 
 public extension ModelContext {

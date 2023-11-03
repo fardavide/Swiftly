@@ -26,7 +26,7 @@ private struct CurrencyRow: View {
     HStack {
       Text(currency.flag)
         .font(.title)
-      Text(currency.code)
+      Text(currency.code.value)
       Spacer()
       Text(currency.nameWithSymbol)
     }

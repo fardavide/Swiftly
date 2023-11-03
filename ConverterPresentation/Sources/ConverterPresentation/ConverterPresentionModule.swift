@@ -12,6 +12,11 @@ final public class ConverterPresentionModule: Module {
   
   public func register(on provider: Provider) {
     provider
-      .register { ConverterViewModel(repository: provider.get()) }
+      .register {
+        ConverterViewModel(
+          converterRepository: provider.get(),
+          currencyRepository: provider.get()
+        )
+      }
   }
 }

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 public struct CurrencyRateStorageModel {
-  let code: String
+  let code: CurrencyCode
   let rate: Double
 }
 
@@ -39,7 +39,7 @@ public extension CurrencyRateStorageModel {
   
   func toSwiftDataModel() -> CurrencyRateSwiftDataModel {
     CurrencyRateSwiftDataModel(
-      code: code,
+      code: code.value,
       rate: rate
     )
   }
@@ -65,15 +65,15 @@ public extension [CurrencyRate] {
 extension CurrencyRateSwiftDataModel {
   func toStorageModel() -> CurrencyRateStorageModel {
     CurrencyRateStorageModel(
-      code: code,
+      code: CurrencyCode(value: code),
       rate: rate
     )
   }
 }
 
 public class CurrencyRateStorageModelSamples {
-  public let eur = CurrencyRateStorageModel(code: "EUR", rate: 1)
-  public let usd = CurrencyRateStorageModel(code: "USD", rate: 0.7)
+  public let eur = CurrencyRateStorageModel(code: .samples.eur, rate: CurrencyRate.samples.eur.rate)
+  public let usd = CurrencyRateStorageModel(code: .samples.usd, rate: CurrencyRate.samples.usd.rate)
   
   public func all() -> [CurrencyRateStorageModel] {
     [eur, usd]

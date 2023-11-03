@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Davide Giuseppe Farella on 28/10/23.
-//
-
 import CommonUtils
 import CommonStorage
 import Foundation

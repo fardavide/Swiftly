@@ -1,15 +1,9 @@
-//
-//  File.swift
-//
-//
-//  Created by Davide Giuseppe Farella on 28/10/23.
-//
 import CurrencyDomain
 import Foundation
 import SwiftData
 
 public struct CurrencyStorageModel {
-  let code: String
+  let code: CurrencyCode
   let flag: String
   let name: String
   let symbol: String
@@ -48,7 +42,7 @@ public extension CurrencyStorageModel {
   
   func toSwiftDataModel() -> CurrencySwiftDataModel {
     CurrencySwiftDataModel(
-      code: code,
+      code: code.value,
       flag: flag,
       name: name,
       symbol: symbol
@@ -78,7 +72,7 @@ public extension [Currency] {
 extension CurrencySwiftDataModel {
   func toStorageModel() -> CurrencyStorageModel {
     CurrencyStorageModel(
-      code: code,
+      code: CurrencyCode(value: code),
       flag: flag,
       name: name,
       symbol: symbol

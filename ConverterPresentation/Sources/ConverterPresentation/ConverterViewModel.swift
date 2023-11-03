@@ -1,11 +1,5 @@
-//
-//  ConverterViewModel.swift
-//  App
-//
-//  Created by Davide Giuseppe Farella on 25/10/23.
-//
-
 import CommonUtils
+import ConverterDomain
 import CurrencyDomain
 import Foundation
 
@@ -13,14 +7,17 @@ public final class ConverterViewModel: ViewModel {
   public typealias Action = ConverterAction
   public typealias State = ConverterState
   
-  private let repository: CurrencyRepository
+  private let converterRepository: ConverterRepository
+  private let currencyRepository: CurrencyRepository
   @Published public var state: State
   
   public init(
-    repository: CurrencyRepository,
+    converterRepository: ConverterRepository,
+    currencyRepository: CurrencyRepository,
     initialState: ConverterState = ConverterState.initial
   ) {
-    self.repository = repository
+    self.converterRepository = converterRepository
+    self.currencyRepository = currencyRepository
     state = initialState
     Task { await load() }
   }
@@ -47,7 +44,7 @@ public final class ConverterViewModel: ViewModel {
       
     case let .valueUpdate(currencyValue):
       state.values = state.values.map { v in
-        v.currency != currencyValue.currency
+        v.currency == currencyValue.currency
         ? currencyValue
         : CurrencyValue(
           value: currencyValue.value * (v.rate / currencyValue.rate),
@@ -63,7 +60,7 @@ public final class ConverterViewModel: ViewModel {
       self.state.isLoading = true
     }
     
-    let currenciesResult = await repository.getCurrencies()
+    let currenciesResult = await currencyRepository.getCurrencies()
     guard let currencies = currenciesResult.orNil() else {
       emit {
         self.state.isLoading = false
@@ -72,7 +69,16 @@ public final class ConverterViewModel: ViewModel {
       return
     }
     
-    let ratesResult = await repository.getLatestRates()
+    let favoriteCurrenciesResult = await converterRepository.getFavoriteCurrencies()
+    guard let favoriteCurrencies = favoriteCurrenciesResult.orNil() else {
+      emit {
+        self.state.isLoading = false
+        self.state.error = "Cannot load favorite currencies: \(favoriteCurrenciesResult)"
+      }
+      return
+    }
+    
+    let ratesResult = await currencyRepository.getLatestRates()
     guard let rates = ratesResult.orNil() else {
       emit {
         self.state.isLoading = false
@@ -85,18 +91,16 @@ public final class ConverterViewModel: ViewModel {
       self.state.isLoading = false
       self.state.error = nil
       self.state.allCurrencies = currencies
-      self.state.values = rates.compactMap { currencyRate in
-        if let currency = currencies.first(where: { $0.code == currencyRate.currencyCode }) {
-          CurrencyValue(
-            value: 10,
-            currencyWithRate: CurrencyWithRate(
-              currency: currency,
-              rate: currencyRate.rate
-            )
+      self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
+        let currency = currencies.first(where: { $0.code == currencyCode })!
+        let rate = rates.first(where: { $0.currencyCode == currencyCode })!
+        return CurrencyValue(
+          value: 10,
+          currencyWithRate: CurrencyWithRate(
+            currency: currency,
+            rate: rate.rate
           )
-        } else {
-          nil
-        }
+        )
       }
     }
   }
@@ -108,18 +112,21 @@ public extension ConverterViewModel {
 
 public class ConverterViewModelSamples {
   let success = ConverterViewModel(
-    repository: FakeCurrencyRepository(
+    converterRepository: FakeConverterRepository(),
+    currencyRepository: FakeCurrencyRepository(
       currencies: Currency.samples.all(),
       currencyRates: CurrencyRate.samples.all()
     )
   )
   let networkError = ConverterViewModel(
-    repository: FakeCurrencyRepository(
+    converterRepository: FakeConverterRepository(),
+    currencyRepository: FakeCurrencyRepository(
       currenciesResult: .failure(.network)
     )
   )
   let storageError = ConverterViewModel(
-    repository: FakeCurrencyRepository(
+    converterRepository: FakeConverterRepository(),
+    currencyRepository: FakeCurrencyRepository(
       currenciesResult: .failure(.storage)
     )
   )

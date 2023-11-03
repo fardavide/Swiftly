@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "ConverterPresentation",
+  name: "ConverterData",
   platforms: [
     .iOS(.v17),
     .macOS(.v14),
@@ -14,31 +14,27 @@ let package = Package(
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
-      name: "ConverterPresentation",
-      targets: ["ConverterPresentation"]
+      name: "ConverterData",
+      targets: ["ConverterData"]
     ),
   ],
   dependencies: [
-    .package(name: "CommonTest", path: "../Common/CommonTest"),
+    .package(name: "CommonProvider", path: "../Common/CommonProvider"),
     .package(path: "ConverterDomain"),
-    .package(name: "CurrencyDomain", path: "../Currency/CurrencyDomain")
+    .package(path: "ConverterStorage")
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .target(
-      name: "ConverterPresentation",
+      name: "ConverterData",
       dependencies: [
-        "ConverterDomain",
-        "CurrencyDomain"
+        "ConverterStorage"
       ]
     ),
     .testTarget(
-      name: "ConverterPresentationTests",
-      dependencies: [
-        "CommonTest",
-        "ConverterPresentation"
-      ]
+      name: "ConverterDataTests",
+      dependencies: ["ConverterData"]
     ),
   ]
 )

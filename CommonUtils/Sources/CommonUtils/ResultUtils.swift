@@ -35,6 +35,9 @@ public extension Result {
     }
   }
   
+  /// Handle `Failure` using `transform`, that will return a `Success` or a new `Failure`
+  /// - Parameter transform: closure to handle `Failure`
+  /// - Returns: `Result` of `Success` and `NewFailure`
   @inlinable func recover<NewFailure>(
     _ transform: (Failure) async -> Result<Success, NewFailure>
   ) async -> Result<Success, NewFailure> where NewFailure : Error {
@@ -44,6 +47,9 @@ public extension Result {
     }
   }
   
+  /// Handle `Failure` using `transform`, that will return a `Success` or a new `Failure`
+  /// - Parameter transform: closure to handle `Failure`
+  /// - Returns: `Result` of `Success` and `NewFailure`
   @inlinable func recover<NewFailure>(
     _ handle: @autoclosure () async -> Result<Success, NewFailure>
   ) async -> Result<Success, NewFailure> where NewFailure : Error {
@@ -53,6 +59,7 @@ public extension Result {
     }
   }
   
+  /// async version of `flatMap`
   @inlinable func then<NewSuccess>(
     _ transform: (Success) async -> Result<NewSuccess, Failure>
   ) async -> Result<NewSuccess, Failure> {

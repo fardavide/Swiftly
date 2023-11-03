@@ -7,12 +7,12 @@
 
 import Foundation
 
-public struct Currency: Equatable, Hashable {
-  public let code: String
+public struct Currency: Hashable {
+  public let code: CurrencyCode
   public let name: String
   public let symbol: String
   
-  public init(code: String, name: String, symbol: String) {
+  public init(code: CurrencyCode, name: String, symbol: String) {
     self.code = code
     self.name = name
     self.symbol = symbol
@@ -20,8 +20,8 @@ public struct Currency: Equatable, Hashable {
   
   public var flag: String {
     switch code {
-    case "EUR": "🇪🇺"
-    case "USD": "🇺🇸"
+    case .samples.eur: "🇪🇺"
+    case .samples.usd: "🇺🇸"
     default: ""
     }
   }
@@ -38,10 +38,14 @@ public extension Currency {
 
 public class CurrencySamples {
   
-  public let eur = Currency(code: "EUR", name: "Euro", symbol: "€")
-  public let usd = Currency(code: "USD", name: "US Dollar", symbol: "$")
+  public let chf = Currency(code: .samples.chf, name: "Swiss Franc", symbol: "CHF")
+  public let cny = Currency(code: .samples.cny, name: "Chinese Yuan", symbol: "CN¥")
+  public let eur = Currency(code: .samples.eur, name: "Euro", symbol: "€")
+  public let gbp = Currency(code: .samples.gbp, name: "British Pound Sterling", symbol: "£")
+  public let jpy = Currency(code: .samples.jpy, name: "Japanese Yen", symbol: "¥")
+  public let usd = Currency(code: .samples.usd, name: "US Dollar", symbol: "$")
   
   public func all() -> [Currency] {
-    [eur, usd]
+    [chf, cny, eur, gbp, jpy, usd]
   }
 }

@@ -48,7 +48,10 @@ public extension CurrencyRatesApiModel {
   
   func toDomainModels() -> [CurrencyRate] {
     self.data.map { code, currencyApiModel in
-      CurrencyRate(currencyCode: code, rate: currencyApiModel.value)
+      CurrencyRate(
+        currencyCode: CurrencyCode(value: code),
+        rate: currencyApiModel.value
+      )
     }
   }
   

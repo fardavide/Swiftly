@@ -96,7 +96,7 @@ private struct CurrencyValueRow: View {
       HStack {
         Text(currency.flag)
           .font(.largeTitle)
-        Text(currency.code)
+        Text(currency.code.value)
       }
       .accessibilityElement(children: .ignore)
       .accessibilityLabel("Currency: \(currency.name)")

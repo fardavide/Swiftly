@@ -5,16 +5,16 @@
 //  Created by Davide Giuseppe Farella on 24/10/23.
 //
 
-public struct CurrencyRate: Equatable, Hashable, Identifiable {
-  public let currencyCode: String
+public struct CurrencyRate: Hashable, Identifiable {
+  public let currencyCode: CurrencyCode
   public let rate: Double
   
-  public init(currencyCode: String, rate: Double) {
+  public init(currencyCode: CurrencyCode, rate: Double) {
     self.currencyCode = currencyCode
     self.rate = rate
   }
   
-  public var id: String {
+  public var id: CurrencyCode {
     currencyCode
   }
 }
@@ -24,10 +24,14 @@ public extension CurrencyRate {
 }
 
 public struct CurrencyRateSamples {
-  public let eur = CurrencyRate(currencyCode: Currency.samples.eur.code, rate: 1)
-  public let usd = CurrencyRate(currencyCode: Currency.samples.usd.code, rate: 0.7)
+  public let chf = CurrencyRate(currencyCode: .samples.chf, rate: 0.9)
+  public let cny = CurrencyRate(currencyCode: .samples.cny, rate: 7.3)
+  public let eur = CurrencyRate(currencyCode: .samples.eur, rate: 0.9)
+  public let gbp = CurrencyRate(currencyCode: .samples.gbp, rate: 0.8)
+  public let jpy = CurrencyRate(currencyCode: .samples.jpy, rate: 150)
+  public let usd = CurrencyRate(currencyCode: .samples.usd, rate: 1.0)
   
   public func all() -> [CurrencyRate] {
-    [eur, usd]
+    [chf, cny, eur, gbp, jpy, usd]
   }
 }

@@ -24,10 +24,14 @@ public extension CurrencyWithRate {
 }
 
 public struct CurrencyWithRateSamples {
-  public let eur = CurrencyWithRate(currency: Currency.samples.eur, rate: 1)
-  public let usd = CurrencyWithRate(currency: Currency.samples.usd, rate: 0.7)
+  public let chf = CurrencyWithRate(currency: .samples.chf, rate: CurrencyRate.samples.chf.rate)
+  public let cny = CurrencyWithRate(currency: .samples.cny, rate: CurrencyRate.samples.cny.rate)
+  public let eur = CurrencyWithRate(currency: .samples.eur, rate: CurrencyRate.samples.eur.rate)
+  public let gbp = CurrencyWithRate(currency: .samples.gbp, rate: CurrencyRate.samples.gbp.rate)
+  public let jpy = CurrencyWithRate(currency: .samples.jpy, rate: CurrencyRate.samples.jpy.rate)
+  public let usd = CurrencyWithRate(currency: .samples.usd, rate: CurrencyRate.samples.usd.rate)
   
   public func all() -> [CurrencyWithRate] {
-    [eur, usd]
+    [chf, cny, eur, gbp, jpy, usd]
   }
 }

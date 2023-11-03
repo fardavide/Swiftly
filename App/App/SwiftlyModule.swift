@@ -1,12 +1,6 @@
-//
-//  SwiftlyModule.swift
-//  App
-//
-//  Created by Davide Giuseppe Farella on 28/10/23.
-//
-
 import CommonDate
 import CommonProvider
+import ConverterData
 import ConverterPresentation
 import CurrencyData
 
@@ -15,6 +9,7 @@ final class SwiftlyModule : Module {
 
   var dependencies: [Module.Type] = [
     CommonDateModule.self,
+    ConverterDataModule.self,
     ConverterPresentionModule.self,
     CurrencyDataModule.self
   ]
