@@ -141,7 +141,7 @@ public class ConverterViewModelSamples {
       favoriteCurrencies: .initial
     ),
     currencyRepository: FakeCurrencyRepository(
-      currenciesResult: .failure(.storage)
+      currenciesResult: .failure(.storage(cause: .unknown))
     )
   )
 }

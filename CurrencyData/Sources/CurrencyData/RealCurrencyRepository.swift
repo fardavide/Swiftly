@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Davide Giuseppe Farella on 27/10/23.
-//
 import CommonDate
 import CommonNetwork
 import CommonUtils
@@ -29,17 +23,17 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
   
   public func getCurrencies() async -> Result<[Currency], DataError> {
-    await fetchCurrenciesFromStorage()
-      .recover(await fetchCurrenciesFromApi())
+    await fetchCurrenciesFromStorage().print { "Get currencies from Storage: \($0)" }
+      .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0)" })
   }
   
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
     let updatedAt = await storage.getUpdateDate().updatedAt
     return if getCurrentDate.run() % updatedAt > 1.days() {
-      await fetchRatesFromApi()
+      await fetchRatesFromApi().print { "Get latest rates from API: \($0)" }
     } else {
-      await fetchRatesFromStorage()
-        .recover(await fetchRatesFromApi())
+      await fetchRatesFromStorage().print { "Get latest rates from Storage: \($0)" }
+        .recover(await fetchRatesFromApi().print { "Get latest rates from API: \($0)" })
     }
   }
   
@@ -51,7 +45,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
     case let .success(apiModel):
       let domainModels = apiModel.toDomainModels()
       await storeCurrencies(currencies: domainModels)
-      return .success(domainModels)
+      return .success(domainModels.sorted { $0.code < $1.code })
       
     case let .failure(apiError):
       return switch apiError {
@@ -69,12 +63,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
         case true: .failure(.noCache)
         }
       }
-      .mapError { storageError in
-        switch storageError {
-        case .noCache: .storage
-        case .unknown: .storage
-        }
-      }
+      .mapErrorToDataError()
   }
   
   private func fetchRatesFromApi() async -> Result<[CurrencyRate], DataError> {
@@ -104,12 +93,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
         case true: .failure(.noCache)
         }
       }
-      .mapError { storageError in
-        switch storageError {
-        case .noCache: .storage
-        case .unknown: .storage
-        }
-      }
+      .mapErrorToDataError()
   }
   
   private func storeCurrencies(currencies: [Currency]) async {

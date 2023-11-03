@@ -8,7 +8,18 @@ public enum StorageError: Error {
 
 public extension StorageError {
   func toDataError() -> DataError {
-    .storage
+    let cause: DataError.StorageCause = switch self {
+    case .noCache: .noCache
+    case .unknown: .unknown
+    }
+    return .storage(cause: cause)
+  }
+}
+
+public extension Result where Failure == StorageError {
+  
+  @inlinable func mapErrorToDataError() -> Result<Success, DataError> {
+    mapError { storageError in storageError.toDataError() }
   }
 }
 

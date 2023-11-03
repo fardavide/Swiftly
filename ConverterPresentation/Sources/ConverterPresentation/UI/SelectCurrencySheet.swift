@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Davide Giuseppe Farella on 31/10/23.
-//
 import CurrencyDomain
 import SwiftUI
 

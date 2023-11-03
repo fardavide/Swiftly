@@ -1,4 +1,4 @@
-public struct CurrencyCode: Hashable, Identifiable {
+public struct CurrencyCode: Comparable, Hashable, Identifiable {
   public let value: String
 
   public var id: String {
@@ -13,6 +13,10 @@ public struct CurrencyCode: Hashable, Identifiable {
       )
     }
     self.value = value
+  }
+  
+  public static func < (lhs: CurrencyCode, rhs: CurrencyCode) -> Bool {
+    lhs.value < rhs.value
   }
 }
 

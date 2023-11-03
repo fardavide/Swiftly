@@ -46,11 +46,11 @@ public struct ConverterView: View {
 private struct ContentView: View {
   let allCurrencies: [Currency]
   let values: [CurrencyValue]
-  @State private var isShowingSheet = false
   let onCurrencyValueChange: (CurrencyValue) -> ()
   let onCurrencyChange: (_ prev: Currency, _ new: Currency) -> ()
   
-  @State var selectedCurrencyValue: CurrencyValue? = nil
+  @State private var isShowingSheet = false
+  @State private var selectedCurrencyValue: CurrencyValue? = nil
   
   var body: some View {
     List(values, id: \.currency) { value in
@@ -77,15 +77,15 @@ private struct ContentView: View {
           isShowingSheet = true
         }
       }
-      .sheet(isPresented: $isShowingSheet) {
-        SelectCurrencySheet(
-          currencies: allCurrencies,
-          onCurrencySelected: { newCurrency in
-            onCurrencyChange(selectedCurrencyValue!.currency, newCurrency)
-            isShowingSheet = false
-          }
-        )
-      }
+    }
+    .sheet(isPresented: $isShowingSheet) {
+      SelectCurrencySheet(
+        currencies: allCurrencies,
+        onCurrencySelected: { newCurrency in
+          onCurrencyChange(selectedCurrencyValue!.currency, newCurrency)
+          isShowingSheet = false
+        }
+      )
     }
   }
 }
