@@ -28,6 +28,10 @@ public final class ConverterViewModel: ViewModel {
     switch action {
       
     case let .currencyChange(prev, new):
+      let replacedIndex = state.values.firstIndex(where: { $0.currency == prev })!
+      Task {
+        await converterRepository.setCurrencyAt(position: replacedIndex, currency: new)
+      }
       state.values = state.values.map { currencyValue in
         if currencyValue.currency == prev {
           newCurrencyValue(for: new)

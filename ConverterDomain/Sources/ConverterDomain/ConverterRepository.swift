@@ -1,8 +1,10 @@
 import CommonUtils
+import CurrencyDomain
 
 public protocol ConverterRepository {
   
   func getFavoriteCurrencies() async -> Result<FavoriteCurrencies, DataError>
+  func setCurrencyAt(position: Int, currency: Currency) async
 }
 
 public final class FakeConverterRepository: ConverterRepository {
@@ -26,4 +28,6 @@ public final class FakeConverterRepository: ConverterRepository {
   public func getFavoriteCurrencies() async -> Result<FavoriteCurrencies, DataError> {
     favoriteCurrenciesResult
   }
+  
+  public func setCurrencyAt(position: Int, currency: Currency) async {}
 }

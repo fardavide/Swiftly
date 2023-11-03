@@ -1,4 +1,4 @@
-public struct CurrencyCode: Comparable, Hashable, Identifiable {
+public struct CurrencyCode: Comparable, Decodable, Encodable, Hashable, Identifiable {
   public let value: String
 
   public var id: String {

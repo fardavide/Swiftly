@@ -19,6 +19,7 @@ let package = Package(
     ),
   ],
   dependencies: [
+    .package(name: "AppStorageApi", path: "../AppStorage/AppStorageApi"),
     .package(name: "CommonDate", path: "../Common/CommonDate"),
     .package(name: "CommonProvider", path: "../Common/CommonProvider"),
     .package(name: "CommonStorage", path: "../Common/CommonStorage"),

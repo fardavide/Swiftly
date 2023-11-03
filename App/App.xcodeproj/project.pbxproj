@@ -12,6 +12,7 @@
 		6B994AE82AEC6AA600A8E980 /* CurrencyData in Frameworks */ = {isa = PBXBuildFile; productRef = 6B994AE72AEC6AA600A8E980 /* CurrencyData */; };
 		6B994AED2AECF9D300A8E980 /* SwiftlyModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B994AEC2AECF9D300A8E980 /* SwiftlyModule.swift */; };
 		6BC44F592AF370FB006B3187 /* ConverterData in Frameworks */ = {isa = PBXBuildFile; productRef = 6BC44F582AF370FB006B3187 /* ConverterData */; };
+		6BC44F612AF57C7A006B3187 /* RealAppStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6BC44F602AF57C7A006B3187 /* RealAppStorage */; };
 		6BDF20132AE570F500F97DA5 /* SwiftlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDF20122AE570F500F97DA5 /* SwiftlyApp.swift */; };
 		6BDF20172AE570F600F97DA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BDF20162AE570F600F97DA5 /* Assets.xcassets */; };
 		6BDF201B2AE570F600F97DA5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BDF201A2AE570F600F97DA5 /* Preview Assets.xcassets */; };
@@ -50,6 +51,8 @@
 		6BC44F542AF21ECE006B3187 /* CommonTest */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CommonTest; path = ../../Common/CommonTest; sourceTree = "<group>"; };
 		6BC44F562AF36EEC006B3187 /* ConverterStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ConverterStorage; path = ../../../Converter/Data/ConverterStorage; sourceTree = "<group>"; };
 		6BC44F572AF370C4006B3187 /* ConverterData */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ConverterData; path = ../../../Converter/Data/ConverterData; sourceTree = "<group>"; };
+		6BC44F5E2AF57A65006B3187 /* AppStorageApi */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AppStorageApi; path = ../../Converter/Data/AppStorageApi; sourceTree = "<group>"; };
+		6BC44F5F2AF57BCD006B3187 /* RealAppStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RealAppStorage; path = ../../Converter/Data/RealAppStorage; sourceTree = "<group>"; };
 		6BDD5DB92AEB822900B0FC32 /* CurrencyDomain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyDomain; path = ../../CurrencyDomain; sourceTree = "<group>"; };
 		6BDD5DBD2AEB82C300B0FC32 /* CurrencyApi */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyApi; path = ../../../CurrencyApi; sourceTree = "<group>"; };
 		6BDD5DBE2AEB82E700B0FC32 /* CurrencyData */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CurrencyData; path = ../../../CurrencyData; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 				6B994AE62AEC67C900A8E980 /* CommonProvider in Frameworks */,
 				6B904D912AEB908900072057 /* ConverterPresentation in Frameworks */,
 				6B994AE82AEC6AA600A8E980 /* CurrencyData in Frameworks */,
+				6BC44F612AF57C7A006B3187 /* RealAppStorage in Frameworks */,
 				6BC44F592AF370FB006B3187 /* ConverterData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +139,15 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		6BC44F5D2AF57A4C006B3187 /* AppStorage */ = {
+			isa = PBXGroup;
+			children = (
+				6BC44F5F2AF57BCD006B3187 /* RealAppStorage */,
+				6BC44F5E2AF57A65006B3187 /* AppStorageApi */,
+			);
+			path = AppStorage;
+			sourceTree = "<group>";
+		};
 		6BDD5DB22AEB7D6E00B0FC32 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +168,7 @@
 		6BDF20062AE570F500F97DA5 = {
 			isa = PBXGroup;
 			children = (
+				6BC44F5D2AF57A4C006B3187 /* AppStorage */,
 				6B994ADC2AEC5CEF00A8E980 /* Common */,
 				6B904D8B2AEB8ED500072057 /* Converter */,
 				6BB7BE3B2AEB649C00E2FFDC /* Currency */,
@@ -234,6 +248,7 @@
 				6B994AE52AEC67C900A8E980 /* CommonProvider */,
 				6B994AE72AEC6AA600A8E980 /* CurrencyData */,
 				6BC44F582AF370FB006B3187 /* ConverterData */,
+				6BC44F602AF57C7A006B3187 /* RealAppStorage */,
 			);
 			productName = App;
 			productReference = 6BDF200F2AE570F500F97DA5 /* App.app */;
@@ -734,6 +749,10 @@
 		6BC44F582AF370FB006B3187 /* ConverterData */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ConverterData;
+		};
+		6BC44F602AF57C7A006B3187 /* RealAppStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RealAppStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

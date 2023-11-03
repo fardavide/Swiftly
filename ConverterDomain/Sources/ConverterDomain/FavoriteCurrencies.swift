@@ -29,10 +29,10 @@ public extension FavoriteCurrencies {
   static let samples = FavoriteCurrenciesSamples()
   
   static func of(currencyCodes: [CurrencyCode]) -> FavoriteCurrencies {
-    if currencyCodes.count >= FavoriteCurrencies.size {
+    if currencyCodes.count < FavoriteCurrencies.size {
       preconditionFailure("Required at least \(FavoriteCurrencies.size) currencies")
     }
-    return FavoriteCurrencies(currencyCodes: Array(currencyCodes[0...size]))
+    return FavoriteCurrencies(currencyCodes: Array(currencyCodes[0...size-1]))
   }
 }
 

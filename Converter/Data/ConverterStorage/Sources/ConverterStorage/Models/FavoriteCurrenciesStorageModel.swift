@@ -3,28 +3,47 @@ import CurrencyDomain
 import SwiftData
 
 public struct FavoriteCurrenciesStorageModel {
-  let currencyCodes: [CurrencyCode]
+  let currencyCodes: [FavoriteCurrencyPosition: CurrencyCode]
+}
+
+public struct FavoriteCurrencyPosition: Comparable, Decodable, Encodable, Hashable {
+  
+  let value: Int
+  
+  public init(value: Int) {
+    self.value = value
+  }
+  
+  public static func < (lhs: FavoriteCurrencyPosition, rhs: FavoriteCurrencyPosition) -> Bool {
+    lhs.value < rhs.value
+  }
 }
 
 @Model
-class FavoriteCurrenciesSwiftDataModel {
-  @Attribute(.unique) let id = 0
-  var currencyCodes: [String]
+public class FavoriteCurrenciesSwiftDataModel {
+  @Attribute(.unique) public let id = 0
+  var currencyCodes: [FavoriteCurrencyPosition: CurrencyCode]
   
-  init(currencyCodes: [String]) {
+  init(currencyCodes: [FavoriteCurrencyPosition: CurrencyCode]) {
     self.currencyCodes = currencyCodes
+  }
+  
+  func replaceAt(position: Int, newValue: CurrencyCode) {
+    currencyCodes.updateValue(newValue, forKey: FavoriteCurrencyPosition(value: position))
   }
 }
 
 extension FavoriteCurrenciesStorageModel {
   
   public func toDomainModel() -> FavoriteCurrencies {
-    FavoriteCurrencies.of(currencyCodes: currencyCodes)
+    FavoriteCurrencies.of(
+      currencyCodes: currencyCodes.sorted { e1, e2 in e1.key < e2.key }.map(\.value)
+    )
   }
   
   func toSwiftDataModel() -> FavoriteCurrenciesSwiftDataModel {
     FavoriteCurrenciesSwiftDataModel(
-      currencyCodes: currencyCodes.map(\.value)
+      currencyCodes: currencyCodes
     )
   }
 }
@@ -33,7 +52,7 @@ extension FavoriteCurrenciesSwiftDataModel {
   
   func toStorageModel() -> FavoriteCurrenciesStorageModel {
     FavoriteCurrenciesStorageModel(
-      currencyCodes: currencyCodes.map { CurrencyCode(value: $0) }
+      currencyCodes: currencyCodes
     )
   }
 }

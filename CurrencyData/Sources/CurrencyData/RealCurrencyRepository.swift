@@ -23,17 +23,17 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
   
   public func getCurrencies() async -> Result<[Currency], DataError> {
-    await fetchCurrenciesFromStorage().print { "Get currencies from Storage: \($0)" }
-      .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0)" })
+    await fetchCurrenciesFromStorage().print(enabled: false) { "Get currencies from Storage: \($0)" }
+      .recover(await fetchCurrenciesFromApi().print(enabled: false) { "Get currencies from API: \($0)" })
   }
   
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
     let updatedAt = await storage.getUpdateDate().updatedAt
     return if getCurrentDate.run() % updatedAt > 1.days() {
-      await fetchRatesFromApi().print { "Get latest rates from API: \($0)" }
+      await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" }
     } else {
-      await fetchRatesFromStorage().print { "Get latest rates from Storage: \($0)" }
-        .recover(await fetchRatesFromApi().print { "Get latest rates from API: \($0)" })
+      await fetchRatesFromStorage().print(enabled: false) { "Get latest rates from Storage: \($0)" }
+        .recover(await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" })
     }
   }
   

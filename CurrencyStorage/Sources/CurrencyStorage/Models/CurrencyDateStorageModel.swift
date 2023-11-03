@@ -13,8 +13,8 @@ public struct CurrencyDateStorageModel {
 }
 
 @Model
-class CurrencyDateSwiftDataModel {
-  @Attribute(.unique) let id = 0
+public class CurrencyDateSwiftDataModel {
+  @Attribute(.unique) public let id = 0
   var updatedAt: Date
   
   init(updatedAt: Date) {

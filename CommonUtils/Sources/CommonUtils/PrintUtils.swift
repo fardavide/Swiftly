@@ -4,9 +4,12 @@ public extension Printable {
   
   @discardableResult
   func print(
+    enabled: Bool = true,
     message: (Self) -> String = { "\($0)" }
   ) -> Self {
-    Swift.print(message(self))
+    if enabled {
+      Swift.print(message(self))
+    }
     return self
   }
 }

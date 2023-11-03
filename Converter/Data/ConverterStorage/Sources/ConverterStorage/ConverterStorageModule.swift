@@ -6,6 +6,6 @@ public final class ConverterStorageModule: Module {
   
   public func register(on provider: Provider) {
     provider
-      .register { RealConverterStorage() as ConverterStorage }
+      .register { RealConverterStorage(container: provider.get()) as ConverterStorage }
   }
 }

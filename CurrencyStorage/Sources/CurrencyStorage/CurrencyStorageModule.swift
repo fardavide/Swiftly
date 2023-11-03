@@ -10,6 +10,6 @@ public final class CurrencyStorageModule: Module {
   
   public func register(on provider: Provider) {
     provider
-      .register { RealCurrencyStorage() as CurrencyStorage }
+      .register { RealCurrencyStorage(container: provider.get()) as CurrencyStorage }
   }
 }

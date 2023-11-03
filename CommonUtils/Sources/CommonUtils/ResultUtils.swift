@@ -26,6 +26,28 @@ public extension Result {
     }
   }
   
+  /// Executes `f` in case of `Failure`
+  /// - Parameter f: closure to execute
+  /// - Returns: self
+  @inlinable func onFailure(_ f: (Failure) async -> Void) async -> Result<Success, Failure> {
+    switch self {
+    case .success: break
+    case let .failure(error): await f(error)
+    }
+    return self
+  }
+  
+  /// Executes `f` in case of `Success`
+  /// - Parameter f: closure to execute
+  /// - Returns: self
+  @inlinable func onSuccess(_ f: (Success) async -> Void) async -> Result<Success, Failure> {
+    switch self {
+    case let .success(value): await f(value)
+    case .failure: break
+    }
+    return self
+  }
+  
   /// Return value of `Success` or `nil`
   /// - Returns: value of `Success` or `nil`
   @inlinable func orNil() -> Success? {

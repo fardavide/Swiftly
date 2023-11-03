@@ -1,3 +1,4 @@
+import AppStorageApi
 import CommonUtils
 import CommonStorage
 import Foundation
@@ -13,18 +14,12 @@ public protocol CurrencyStorage {
   func getUpdateDate() async -> CurrencyDateStorageModel
 }
 
-class RealCurrencyStorage: CurrencyStorage {
-  private let configuration = ModelConfiguration()
+class RealCurrencyStorage: AppStorage, CurrencyStorage {
   
-  private var container: ModelContainer {
-    do {
-      return try ModelContainer(
-        for: CurrencyDateSwiftDataModel.self, CurrencyRateSwiftDataModel.self, CurrencySwiftDataModel.self,
-        configurations: configuration
-      )
-    } catch {
-      fatalError(error.localizedDescription)
-    }
+  let container: ModelContainer
+  
+  init(container: ModelContainer) {
+    self.container = container
   }
   
   func insertAllCurrencies(_ models: [CurrencyStorageModel]) async {
@@ -85,10 +80,5 @@ class RealCurrencyStorage: CurrencyStorage {
       let fetchDateSwiftDataModel = result.getOr(default: []).first ?? CurrencyDateSwiftDataModel.distantPast
       return fetchDateSwiftDataModel.toStorageModel()
     }
-  }
-  
-  private func withContext<T>(_ f: (ModelContext) -> T) async -> T {
-    let context = await container.mainContext
-    return f(context)
   }
 }
