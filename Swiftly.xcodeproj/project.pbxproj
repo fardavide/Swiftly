@@ -17,7 +17,6 @@
 		6BD0FF4C2AF6574900CC9579 /* SwiftlyModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF4B2AF6574900CC9579 /* SwiftlyModule.swift */; };
 		6BD0FF4E2AF668BC00CC9579 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF4D2AF668BC00CC9579 /* Core */; };
 		6BD0FF512AF6696700CC9579 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF502AF6696700CC9579 /* Core */; };
-		6BD0FF532AF6B7B000CC9579 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BD0FF522AF6B7B000CC9579 /* XCTest.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +58,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BD0FF532AF6B7B000CC9579 /* XCTest.framework in Frameworks */,
 				6BD0FF512AF6696700CC9579 /* Core in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,6 +363,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -426,6 +425,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
