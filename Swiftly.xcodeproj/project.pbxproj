@@ -17,6 +17,9 @@
 		6BD0FF4C2AF6574900CC9579 /* SwiftlyModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF4B2AF6574900CC9579 /* SwiftlyModule.swift */; };
 		6BD0FF4E2AF668BC00CC9579 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF4D2AF668BC00CC9579 /* Core */; };
 		6BD0FF512AF6696700CC9579 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF502AF6696700CC9579 /* Core */; };
+		6BD0FF562AF6C77C00CC9579 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF552AF6C77C00CC9579 /* Nuke */; };
+		6BD0FF582AF6C77C00CC9579 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF572AF6C77C00CC9579 /* NukeExtensions */; };
+		6BD0FF5A2AF6C77C00CC9579 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF592AF6C77C00CC9579 /* NukeUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +62,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BD0FF512AF6696700CC9579 /* Core in Frameworks */,
+				6BD0FF562AF6C77C00CC9579 /* Nuke in Frameworks */,
+				6BD0FF582AF6C77C00CC9579 /* NukeExtensions in Frameworks */,
+				6BD0FF5A2AF6C77C00CC9579 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +172,9 @@
 			name = Swiftly;
 			packageProductDependencies = (
 				6BD0FF502AF6696700CC9579 /* Core */,
+				6BD0FF552AF6C77C00CC9579 /* Nuke */,
+				6BD0FF572AF6C77C00CC9579 /* NukeExtensions */,
+				6BD0FF592AF6C77C00CC9579 /* NukeUI */,
 			);
 			productName = Swiftly;
 			productReference = 6BD0FF1B2AF64E7F00CC9579 /* Swiftly.app */;
@@ -244,6 +253,7 @@
 			mainGroup = 6BD0FF122AF64E7F00CC9579;
 			packageReferences = (
 				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */,
+				6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = 6BD0FF1C2AF64E7F00CC9579 /* Products */;
 			projectDirPath = "";
@@ -656,6 +666,17 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.1.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		6BD0FF4D2AF668BC00CC9579 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -664,6 +685,21 @@
 		6BD0FF502AF6696700CC9579 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;
+		};
+		6BD0FF552AF6C77C00CC9579 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		6BD0FF572AF6C77C00CC9579 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
+		6BD0FF592AF6C77C00CC9579 /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -38,6 +38,9 @@ let package = Package(
       ]
     ),
   ],
+  dependencies: [
+    .package(url: "https://github.com/kean/Nuke", from: Version(12, 1, 6)),
+  ],
   targets: [
     
     // MARK: - App Storage definition
@@ -199,6 +202,7 @@ let package = Package(
       dependencies: [
         "ConverterDomain",
         "Provider",
+        .product(name: "Nuke", package: "Nuke"),
       ],
       path: "Sources/Converter/Presentation"
     ),

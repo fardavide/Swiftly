@@ -1,6 +1,8 @@
-import Provider
 import CurrencyDomain
+import NukeUI
+import Provider
 import SwiftUI
+import SwiftlyUtils
 
 public struct ConverterView: View {
   @StateObject var viewModel: ConverterViewModel = getProvider().get()
@@ -93,8 +95,17 @@ private struct CurrencyValueRow: View {
     
     HStack {
       HStack {
-        Text(currency.flag)
-          .font(.largeTitle)
+        LazyImage(
+          request: ImageRequest(
+            url: currency.flagUrl,
+            processors: [
+              .resize(height: 25),
+              .roundedCorners(radius: 100)
+            ]
+          )
+        )
+        .frame(width: 40, height: 25)
+        .clipShape(.circle)
         Text(currency.code.value)
       }
       .accessibilityElement(children: .ignore)

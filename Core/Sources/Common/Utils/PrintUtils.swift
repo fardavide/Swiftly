@@ -15,3 +15,4 @@ public extension Printable {
 }
 
 extension Result: Printable {}
+extension String: Printable {}

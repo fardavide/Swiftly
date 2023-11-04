@@ -1,3 +1,5 @@
+import Foundation
+
 public struct Currency: Hashable {
   public let code: CurrencyCode
   public let name: String
@@ -8,19 +10,17 @@ public struct Currency: Hashable {
     self.name = name
     self.symbol = symbol
   }
-  
-  public var flag: String {
-    switch code {
-    case .samples.eur: "🇪🇺"
-    case .samples.usd: "🇺🇸"
-    default: ""
-    }
-  }
 }
 
 public extension Currency {
   
   static let samples = CurrencySamples()
+  
+  var flagUrl: URL? {
+    URL(
+      string: "https://github.com/Lissy93/currency-flags/blob/master/assets/flags_png_rectangle/\(code.value.lowercased()).png?raw=true"
+    )
+  }
   
   var nameWithSymbol: String {
     "\(self.name) \(self.symbol)"

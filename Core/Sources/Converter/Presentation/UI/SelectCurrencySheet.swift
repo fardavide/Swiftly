@@ -1,4 +1,5 @@
 import CurrencyDomain
+import NukeUI
 import SwiftUI
 
 struct SelectCurrencySheet: View {
@@ -18,8 +19,17 @@ private struct CurrencyRow: View {
   
   var body: some View {
     HStack {
-      Text(currency.flag)
-        .font(.title)
+      LazyImage(
+        request: ImageRequest(
+          url: currency.flagUrl,
+          processors: [
+            .resize(height: 20),
+            .roundedCorners(radius: 100)
+          ]
+        )
+      )
+      .frame(width: 32, height: 20)
+      .clipShape(.circle)
       Text(currency.code.value)
       Spacer()
       Text(currency.nameWithSymbol)

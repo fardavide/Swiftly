@@ -4,7 +4,6 @@ import SwiftData
 
 public struct CurrencyStorageModel {
   let code: CurrencyCode
-  let flag: String
   let name: String
   let symbol: String
 }
@@ -12,18 +11,15 @@ public struct CurrencyStorageModel {
 @Model
 public class CurrencySwiftDataModel {
   @Attribute(.unique) var code: String
-  var flag: String
   var name: String
   var symbol: String
   
   init(
     code: String,
-    flag: String,
     name: String,
     symbol: String
   ) {
     self.code = code
-    self.flag = flag
     self.name = name
     self.symbol = symbol
   }
@@ -43,7 +39,6 @@ public extension CurrencyStorageModel {
   func toSwiftDataModel() -> CurrencySwiftDataModel {
     CurrencySwiftDataModel(
       code: code.value,
-      flag: flag,
       name: name,
       symbol: symbol
     )
@@ -61,7 +56,6 @@ public extension [Currency] {
     map { currency in
       CurrencyStorageModel(
         code: currency.code,
-        flag: currency.flag,
         name: currency.name,
         symbol: currency.symbol
       )
@@ -73,7 +67,6 @@ extension CurrencySwiftDataModel {
   func toStorageModel() -> CurrencyStorageModel {
     CurrencyStorageModel(
       code: CurrencyCode(value: code),
-      flag: flag,
       name: name,
       symbol: symbol
     )
@@ -83,13 +76,11 @@ extension CurrencySwiftDataModel {
 public class CurrencyStorageModelSamples {
   public let eur = CurrencyStorageModel(
     code: Currency.samples.eur.code,
-    flag: Currency.samples.eur.flag,
     name: Currency.samples.eur.name,
     symbol: Currency.samples.eur.symbol
   )
   public let usd = CurrencyStorageModel(
     code: Currency.samples.usd.code,
-    flag: Currency.samples.usd.flag,
     name: Currency.samples.usd.name,
     symbol: Currency.samples.usd.symbol
   )
