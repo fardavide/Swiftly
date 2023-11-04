@@ -31,6 +31,8 @@ let package = Package(
     .target(
       name: "ConverterStorage",
       dependencies: [
+        "AppStorageApi",
+        "CommonStorage",
         "ConverterDomain"
       ]
     ),

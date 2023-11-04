@@ -24,7 +24,7 @@ class RealConverterStorage: AppStorage, ConverterStorage {
   
   func fetchFavoriteCurrencies() async -> Result<FavoriteCurrenciesStorageModel, StorageError> {
     await withContext {
-      $0.resultFetch(FetchDescriptor<FavoriteCurrenciesSwiftDataModel>()).print { "Favorite currencies from Storage: \($0)" }.flatMap { models in
+      $0.resultFetch(FetchDescriptor<FavoriteCurrenciesSwiftDataModel>()).flatMap { models in
         if let model = models.first {
           .success(model.toStorageModel())
         } else {
@@ -48,15 +48,10 @@ class RealConverterStorage: AppStorage, ConverterStorage {
           model.replaceAt(position: position, newValue: currency.code)
         }
         .onFailure { _ in
-          let initials = FavoriteCurrencies.initial.currencyCodes
-          var currencyCodes = [FavoriteCurrencyPosition: CurrencyCode]()
-          for i in initials.indices {
-            let position = FavoriteCurrencyPosition(value: i)
-            let currencyCode = i == position.value ? currency.code : initials[i]
-            currencyCodes[position] = currencyCode
-          }
-          return context.insert(
-            FavoriteCurrenciesSwiftDataModel(currencyCodes: currencyCodes)
+          context.insert(
+            FavoriteCurrenciesSwiftDataModel(
+              currencyCodes: [FavoriteCurrencyPosition(value: position): currency.code]
+            )
           )
         }
     }

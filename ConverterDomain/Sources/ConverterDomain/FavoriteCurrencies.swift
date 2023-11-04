@@ -1,6 +1,6 @@
 import CurrencyDomain
 
-public struct FavoriteCurrencies {
+public struct FavoriteCurrencies: Equatable {
   public let currencyCodes: [CurrencyCode]
   
   fileprivate init(currencyCodes: [CurrencyCode]) {
