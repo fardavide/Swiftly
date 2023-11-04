@@ -17,7 +17,10 @@ struct SwiftlyApp: App {
   
   var body: some Scene {
     WindowGroup {
-      ConverterView()
+      NavigationStack {
+        ConverterView()
+          .navigationTitle("Swiftly")
+      }
     }
   }
 }
