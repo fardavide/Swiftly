@@ -18,7 +18,6 @@
 		6BD0FF4E2AF668BC00CC9579 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF4D2AF668BC00CC9579 /* Core */; };
 		6BD0FF512AF6696700CC9579 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF502AF6696700CC9579 /* Core */; };
 		6BD0FF562AF6C77C00CC9579 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF552AF6C77C00CC9579 /* Nuke */; };
-		6BD0FF582AF6C77C00CC9579 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF572AF6C77C00CC9579 /* NukeExtensions */; };
 		6BD0FF5A2AF6C77C00CC9579 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF592AF6C77C00CC9579 /* NukeUI */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +53,7 @@
 		6BD0FF492AF64E9600CC9579 /* Core */ = {isa = PBXFileReference; lastKnownFileType = text; path = Core; sourceTree = SOURCE_ROOT; };
 		6BD0FF4B2AF6574900CC9579 /* SwiftlyModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftlyModule.swift; sourceTree = "<group>"; };
 		6BD0FF522AF6B7B000CC9579 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		6BD0FF5B2AF7C9B000CC9579 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +63,6 @@
 			files = (
 				6BD0FF512AF6696700CC9579 /* Core in Frameworks */,
 				6BD0FF562AF6C77C00CC9579 /* Nuke in Frameworks */,
-				6BD0FF582AF6C77C00CC9579 /* NukeExtensions in Frameworks */,
 				6BD0FF5A2AF6C77C00CC9579 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -111,6 +110,7 @@
 		6BD0FF1D2AF64E7F00CC9579 /* Swiftly */ = {
 			isa = PBXGroup;
 			children = (
+				6BD0FF5B2AF7C9B000CC9579 /* Info.plist */,
 				6BD0FF222AF64E8000CC9579 /* Assets.xcassets */,
 				6BD0FF202AF64E7F00CC9579 /* ContentView.swift */,
 				6BD0FF252AF64E8000CC9579 /* Preview Content */,
@@ -173,7 +173,6 @@
 			packageProductDependencies = (
 				6BD0FF502AF6696700CC9579 /* Core */,
 				6BD0FF552AF6C77C00CC9579 /* Nuke */,
-				6BD0FF572AF6C77C00CC9579 /* NukeExtensions */,
 				6BD0FF592AF6C77C00CC9579 /* NukeUI */,
 			);
 			productName = Swiftly;
@@ -465,6 +464,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Swiftly/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -503,6 +504,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Swiftly/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -690,11 +693,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = Nuke;
-		};
-		6BD0FF572AF6C77C00CC9579 /* NukeExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = NukeExtensions;
 		};
 		6BD0FF592AF6C77C00CC9579 /* NukeUI */ = {
 			isa = XCSwiftPackageProductDependency;
