@@ -31,11 +31,11 @@ public extension CurrencyRatesApiModel {
     data: [
       "EUR": CurrencyRateApiModel(
         code: "EUR",
-        value: 1
+        value: 0.9
       ),
       "USD": CurrencyRateApiModel(
         code: "USD",
-        value: 0.7
+        value: 1
       ),
     ]
   )
@@ -79,7 +79,7 @@ public class CurrencyRatesApiModelSamples {
     data: [
       "EUR": CurrencyRateApiModel(
         code: "EUR",
-        value: 1
+        value: 0.9
       )
     ]
   )
@@ -91,7 +91,7 @@ public class CurrencyRatesApiModelSamples {
     data: [
       "USD": CurrencyRateApiModel(
         code: "USD",
-        value: 0.7
+        value: 1
       ),
     ]
   )

@@ -23,8 +23,8 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
   
   public func getCurrencies() async -> Result<[Currency], DataError> {
-    await fetchCurrenciesFromStorage().print(enabled: false) { "Get currencies from Storage: \($0)" }
-      .recover(await fetchCurrenciesFromApi().print(enabled: false) { "Get currencies from API: \($0)" })
+    await fetchCurrenciesFromStorage().print { "Get currencies from Storage: \($0.getOr(default: []).count)" }
+      .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.getOr(default: []).count)" })
   }
   
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
@@ -34,6 +34,25 @@ public final class RealCurrencyRepository: CurrencyRepository {
     } else {
       await fetchRatesFromStorage().print(enabled: false) { "Get latest rates from Storage: \($0)" }
         .recover(await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" })
+    }
+  }
+  
+  public func searchCurrencies(query q: String) async -> Result<[Currency], DataError> {
+    let query: String
+    let compareOptions: String.CompareOptions
+    if q.count > 1 {
+      query = q
+      compareOptions = [.caseInsensitive]
+    } else {
+      query = ".*\(q).*"
+      compareOptions = [.caseInsensitive, .regularExpression]
+    }
+    return await getCurrencies().map { currencies in
+      currencies.filter { currency in
+        currency.code.value.range(of: query, options: compareOptions) ??
+        currency.name.range(of: query, options: compareOptions) ??
+        currency.symbol.range(of: query, options: compareOptions) != nil
+      }
     }
   }
   

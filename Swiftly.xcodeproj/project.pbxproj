@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5F9C982AF8078100CBFD19 /* NukeExtensions */; };
 		6BD0FF1F2AF64E7F00CC9579 /* SwiftlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */; };
 		6BD0FF212AF64E7F00CC9579 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF202AF64E7F00CC9579 /* ContentView.swift */; };
 		6BD0FF232AF64E8000CC9579 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BD0FF222AF64E8000CC9579 /* Assets.xcassets */; };
@@ -62,6 +63,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BD0FF512AF6696700CC9579 /* Core in Frameworks */,
+				6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */,
 				6BD0FF562AF6C77C00CC9579 /* Nuke in Frameworks */,
 				6BD0FF5A2AF6C77C00CC9579 /* NukeUI in Frameworks */,
 			);
@@ -174,6 +176,7 @@
 				6BD0FF502AF6696700CC9579 /* Core */,
 				6BD0FF552AF6C77C00CC9579 /* Nuke */,
 				6BD0FF592AF6C77C00CC9579 /* NukeUI */,
+				6B5F9C982AF8078100CBFD19 /* NukeExtensions */,
 			);
 			productName = Swiftly;
 			productReference = 6BD0FF1B2AF64E7F00CC9579 /* Swiftly.app */;
@@ -681,6 +684,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6B5F9C982AF8078100CBFD19 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
 		6BD0FF4D2AF668BC00CC9579 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;

@@ -6,10 +6,12 @@ import CurrencyStorage
 import DateUtils
 import Network
 import SwiftlyStorage
+import SwiftlyUtils
 @testable import CurrencyData
 
 final class RealCurrencyRepositoryTests: XCTestCase {
   
+  // MARK: - latest rates
   func testLatestRates_whenEmptyCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -128,6 +130,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
   }
   
+  // MARK: - all currencies
   func testCurrencies_whenEmptyCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -170,7 +173,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     XCTAssertTrue(scenario.api.didFetchCurrencies)
   }
   
-  func testCurrencies_whenErrorFromCache_returnsResultFromApi() async throws {
+  func testCurrencies_whenErrorFromCache_returnsResultFromApi() async {
     // given
     let scenario = Scenario(
       currenciesApiResult: .success(CurrenciesApiModel.samples.eurOnly),
@@ -182,6 +185,136 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     
     // then
     XCTAssertEqual(result, .success([Currency.samples.eur]))
+  }
+  
+  // MARK: - search currencies
+  func testSearchCurrencies_whenEmpty_returnsAllCurrencies() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "")
+    
+    // then
+    XCTAssertEqual(result, .success(Currency.samples.all()))
+  }
+  func testSearchCurrencies_whenMatchFullNameSameCase_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "Euro")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.eur]))
+  }
+  
+  func testSearchCurrencies_whenMatchFullNameDifferentCase_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "eUrO")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.eur]))
+  }
+  
+  func testSearchCurrencies_whenMatchPartialName_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "ur")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.eur]))
+  }
+  
+  func testSearchCurrencies_whenMatchFullCodeSameCase_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all().print()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "CNY")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.cny]))
+  }
+  
+  func testSearchCurrencies_whenMatchFullCodeDifferentCase_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "CnY")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.cny]))
+  }
+  
+  func testSearchCurrencies_whenMatchPartialCode_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "Y")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.cny, .samples.jpy]))
+  }
+  
+  func testSearchCurrencies_whenMatchFullSymbolSameCase_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "CN¥")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.cny]))
+  }
+  
+  func testSearchCurrencies_whenMatchFullSymbolDifferentCase_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "Cn¥")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.cny]))
+  }
+  
+  func testSearchCurrencies_whenMatchPartialSymbol_returnsFilteredResults() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all()
+    )
+    
+    // when
+    let result = await scenario.sut.searchCurrencies(query: "¥")
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.cny, .samples.jpy]))
   }
 }
 

@@ -14,5 +14,6 @@ public extension Printable {
   }
 }
 
+extension Array: Printable {}
 extension Result: Printable {}
 extension String: Printable {}

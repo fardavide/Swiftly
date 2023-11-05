@@ -74,10 +74,30 @@ extension CurrencySwiftDataModel {
 }
 
 public class CurrencyStorageModelSamples {
+  public let chf = CurrencyStorageModel(
+    code: Currency.samples.chf.code,
+    name: Currency.samples.chf.name,
+    symbol: Currency.samples.chf.symbol
+  )
+  public let cny = CurrencyStorageModel(
+    code: Currency.samples.cny.code,
+    name: Currency.samples.cny.name,
+    symbol: Currency.samples.cny.symbol
+  )
   public let eur = CurrencyStorageModel(
     code: Currency.samples.eur.code,
     name: Currency.samples.eur.name,
     symbol: Currency.samples.eur.symbol
+  )
+  public let gbp = CurrencyStorageModel(
+    code: Currency.samples.gbp.code,
+    name: Currency.samples.gbp.name,
+    symbol: Currency.samples.gbp.symbol
+  )
+  public let jpy = CurrencyStorageModel(
+    code: Currency.samples.jpy.code,
+    name: Currency.samples.jpy.name,
+    symbol: Currency.samples.jpy.symbol
   )
   public let usd = CurrencyStorageModel(
     code: Currency.samples.usd.code,
@@ -86,6 +106,6 @@ public class CurrencyStorageModelSamples {
   )
   
   public func all() -> [CurrencyStorageModel] {
-    [eur, usd]
+    [chf, cny, eur, gbp, jpy, usd]
   }
 }

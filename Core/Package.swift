@@ -235,7 +235,8 @@ let package = Package(
     .target(
       name: "CurrencyApi",
       dependencies: [
-        "CurrencyDomain"
+        "CurrencyDomain",
+        "Network",
       ],
       path: "Sources/Currency/Data/Api"
     ),
@@ -285,8 +286,10 @@ let package = Package(
     .target(
       name: "CurrencyStorage",
       dependencies: [
+        "AppStorage",
         "DateUtils",
-        "CurrencyDomain"
+        "CurrencyDomain",
+        "SwiftlyStorage"
       ],
       path: "Sources/Currency/Data/Storage"
     ),

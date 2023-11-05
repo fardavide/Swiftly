@@ -5,9 +5,11 @@ public protocol CurrencyRepository {
   
   func getCurrencies() async -> Result<[Currency], DataError>
   func getLatestRates() async -> Result<[CurrencyRate], DataError>
+  func searchCurrencies(query: String) async -> Result<[Currency], DataError>
 }
 
 public class FakeCurrencyRepository: CurrencyRepository {
+  
   let currenciesResult: Result<[Currency], DataError>
   let currencyRatesResult: Result<[CurrencyRate], DataError>
   
@@ -34,5 +36,12 @@ public class FakeCurrencyRepository: CurrencyRepository {
   }
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
     currencyRatesResult
+  }
+  public func searchCurrencies(query: String) async -> Result<[Currency], DataError> {
+    currenciesResult.map { currencies in
+      currencies.filter { currency in
+        currency.name.contains(query) || currency.code.value.contains(query)
+      }
+    }
   }
 }

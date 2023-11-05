@@ -4,12 +4,31 @@ import SwiftUI
 
 struct SelectCurrencySheet: View {
   let currencies: [Currency]
-  let onCurrencySelected: (Currency) -> ()
+  let onCurrencySelected: (Currency) -> Void
+  let onSearchCurrencies: (_ query: String) -> Void
+  
+  @State private var searchQuery = ""
   
   var body: some View {
-    List(currencies, id: \.code) { currency in
-      CurrencyRow(currency: currency)
-        .onTapGesture { onCurrencySelected(currency) }
+    let textFieldBinding = Binding(
+      get: { searchQuery },
+      set: { text in
+        searchQuery = text
+        onSearchCurrencies(text)
+      }
+    )
+
+    VStack {
+      TextField(
+        "Search Currency",
+        text: textFieldBinding
+      )
+      .font(.title2)
+      .multilineTextAlignment(.trailing)
+      List(currencies, id: \.code) { currency in
+        CurrencyRow(currency: currency)
+          .onTapGesture { onCurrencySelected(currency) }
+      }
     }
   }
 }
@@ -42,6 +61,7 @@ private struct CurrencyRow: View {
 #Preview {
   SelectCurrencySheet(
     currencies: Currency.samples.all(),
-    onCurrencySelected: { _ in }
+    onCurrencySelected: { _ in },
+    onSearchCurrencies: { _ in }
   )
 }

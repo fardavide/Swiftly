@@ -1,21 +1,21 @@
 import CurrencyDomain
 
 public struct ConverterState {
-  var allCurrencies: [Currency]
   var error: String?
   var isLoading: Bool
+  var searchCurrencies: [Currency]
   var values: [CurrencyValue]
 }
 
 public extension ConverterState {
   static let initial = ConverterState(
-    allCurrencies: [],
     isLoading: true,
+    searchCurrencies: [],
     values: []
   )
   static let sample = ConverterState(
-    allCurrencies: Currency.samples.all(),
     isLoading: false,
+    searchCurrencies: Currency.samples.all(),
     values: CurrencyValue.samples.all()
   )
 }

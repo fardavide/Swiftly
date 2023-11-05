@@ -42,6 +42,14 @@ public final class ConverterViewModel: ViewModel {
         }
       }
       
+    case let .searchCurrencies(query):
+      Task {
+        let searchResult = await currencyRepository.searchCurrencies(query: query)
+        emit {
+          self.state.searchCurrencies = searchResult.getOr(default: [])
+        }
+      }
+      
     case let .valueUpdate(currencyValue):
       state.values = state.values.map { v in
         v.currency == currencyValue.currency
@@ -91,7 +99,7 @@ public final class ConverterViewModel: ViewModel {
     emit {
       self.state.isLoading = false
       self.state.error = nil
-      self.state.allCurrencies = currencies
+      self.state.searchCurrencies = currencies
       self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
         let currency = currencies.first(where: { $0.code == currencyCode })!
         let rate = rates.first(where: { $0.currencyCode == currencyCode })!

@@ -8,7 +8,7 @@ public extension AppStorage {
   
   @discardableResult
   func withContext<T>(_ f: (ModelContext) async -> T) async -> T {
-    let context = await container.mainContext
+    let context = ModelContext(container)
     let result = await f(context)
     do {
       try context.save()

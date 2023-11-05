@@ -24,13 +24,16 @@ public struct ConverterView: View {
         
       case .none:
         ContentView(
-          allCurrencies: state.allCurrencies,
+          searchCurrencies: state.searchCurrencies,
           values: state.values,
           onCurrencyValueChange: { currencyValue in
             viewModel.send(.valueUpdate(currencyValue: currencyValue))
           },
           onCurrencyChange: { prev, new in
             viewModel.send(.currencyChange(prev: prev, new: new))
+          },
+          onSearchCurrencies: { query in
+            viewModel.send(.searchCurrencies(query: query))
           }
         )
       }
@@ -39,10 +42,11 @@ public struct ConverterView: View {
 }
 
 private struct ContentView: View {
-  let allCurrencies: [Currency]
+  let searchCurrencies: [Currency]
   let values: [CurrencyValue]
   let onCurrencyValueChange: (CurrencyValue) -> ()
   let onCurrencyChange: (_ prev: Currency, _ new: Currency) -> ()
+  let onSearchCurrencies: (_ query: String) -> ()
   
   @State private var isShowingSheet = false
   @State private var selectedCurrencyValue: CurrencyValue? = nil
@@ -75,11 +79,12 @@ private struct ContentView: View {
     }
     .sheet(isPresented: $isShowingSheet) {
       SelectCurrencySheet(
-        currencies: allCurrencies,
+        currencies: searchCurrencies,
         onCurrencySelected: { newCurrency in
           onCurrencyChange(selectedCurrencyValue!.currency, newCurrency)
           isShowingSheet = false
-        }
+        },
+        onSearchCurrencies: onSearchCurrencies
       )
     }
   }

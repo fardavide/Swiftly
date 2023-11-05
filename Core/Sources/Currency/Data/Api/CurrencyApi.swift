@@ -1,5 +1,5 @@
-import Network
 import Foundation
+import Network
 
 public protocol CurrencyApi {
   
