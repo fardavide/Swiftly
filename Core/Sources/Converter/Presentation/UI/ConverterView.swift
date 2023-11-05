@@ -105,7 +105,7 @@ private struct CurrencyValueRow: View {
             url: currency.flagUrl,
             processors: [
               .resize(height: 25),
-              .roundedCorners(radius: 100)
+              .circle(border: .none)
             ]
           )
         )

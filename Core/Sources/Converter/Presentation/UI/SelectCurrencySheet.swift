@@ -10,7 +10,7 @@ struct SelectCurrencySheet: View {
   @State private var searchQuery = ""
   
   var body: some View {
-    let textFieldBinding = Binding(
+    let searchQueryBinding = Binding(
       get: { searchQuery },
       set: { text in
         searchQuery = text
@@ -18,18 +18,15 @@ struct SelectCurrencySheet: View {
       }
     )
 
-    VStack {
-      TextField(
-        "Search Currency",
-        text: textFieldBinding
-      )
-      .font(.title2)
-      .multilineTextAlignment(.trailing)
+    NavigationStack {
       List(currencies, id: \.code) { currency in
         CurrencyRow(currency: currency)
           .onTapGesture { onCurrencySelected(currency) }
       }
+      .scrollDismissesKeyboard(.automatic)
+      .navigationTitle("Change currency")
     }
+    .searchable(text: searchQueryBinding, prompt: "Search Currency")
   }
 }
 
@@ -43,7 +40,7 @@ private struct CurrencyRow: View {
           url: currency.flagUrl,
           processors: [
             .resize(height: 20),
-            .roundedCorners(radius: 100)
+            .circle(border: .none)
           ]
         )
       )
