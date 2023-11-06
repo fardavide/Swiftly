@@ -2,17 +2,17 @@ import Foundation
 import SwiftlyUtils
 
 public protocol CurrencyRepository {
-  
+
   func getCurrencies() async -> Result<[Currency], DataError>
   func getLatestRates() async -> Result<[CurrencyRate], DataError>
   func searchCurrencies(query: String) async -> Result<[Currency], DataError>
 }
 
 public class FakeCurrencyRepository: CurrencyRepository {
-  
+
   let currenciesResult: Result<[Currency], DataError>
   let currencyRatesResult: Result<[CurrencyRate], DataError>
-  
+
   public init(
     currenciesResult: Result<[Currency], DataError> = .failure(.unknown),
     currencyRatesResult: Result<[CurrencyRate], DataError> = .failure(.unknown)
@@ -20,7 +20,7 @@ public class FakeCurrencyRepository: CurrencyRepository {
     self.currenciesResult = currenciesResult
     self.currencyRatesResult = currencyRatesResult
   }
-  
+
   public convenience init(
     currencies: [Currency]? = nil,
     currencyRates: [CurrencyRate]? = nil
@@ -30,7 +30,7 @@ public class FakeCurrencyRepository: CurrencyRepository {
       currencyRatesResult: currencyRates != nil ? .success(currencyRates!) : .failure(.unknown)
     )
   }
-  
+
   public func getCurrencies() async -> Result<[Currency], DataError> {
     currenciesResult
   }

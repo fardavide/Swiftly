@@ -1,2 +1,4 @@
 disabled_rules:
   - identifier_name
+  
+indentation: 2

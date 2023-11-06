@@ -4,7 +4,7 @@ import ConverterDomain
 @testable import ConverterStorage
 
 final class FavoriteCurrenciesStorageModelTests: XCTestCase {
-  
+
   func test_whenConvertToDomainModel_favoritesAreSortedCorrectly() {
     // given
     let storageModel = FavoriteCurrenciesStorageModel(
@@ -17,10 +17,10 @@ final class FavoriteCurrenciesStorageModelTests: XCTestCase {
         FavoriteCurrencyPosition(value: 0): .samples.eur
       ]
     )
-    
+
     // when
     let domainModel = storageModel.toDomainModel()
-    
+
     // then
     XCTAssertEqual(
       domainModel,
@@ -36,7 +36,7 @@ final class FavoriteCurrenciesStorageModelTests: XCTestCase {
       )
     )
   }
-  
+
   func test_whenConvertToDomainModel_andNotEnoughValues_gapsAreFilledWithDefaults() {
     // given
     let storageModel = FavoriteCurrenciesStorageModel(
@@ -46,10 +46,10 @@ final class FavoriteCurrenciesStorageModelTests: XCTestCase {
         FavoriteCurrencyPosition(value: 4): .samples.chf
       ]
     )
-    
+
     // when
     let domainModel = storageModel.toDomainModel()
-    
+
     // then
     XCTAssertEqual(
       domainModel,

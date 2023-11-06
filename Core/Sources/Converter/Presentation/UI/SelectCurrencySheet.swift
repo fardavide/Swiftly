@@ -6,9 +6,9 @@ struct SelectCurrencySheet: View {
   let currencies: [Currency]
   let onCurrencySelected: (Currency) -> Void
   let onSearchCurrencies: (_ query: String) -> Void
-  
+
   @State private var searchQuery = ""
-  
+
   var body: some View {
     let searchQueryBinding = Binding(
       get: { searchQuery },
@@ -32,7 +32,7 @@ struct SelectCurrencySheet: View {
 
 private struct CurrencyRow: View {
   let currency: Currency
-  
+
   var body: some View {
     HStack {
       LazyImage(

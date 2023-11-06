@@ -1,7 +1,7 @@
 import Foundation
 
 public extension Date {
-  
+
   static let samples = DateSamples()
 }
 

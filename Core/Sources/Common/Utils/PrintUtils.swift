@@ -1,7 +1,7 @@
 public protocol Printable {}
 
 public extension Printable {
-  
+
   @discardableResult
   func print(
     enabled: Bool = true,

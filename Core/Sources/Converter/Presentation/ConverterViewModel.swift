@@ -6,13 +6,13 @@ import SwiftlyUtils
 public final class ConverterViewModel: ViewModel {
   public typealias Action = ConverterAction
   public typealias State = ConverterState
-  
+
   private let converterRepository: ConverterRepository
   private let currencyRepository: CurrencyRepository
   @Published public var state: State
-  
+
   private var rates: [CurrencyRate] = []
-  
+
   public init(
     converterRepository: ConverterRepository,
     currencyRepository: CurrencyRepository,
@@ -23,10 +23,10 @@ public final class ConverterViewModel: ViewModel {
     state = initialState
     Task { await load() }
   }
-  
+
   public func send(_ action: ConverterAction) {
     switch action {
-      
+
     case let .currencyChange(prev, new):
       let replacedIndex = state.values.firstIndex(where: { $0.currency == prev })!
       Task {
@@ -41,7 +41,7 @@ public final class ConverterViewModel: ViewModel {
           currencyValue
         }
       }
-      
+
     case let .searchCurrencies(query):
       Task {
         let searchResult = await currencyRepository.searchCurrencies(query: query)
@@ -49,25 +49,25 @@ public final class ConverterViewModel: ViewModel {
           self.state.searchCurrencies = searchResult.getOr(default: [])
         }
       }
-      
+
     case let .valueUpdate(currencyValue):
       state.values = state.values.map { v in
         v.currency == currencyValue.currency
-        ? currencyValue
-        : CurrencyValue(
-          value: currencyValue.value * (v.rate / currencyValue.rate),
-          currencyWithRate: v.currencyWithRate
-        )
+          ? currencyValue
+          : CurrencyValue(
+            value: currencyValue.value * (v.rate / currencyValue.rate),
+            currencyWithRate: v.currencyWithRate
+          )
       }
-      
+
     }
   }
-  
+
   private func load() async {
     emit {
       self.state.isLoading = true
     }
-    
+
     let currenciesResult = await currencyRepository.getCurrencies()
     guard let currencies = currenciesResult.orNil() else {
       emit {
@@ -76,7 +76,7 @@ public final class ConverterViewModel: ViewModel {
       }
       return
     }
-    
+
     let favoriteCurrenciesResult = await converterRepository.getFavoriteCurrencies()
     guard let favoriteCurrencies = favoriteCurrenciesResult.orNil() else {
       emit {
@@ -85,7 +85,7 @@ public final class ConverterViewModel: ViewModel {
       }
       return
     }
-    
+
     let ratesResult = await currencyRepository.getLatestRates()
     guard let rates = ratesResult.orNil() else {
       emit {
@@ -95,7 +95,7 @@ public final class ConverterViewModel: ViewModel {
       return
     }
     self.rates = rates
-    
+
     emit {
       self.state.isLoading = false
       self.state.error = nil
@@ -113,7 +113,7 @@ public final class ConverterViewModel: ViewModel {
       }
     }
   }
-  
+
   private func newCurrencyValue(for currency: Currency) -> CurrencyValue {
     let currencyWithRate = CurrencyWithRate(
       currency: currency,
@@ -157,4 +157,3 @@ public class ConverterViewModelSamples {
     )
   )
 }
-

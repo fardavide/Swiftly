@@ -6,11 +6,11 @@ public protocol GetCurrentDate {
 
 public class FakeGetCurrentDate: GetCurrentDate {
   private let date: Date
-  
+
   public init(date: Date) {
     self.date = date
   }
-  
+
   public func run() -> Date {
     date
   }

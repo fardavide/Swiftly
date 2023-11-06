@@ -6,7 +6,7 @@ public enum ApiError: Error {
 }
 
 public extension URLSession {
-  
+
   func resultData<T: Decodable>(from url: URL) async -> Result<T, ApiError> {
     do {
       let (data, _) = try await data(from: url)

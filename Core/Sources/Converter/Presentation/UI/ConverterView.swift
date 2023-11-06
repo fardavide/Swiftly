@@ -6,22 +6,22 @@ import SwiftlyUtils
 
 public struct ConverterView: View {
   @StateObject var viewModel: ConverterViewModel = getProvider().get()
-  
+
   public init() {}
-  
+
   public var body: some View {
     let state = viewModel.state
     switch state.isLoading {
-      
+
     case true:
       ProgressView()
-      
+
     case false:
       switch state.error {
-        
+
       case let .some(error):
         Text(error)
-        
+
       case .none:
         ContentView(
           searchCurrencies: state.searchCurrencies,
@@ -44,13 +44,13 @@ public struct ConverterView: View {
 private struct ContentView: View {
   let searchCurrencies: [Currency]
   let values: [CurrencyValue]
-  let onCurrencyValueChange: (CurrencyValue) -> ()
-  let onCurrencyChange: (_ prev: Currency, _ new: Currency) -> ()
-  let onSearchCurrencies: (_ query: String) -> ()
-  
+  let onCurrencyValueChange: (CurrencyValue) -> Void
+  let onCurrencyChange: (_ prev: Currency, _ new: Currency) -> Void
+  let onSearchCurrencies: (_ query: String) -> Void
+
   @State private var isShowingSheet = false
-  @State private var selectedCurrencyValue: CurrencyValue? = nil
-  
+  @State private var selectedCurrencyValue: CurrencyValue?
+
   var body: some View {
     List(values, id: \.currency) { value in
       CurrencyValueRow(
@@ -59,17 +59,17 @@ private struct ContentView: View {
           onCurrencyValueChange(newValue.of(value.currencyWithRate))
         }
       )
-#if os(iOS)
+      #if os(iOS)
       .swipeActions(edge: .trailing) {
-        Button {
-          selectedCurrencyValue = value
-          isShowingSheet = true
-        } label: {
-          Label("Change currency", systemImage: "arrow.left.arrow.right")
-            .tint(Color.accentColor)
-        }
+      Button {
+      selectedCurrencyValue = value
+      isShowingSheet = true
+      } label: {
+      Label("Change currency", systemImage: "arrow.left.arrow.right")
+      .tint(Color.accentColor)
       }
-#endif
+      }
+      #endif
       .contextMenu {
         Button("Change currency") {
           selectedCurrencyValue = value
@@ -92,12 +92,12 @@ private struct ContentView: View {
 
 private struct CurrencyValueRow: View {
   let value: CurrencyValue
-  let onValueChange: (Double) -> ()
-  
+  let onValueChange: (Double) -> Void
+
   var body: some View {
     let currency = value.currency
     let textFieldBinding = Binding(get: { value.value }, set: onValueChange)
-    
+
     HStack {
       HStack {
         LazyImage(

@@ -34,15 +34,15 @@ let package = Package(
         "CurrencyApi",
         "CurrencyData",
         "CurrencyDomain",
-        "CurrencyStorage",
+        "CurrencyStorage"
       ]
-    ),
+    )
   ],
   dependencies: [
-    .package(url: "https://github.com/kean/Nuke", from: Version(12, 1, 6)),
+    .package(url: "https://github.com/kean/Nuke", from: Version(12, 1, 6))
   ],
   targets: [
-    
+
     // MARK: - App Storage definition
     // MARK: App Storage
     .target(
@@ -57,7 +57,7 @@ let package = Package(
       ],
       path: "Tests/AppStorage/ApiTests"
     ),
-    
+
     // MARK: Real App Storage
     .target(
       name: "RealAppStorage",
@@ -65,7 +65,7 @@ let package = Package(
         "AppStorage",
         "ConverterStorage",
         "CurrencyStorage",
-        "Provider",
+        "Provider"
       ],
       path: "Sources/AppStorage/Real"
     ),
@@ -76,7 +76,7 @@ let package = Package(
       ],
       path: "Tests/AppStorage/RealTests"
     ),
-    
+
     // MARK: - Common definitions
     // MARK: Date Utils
     .target(
@@ -93,7 +93,7 @@ let package = Package(
       ],
       path: "Tests/Common/DateUtilsTests"
     ),
-    
+
     // MARK: Network
     .target(
       name: "Network",
@@ -106,7 +106,7 @@ let package = Package(
       ],
       path: "Tests/Common/NetworkTests"
     ),
-    
+
     // MARK: Provider
     .target(
       name: "Provider",
@@ -119,12 +119,12 @@ let package = Package(
       ],
       path: "Tests/Common/ProviderTests"
     ),
-    
+
     // MARK: Storage
     .target(
       name: "SwiftlyStorage",
       dependencies: [
-        "SwiftlyUtils",
+        "SwiftlyUtils"
       ],
       path: "Sources/Common/Storage"
     ),
@@ -135,7 +135,7 @@ let package = Package(
       ],
       path: "Tests/Common/StorageTests"
     ),
-    
+
     // MARK: Test
     .target(
       name: "SwiftlyTest",
@@ -148,7 +148,7 @@ let package = Package(
       ],
       path: "Tests/Common/TestTests"
     ),
-    
+
     // MARK: Utils
     .target(
       name: "SwiftlyUtils",
@@ -161,14 +161,14 @@ let package = Package(
       ],
       path: "Tests/Common/UtilsTests"
     ),
-    
+
     // MARK: - Converter definitions
     // MARK: Converter Data
     .target(
       name: "ConverterData",
       dependencies: [
         "ConverterStorage",
-        "Provider",
+        "Provider"
       ],
       path: "Sources/Converter/Data/Data"
     ),
@@ -179,7 +179,7 @@ let package = Package(
       ],
       path: "Tests/Converter/Data/DataTests"
     ),
-    
+
     // MARK: Converter Domain
     .target(
       name: "ConverterDomain",
@@ -195,14 +195,14 @@ let package = Package(
       ],
       path: "Tests/Converter/DomainTests"
     ),
-    
+
     // MARK: Converter Presentation
     .target(
       name: "ConverterPresentation",
       dependencies: [
         "ConverterDomain",
         "Provider",
-        .product(name: "Nuke", package: "Nuke"),
+        .product(name: "Nuke", package: "Nuke")
       ],
       path: "Sources/Converter/Presentation"
     ),
@@ -213,12 +213,12 @@ let package = Package(
       ],
       path: "Tests/Converter/PresentationTests"
     ),
-    
+
     // MARK: Converter Storage
     .target(
       name: "ConverterStorage",
       dependencies: [
-        "ConverterDomain",
+        "ConverterDomain"
       ],
       path: "Sources/Converter/Data/Storage"
     ),
@@ -229,14 +229,14 @@ let package = Package(
       ],
       path: "Tests/Converter/Data/StorageTests"
     ),
-    
+
     // MARK: - Currency definitions
     // MARK: Currency Api
     .target(
       name: "CurrencyApi",
       dependencies: [
         "CurrencyDomain",
-        "Network",
+        "Network"
       ],
       path: "Sources/Currency/Data/Api"
     ),
@@ -247,14 +247,14 @@ let package = Package(
       ],
       path: "Tests/Currency/Data/ApiTests"
     ),
-    
+
     // MARK: Currency Data
     .target(
       name: "CurrencyData",
       dependencies: [
         "CurrencyApi",
         "CurrencyDomain",
-        "CurrencyStorage",
+        "CurrencyStorage"
       ],
       path: "Sources/Currency/Data/Data"
     ),
@@ -265,7 +265,7 @@ let package = Package(
       ],
       path: "Tests/Currency/Data/DataTests"
     ),
-    
+
     // MARK: Currency Domain
     .target(
       name: "CurrencyDomain",
@@ -281,7 +281,7 @@ let package = Package(
       ],
       path: "Tests/Currency/DomainTests"
     ),
-    
+
     // MARK: Currency Storage
     .target(
       name: "CurrencyStorage",
@@ -299,6 +299,6 @@ let package = Package(
         "CurrencyStorage"
       ],
       path: "Tests/Currency/Data/StorageTests"
-    ),
+    )
   ]
 )

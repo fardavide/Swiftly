@@ -11,9 +11,9 @@ public struct CurrencyApiModel: Codable {
 }
 
 public extension CurrenciesApiModel {
-  
+
   static let samples = CurrenciesApiModelSamples()
-  
+
   func toDomainModels() -> [Currency] {
     self.data.map { code, currencyApiModel in
       Currency(
@@ -26,7 +26,7 @@ public extension CurrenciesApiModel {
 }
 
 public class CurrenciesApiModelSamples {
-  
+
   public let eurOnly = CurrenciesApiModel(
     data: [
       CurrencyApiModel.samples.eur.code: CurrencyApiModel.samples.eur
@@ -46,9 +46,9 @@ public class CurrenciesApiModelSamples {
 }
 
 public extension CurrencyApiModel {
-  
+
   static let samples = CurrencyApiModelSamples()
-  
+
   func toDomainModel() -> Currency {
     Currency(
       code: CurrencyCode(value: code),
@@ -59,7 +59,7 @@ public extension CurrencyApiModel {
 }
 
 public class CurrencyApiModelSamples {
-  
+
   let eur = CurrencyApiModel(code: "EUR", name: "Euro", symbol: "€")
   let usd = CurrencyApiModel(code: "USD", name: "US Dollar", symbol: "$")
 }

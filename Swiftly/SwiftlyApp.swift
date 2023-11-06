@@ -9,12 +9,12 @@ private let provider = Provider.start()
 
 @main
 struct SwiftlyApp: App {
-  
+
   init() {
     SwiftlyModule().start(with: provider)
     ImagePipeline.shared = ImagePipeline(configuration: .withURLCache)
   }
-  
+
   var body: some Scene {
     WindowGroup {
       NavigationStack {

@@ -17,14 +17,14 @@ public extension StorageError {
 }
 
 public extension Result where Failure == StorageError {
-  
+
   @inlinable func mapErrorToDataError() -> Result<Success, DataError> {
     mapError { storageError in storageError.toDataError() }
   }
 }
 
 public extension ModelContext {
-  func resultFetch<T>(_ descriptor: FetchDescriptor<T>) -> Result<[T], StorageError> where T : PersistentModel {
+  func resultFetch<T>(_ descriptor: FetchDescriptor<T>) -> Result<[T], StorageError> where T: PersistentModel {
     do {
       return try .success(fetch(descriptor))
     } catch {

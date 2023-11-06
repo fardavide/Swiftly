@@ -11,7 +11,7 @@ public struct CurrencyRateStorageModel {
 public class CurrencyRateSwiftDataModel {
   @Attribute(.unique) var code: String
   var rate: Double
-  
+
   init(
     code: String,
     rate: Double
@@ -23,14 +23,14 @@ public class CurrencyRateSwiftDataModel {
 
 public extension CurrencyRateStorageModel {
   static let samples = CurrencyRateStorageModelSamples()
-  
+
   func toDomainModel() -> CurrencyRate? {
     CurrencyRate(
       currencyCode: code,
       rate: rate
     )
   }
-  
+
   func toSwiftDataModel() -> CurrencyRateSwiftDataModel {
     CurrencyRateSwiftDataModel(
       code: code.value,
@@ -68,7 +68,7 @@ extension CurrencyRateSwiftDataModel {
 public class CurrencyRateStorageModelSamples {
   public let eur = CurrencyRateStorageModel(code: .samples.eur, rate: CurrencyRate.samples.eur.rate)
   public let usd = CurrencyRateStorageModel(code: .samples.usd, rate: CurrencyRate.samples.usd.rate)
-  
+
   public func all() -> [CurrencyRateStorageModel] {
     [eur, usd]
   }

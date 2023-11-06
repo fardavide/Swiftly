@@ -5,9 +5,9 @@ import ConverterPresentation
 import CurrencyData
 import RealAppStorage
 
-final class SwiftlyModule : Module {
+final class SwiftlyModule: Module {
   init() {}
-  
+
   var dependencies: [Module.Type] = [
     AppStorageModule.self,
     ConverterDataModule.self,

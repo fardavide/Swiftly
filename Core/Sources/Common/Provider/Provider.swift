@@ -1,18 +1,18 @@
 final public class Provider {
-  
+
   private var registry: [String: () -> Any]
-  
-  init(registry: [String : () -> Any]) {
+
+  init(registry: [String: () -> Any]) {
     self.registry = registry
   }
-  
+
   @discardableResult
   public func register<T>(_ provider: @escaping () -> T) -> Provider {
     let key = "\(T.self)"
     registry[key] = provider
     return self
   }
-  
+
   public func safeGet<T>(_ type: T.Type) -> Result<T, ProviderError> {
     let key = "\(T.self)"
     if let provider = registry[key] {
@@ -22,7 +22,7 @@ final public class Provider {
       return .failure(ProviderError(key: key))
     }
   }
-  
+
   public func get<T>(_ type: T.Type) -> T {
     let result = safeGet(type)
     switch result {
@@ -30,7 +30,7 @@ final public class Provider {
     case let .failure(error): fatalError("key '\(error.key)' not registered")
     }
   }
-  
+
   public func get<T>() -> T {
     get(T.self)
   }
@@ -46,7 +46,7 @@ public func getProvider() -> Provider {
 
 public extension Provider {
   private static var instance: Provider?
-  
+
   static func require() -> Provider {
     if let safeInstance = instance {
       safeInstance
@@ -54,8 +54,8 @@ public extension Provider {
       fatalError("Provider not initialized")
     }
   }
-  
-  static func start(registry: [String : () -> Any] = [:]) -> Provider {
+
+  static func start(registry: [String: () -> Any] = [:]) -> Provider {
     if instance == nil {
       instance = Provider(registry: registry)
       return instance!
@@ -63,7 +63,7 @@ public extension Provider {
       fatalError("Provider already initialized")
     }
   }
-  
+
   static func setupPreview<ViewModel>(viewModel: @escaping @autoclosure () -> ViewModel) {
     let provider = start()
     provider.register(viewModel)
@@ -71,8 +71,8 @@ public extension Provider {
 }
 
 extension Provider {
-  
-  static func test(registry: [String : () -> Any] = [:]) -> Provider {
+
+  static func test(registry: [String: () -> Any] = [:]) -> Provider {
     instance = Provider(registry: registry)
     return instance!
   }

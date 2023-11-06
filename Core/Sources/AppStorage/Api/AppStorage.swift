@@ -5,7 +5,7 @@ public protocol AppStorage {
 }
 
 public extension AppStorage {
-  
+
   @discardableResult
   func withContext<T>(_ f: (ModelContext) async -> T) async -> T {
     let context = ModelContext(container)
@@ -18,4 +18,3 @@ public extension AppStorage {
     return result
   }
 }
-

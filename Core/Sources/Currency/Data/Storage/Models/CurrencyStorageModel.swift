@@ -13,7 +13,7 @@ public class CurrencySwiftDataModel {
   @Attribute(.unique) var code: String
   var name: String
   var symbol: String
-  
+
   init(
     code: String,
     name: String,
@@ -27,7 +27,7 @@ public class CurrencySwiftDataModel {
 
 public extension CurrencyStorageModel {
   static let samples = CurrencyStorageModelSamples()
-  
+
   func toDomainModel() -> Currency? {
     Currency(
       code: code,
@@ -35,7 +35,7 @@ public extension CurrencyStorageModel {
       symbol: symbol
     )
   }
-  
+
   func toSwiftDataModel() -> CurrencySwiftDataModel {
     CurrencySwiftDataModel(
       code: code.value,
@@ -104,7 +104,7 @@ public class CurrencyStorageModelSamples {
     name: Currency.samples.usd.name,
     symbol: Currency.samples.usd.symbol
   )
-  
+
   public func all() -> [CurrencyStorageModel] {
     [chf, cny, eur, gbp, jpy, usd]
   }

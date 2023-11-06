@@ -1,12 +1,12 @@
 public struct CurrencyWithRate: Equatable, Hashable, Identifiable {
   public let currency: Currency
   public let rate: Double
-  
+
   public init(currency: Currency, rate: Double) {
     self.currency = currency
     self.rate = rate
   }
-  
+
   public var id: Currency {
     currency
   }
@@ -23,7 +23,7 @@ public struct CurrencyWithRateSamples {
   public let gbp = CurrencyWithRate(currency: .samples.gbp, rate: CurrencyRate.samples.gbp.rate)
   public let jpy = CurrencyWithRate(currency: .samples.jpy, rate: CurrencyRate.samples.jpy.rate)
   public let usd = CurrencyWithRate(currency: .samples.usd, rate: CurrencyRate.samples.usd.rate)
-  
+
   public func all() -> [CurrencyWithRate] {
     [chf, cny, eur, gbp, jpy, usd]
   }

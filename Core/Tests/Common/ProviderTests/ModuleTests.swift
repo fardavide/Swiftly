@@ -6,10 +6,10 @@ final class ModuleTests: XCTestCase {
     // given
     let module = ThirdTestModule()
     let provider = Provider.test()
-    
+
     // when
     module.start(with: provider)
-    
+
     // then
     XCTAssertEqual(getCount(type: ThirdTestModule.self), 1)
     XCTAssertEqual(getCount(type: SecondTestModule.self), 1)
@@ -43,23 +43,23 @@ private final class FirstTestModule: Module {
 }
 
 private final class SecondTestModule: Module {
-  
+
   var dependencies: [Module.Type] = [
     FirstTestModule.self
   ]
-  
+
   init() {
     incrementCount(SecondTestModule.self)
   }
 }
 
 private final class ThirdTestModule: Module {
-  
+
   var dependencies: [Module.Type] = [
     FirstTestModule.self,
     SecondTestModule.self
   ]
-  
+
   init() {
     incrementCount(ThirdTestModule.self)
   }

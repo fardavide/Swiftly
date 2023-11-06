@@ -5,7 +5,7 @@ import SwiftlyStorage
 import SwiftlyUtils
 
 public protocol CurrencyStorage {
-  
+
   func insertAllCurrencies(_ models: [CurrencyStorageModel]) async
   func insertAllRates(_ models: [CurrencyRateStorageModel]) async
   func insertUpdateDate(_ model: CurrencyDateStorageModel) async
@@ -15,13 +15,13 @@ public protocol CurrencyStorage {
 }
 
 class RealCurrencyStorage: AppStorage, CurrencyStorage {
-  
+
   let container: ModelContainer
-  
+
   init(container: ModelContainer) {
     self.container = container
   }
-  
+
   func insertAllCurrencies(_ models: [CurrencyStorageModel]) async {
     await withContext {
       for model in models {
@@ -29,7 +29,7 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
       }
     }
   }
-  
+
   func insertAllRates(_ models: [CurrencyRateStorageModel]) async {
     await withContext {
       for model in models {
@@ -37,13 +37,13 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
       }
     }
   }
-  
+
   func insertUpdateDate(_ model: CurrencyDateStorageModel) async {
     await withContext {
       $0.insert(model.toSwiftDataModel())
     }
   }
-  
+
   func fetchAllCurrencies() async -> Result<[CurrencyStorageModel], StorageError> {
     await withContext {
       $0.resultFetch(
@@ -58,7 +58,7 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
       }
     }
   }
-  
+
   func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError> {
     await withContext {
       $0.resultFetch(
@@ -73,7 +73,7 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
       }
     }
   }
-  
+
   func getUpdateDate() async -> CurrencyDateStorageModel {
     await withContext {
       let result = $0.resultFetch(FetchDescriptor<CurrencyDateSwiftDataModel>())

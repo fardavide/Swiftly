@@ -1,14 +1,14 @@
 import Foundation
 
 public extension Date {
-  
+
   static func from(_ string: String, formatter: Date.Formatter) -> Date? {
     let formatter = switch formatter {
     case .iso8601: ISO8601DateFormatter()
     }
     return formatter.date(from: string)
   }
-  
+
   /// Create a `date` using given parameters
   /// - Parameters:
   ///   - year: year of the `Date`
@@ -40,14 +40,14 @@ public extension Date {
     """
     return from(string, formatter: .iso8601)!
   }
-  
+
   enum Formatter {
     /*
      Example: 2016-04-14T10:44:00+0000
      */
     case iso8601
   }
-  
+
   enum Month: CaseIterable {
     case jan
     case feb
@@ -65,7 +65,7 @@ public extension Date {
 }
 
 extension Date.Month {
-  
+
   public func ordinal() -> Self.AllCases.Index {
     return Self.allCases.firstIndex(of: self)!
   }

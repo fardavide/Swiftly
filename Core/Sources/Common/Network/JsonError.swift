@@ -9,7 +9,7 @@ public enum JsonError: Error {
 }
 
 public extension JSONDecoder {
-  
+
   func resultDecode<T: Decodable>(
     _ type: T.Type,
     from data: Data
@@ -19,19 +19,19 @@ public extension JSONDecoder {
       return .success(decoded)
     } catch {
       switch error as? DecodingError {
-        
+
       case .dataCorrupted(let context):
         return .failure(.dataCorrupted(context))
-        
+
       case .keyNotFound(let key, let context):
         return .failure(.keyNotFound(key, context))
-        
+
       case .typeMismatch(let type, let context):
         return .failure(.typeMismatch(type, context))
-        
+
       case .valueNotFound(let type, let context):
         return .failure(.valueNotFound(type, context))
-        
+
       default:
         return .failure(.unknown(error))
       }
