@@ -16,7 +16,7 @@ jobs:
         uses: norio-nomura/action-swiftlint@3.2.1
         
   Test:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     
     - uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
     - name: Xcode Setup
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.0.1'
+        xcode-version: latest-stable
 
     - name: Build
       run: |
