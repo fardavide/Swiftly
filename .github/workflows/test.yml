@@ -15,21 +15,22 @@ jobs:
       - name: GitHub Action for SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
         
-  Test:
-    runs-on: macos-13
-    steps:
-    
-    - uses: actions/checkout@v4
-
-    - name: Xcode Setup
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-
-    - name: Build
-      run: |
-        xcodebuild build -project Swiftly.xcodeproj -scheme Swiftly clean build -sdk iphoneos CODE_SIGNING_ALLOWED=No
-
-    - name: Run tests
-      run: |
-        xcodebuild test -project Swiftly.xcodeproj -scheme Swiftly clean build -sdk iphoneos -destination "platform=iOS Simulator,OS=17.1,name=iPhone 15 Pro" CODE_SIGNING_ALLOWED=No
+#  Test:
+#    # TODO: waiting for MacOS 14 release
+#    runs-on: macos-14
+#    steps:
+#    
+#    - uses: actions/checkout@v4
+#
+#    - name: Xcode Setup
+#      uses: maxim-lobanov/setup-xcode@v1
+#      with:
+#        xcode-version: latest-stable
+#
+#    - name: Build
+#      run: |
+#        xcodebuild build -project Swiftly.xcodeproj -scheme Swiftly clean build -sdk iphoneos CODE_SIGNING_ALLOWED=No
+#
+#    - name: Run tests
+#      run: |
+#        xcodebuild test -project Swiftly.xcodeproj -scheme Swiftly clean build -sdk iphoneos -destination "platform=iOS Simulator,OS=17.1,name=iPhone 15 Pro" CODE_SIGNING_ALLOWED=No
