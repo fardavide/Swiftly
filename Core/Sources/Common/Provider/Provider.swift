@@ -16,6 +16,7 @@ final public class Provider {
   public func safeGet<T>(_ type: T.Type) -> Result<T, ProviderError> {
     let key = "\(T.self)"
     if let provider = registry[key] {
+      // swiftlint:disable force_cast
       return .success(provider() as! T)
     } else {
       return .failure(ProviderError(key: key))
