@@ -18,6 +18,7 @@ final public class Provider {
     if let provider = registry[key] {
       // swiftlint:disable force_cast
       return .success(provider() as! T)
+      // swiftlint:enable force_cast
     } else {
       return .failure(ProviderError(key: key))
     }

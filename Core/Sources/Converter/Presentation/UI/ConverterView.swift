@@ -1,6 +1,7 @@
 import CurrencyDomain
 import NukeUI
 import Provider
+import Resources
 import SwiftUI
 import SwiftlyUtils
 
@@ -59,19 +60,17 @@ private struct ContentView: View {
           onCurrencyValueChange(newValue.of(value.currencyWithRate))
         }
       )
-      #if os(iOS)
       .swipeActions(edge: .trailing) {
-      Button {
-      selectedCurrencyValue = value
-      isShowingSheet = true
-      } label: {
-      Label("Change currency", systemImage: "arrow.left.arrow.right")
-      .tint(Color.accentColor)
+        Button {
+          selectedCurrencyValue = value
+          isShowingSheet = true
+        } label: {
+          Label(+S.changeCurrency, systemImage: "arrow.left.arrow.right")
+            .tint(Color.accentColor)
+        }
       }
-      }
-      #endif
       .contextMenu {
-        Button("Change currency") {
+        Button(+S.changeCurrency) {
           selectedCurrencyValue = value
           isShowingSheet = true
         }
@@ -114,11 +113,11 @@ private struct CurrencyValueRow: View {
         Text(currency.code.value)
       }
       .accessibilityElement(children: .ignore)
-      .accessibilityLabel("Currency: \(currency.name)")
+      .accessibilityLabel(+S.currencyWith(currencyName: currency.name))
       Spacer()
       VStack(alignment: .trailing) {
         TextField(
-          "Value",
+          +S.value,
           value: textFieldBinding,
           format: .number.precision(.fractionLength(2))
         )

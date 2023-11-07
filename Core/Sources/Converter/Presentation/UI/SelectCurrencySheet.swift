@@ -1,5 +1,6 @@
 import CurrencyDomain
 import NukeUI
+import Resources
 import SwiftUI
 
 struct SelectCurrencySheet: View {
@@ -24,9 +25,9 @@ struct SelectCurrencySheet: View {
           .onTapGesture { onCurrencySelected(currency) }
       }
       .scrollDismissesKeyboard(.automatic)
-      .navigationTitle("Change currency")
+      .navigationTitle(+S.changeCurrency)
     }
-    .searchable(text: searchQueryBinding, prompt: "Search Currency")
+    .searchable(text: searchQueryBinding, prompt: +S.searchCurrency)
   }
 }
 
@@ -51,7 +52,7 @@ private struct CurrencyRow: View {
       Text(currency.nameWithSymbol)
     }
     .accessibilityElement(children: .ignore)
-    .accessibilityLabel("Currency: \(currency.name)")
+    .accessibilityLabel(+S.currencyWith(currencyName: currency.name))
   }
 }
 

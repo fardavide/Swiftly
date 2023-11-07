@@ -3,6 +3,7 @@ import CurrencyApi
 import CurrencyData
 import Nuke
 import Provider
+import Resources
 import SwiftUI
 
 private let provider = Provider.start()
@@ -19,7 +20,7 @@ struct SwiftlyApp: App {
     WindowGroup {
       NavigationStack {
         ConverterView()
-          .navigationTitle("Swiftly")
+          .navigationTitle(+S.appName)
       }
     }
   }

@@ -22,6 +22,7 @@ let package = Package(
         "DateUtils",
         "Network",
         "Provider",
+        "Resources",
         "SwiftlyStorage",
         "SwiftlyTest",
         "SwiftlyUtils",
@@ -120,6 +121,22 @@ let package = Package(
       path: "Tests/Common/ProviderTests"
     ),
 
+    // MARK: Resources
+    .target(
+      name: "Resources",
+      dependencies: [
+        "SwiftlyUtils"
+      ],
+      path: "Sources/Common/Resources"
+    ),
+    .testTarget(
+      name: "ResourcesTests",
+      dependencies: [
+        "Resources"
+      ],
+      path: "Tests/Common/ResourcesTests"
+    ),
+
     // MARK: Storage
     .target(
       name: "SwiftlyStorage",
@@ -202,6 +219,7 @@ let package = Package(
       dependencies: [
         "ConverterDomain",
         "Provider",
+        "Resources",
         .product(name: "Nuke", package: "Nuke")
       ],
       path: "Sources/Converter/Presentation"

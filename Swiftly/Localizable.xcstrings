@@ -1,0 +1,56 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "AppName" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swiftly"
+          }
+        }
+      }
+    },
+    "ChangeCurrency" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change currency"
+          }
+        }
+      }
+    },
+    "CurrencyWithName" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Currency: %s"
+          }
+        }
+      }
+    },
+    "Hello, world!" : {
+
+    },
+    "SearchCurrency" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search currency"
+          }
+        }
+      }
+    },
+    "Value" : {
+      "extractionState" : "manual"
+    }
+  },
+  "version" : "1.0"
+}

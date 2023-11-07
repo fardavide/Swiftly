@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5F9C982AF8078100CBFD19 /* NukeExtensions */; };
+		6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */; };
 		6BD0FF1F2AF64E7F00CC9579 /* SwiftlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */; };
 		6BD0FF212AF64E7F00CC9579 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF202AF64E7F00CC9579 /* ContentView.swift */; };
 		6BD0FF232AF64E8000CC9579 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BD0FF222AF64E8000CC9579 /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		6BD0FF1B2AF64E7F00CC9579 /* Swiftly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftlyApp.swift; sourceTree = "<group>"; };
 		6BD0FF202AF64E7F00CC9579 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				6BD0FF242AF64E8000CC9579 /* Swiftly.entitlements */,
 				6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */,
 				6BD0FF4B2AF6574900CC9579 /* SwiftlyModule.swift */,
+				6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */,
 			);
 			path = Swiftly;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 			files = (
 				6BD0FF272AF64E8000CC9579 /* Preview Assets.xcassets in Resources */,
 				6BD0FF232AF64E8000CC9579 /* Assets.xcassets in Resources */,
+				6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
