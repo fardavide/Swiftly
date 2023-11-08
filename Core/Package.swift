@@ -1,6 +1,7 @@
 // swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
+import CompilerPluginSupport
 import PackageDescription
 
 let package = Package(
@@ -23,6 +24,7 @@ let package = Package(
         "Network",
         "Provider",
         "Resources",
+        "ResourcesMacro",
         "SwiftlyStorage",
         "SwiftlyTest",
         "SwiftlyUtils",
@@ -40,7 +42,8 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/kean/Nuke", from: Version(12, 1, 6))
+    .package(url: "https://github.com/apple/swift-syntax.git", from: Version(509, 0, 0)),
+    .package(url: "https://github.com/kean/Nuke", from: Version(12, 1, 6)),
   ],
   targets: [
 
@@ -125,16 +128,33 @@ let package = Package(
     .target(
       name: "Resources",
       dependencies: [
+        "ResourcesMacro",
         "SwiftlyUtils"
       ],
-      path: "Sources/Common/Resources"
+      path: "Sources/Common/Resources/Api"
+    ),
+    .macro(
+      name: "ResourcesMacro",
+      dependencies: [
+        .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+        .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
+      ],
+      path: "Sources/Common/Resources/Macro"
     ),
     .testTarget(
       name: "ResourcesTests",
       dependencies: [
         "Resources"
       ],
-      path: "Tests/Common/ResourcesTests"
+      path: "Tests/Common/Resources/ApiTests"
+    ),
+    .testTarget(
+      name: "ResourcesMacoTests",
+      dependencies: [
+        "ResourcesMacro",
+        .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
+      ],
+      path: "Tests/Common/Resources/MacroTests"
     ),
 
     // MARK: Storage
