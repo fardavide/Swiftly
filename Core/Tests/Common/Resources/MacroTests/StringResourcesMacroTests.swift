@@ -10,10 +10,10 @@ final class StringResourcesMacroTests: XCTestCase {
   func test_stringWithoutArgs() {
     assertMacroExpansion(
       #"""
-      #string(.appName)
+        #string(.appName)
       """#,
       expandedSource: #"""
-      LocalizedStringKey("AppName")
+        LocalizedStringKey("AppName")
       """#,
       macros: testMacros
     )
@@ -22,10 +22,10 @@ final class StringResourcesMacroTests: XCTestCase {
   func test_stringWithLiteralArg() {
     assertMacroExpansion(
       #"""
-      #string(.currencyWithName("Euro"))
+        #string(.currencyWithName("Euro"))
       """#,
       expandedSource: #"""
-      LocalizedStringKey("CurrencyWithName: Euro")
+        LocalizedStringKey("CurrencyWithName: Euro")
       """#,
       macros: testMacros
     )
@@ -34,10 +34,10 @@ final class StringResourcesMacroTests: XCTestCase {
   func test_stringWithLabeledLiteralArg() {
     assertMacroExpansion(
       #"""
-      #string(.currencyWith(name: "Euro"))
+        #string(.currencyWith(name: "Euro"))
       """#,
       expandedSource: #"""
-      LocalizedStringKey("CurrencyWithName: Euro")
+        LocalizedStringKey("CurrencyWithName: Euro")
       """#,
       macros: testMacros
     )
@@ -46,10 +46,10 @@ final class StringResourcesMacroTests: XCTestCase {
   func test_stringWithLabeledReferenceArg() {
     assertMacroExpansion(
       #"""
-      #string(.currencyWith(name: name))
+        #string(.currencyWith(name: name))
       """#,
       expandedSource: #"""
-      LocalizedStringKey("CurrencyWithName: \(name)")
+        LocalizedStringKey("CurrencyWithName: \(name)")
       """#,
       macros: testMacros
     )

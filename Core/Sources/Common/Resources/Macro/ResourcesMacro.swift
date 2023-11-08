@@ -16,10 +16,10 @@ public struct StringResourcesMacro: ExpressionMacro {
     } else {
       throw Error.unexpectedArg(type: "\(type(of: argument))")
     }
-    
+
     return "LocalizedStringKey(\"\(raw: identifier)\")"
   }
-  
+
   private static func extractIdentifier(
     memberAccess: MemberAccessExprSyntax
   ) -> String {
@@ -49,7 +49,7 @@ public struct StringResourcesMacro: ExpressionMacro {
       }
     }.joined(separator: "")
     let formattedArgs = args.map(\.1).joined(separator: " ")
-  
+
     // TODO: improve for non-trailing args
     return "\(identifier)\(formattedLabels): \(formattedArgs)"
   }
@@ -59,7 +59,7 @@ public struct StringResourcesMacro: ExpressionMacro {
     case unexpectedArg(type: String)
     case unexpectedMemberType(type: String)
     case unxepectedMemberArg(type: String)
-    
+
     var description: String {
       switch self {
       case .noArg: "No arguments provided"
