@@ -20,7 +20,7 @@ struct SwiftlyApp: App {
     WindowGroup {
       NavigationStack {
         ConverterView()
-          .navigationTitle(+S.appName)
+          .navigationTitle(+StringKey.appName)
       }
     }
   }

@@ -25,9 +25,9 @@ struct SelectCurrencySheet: View {
           .onTapGesture { onCurrencySelected(currency) }
       }
       .scrollDismissesKeyboard(.automatic)
-      .navigationTitle(+S.changeCurrency)
+      .navigationTitle(+StringKey.changeCurrency)
     }
-    .searchable(text: searchQueryBinding, prompt: +S.searchCurrency)
+    .searchable(text: searchQueryBinding, prompt: +StringKey.searchCurrency)
   }
 }
 
@@ -52,7 +52,7 @@ private struct CurrencyRow: View {
       Text(currency.nameWithSymbol)
     }
     .accessibilityElement(children: .ignore)
-    .accessibilityLabel(+S.currencyWith(currencyName: currency.name))
+    .accessibilityLabel(+StringKey.currencyWithName(currencyName: currency.name))
   }
 }
 

@@ -65,12 +65,12 @@ private struct ContentView: View {
           selectedCurrencyValue = value
           isShowingSheet = true
         } label: {
-          Label(+S.changeCurrency, systemImage: "arrow.left.arrow.right")
+          Label(+StringKey.changeCurrency, systemImage: "arrow.left.arrow.right")
             .tint(Color.accentColor)
         }
       }
       .contextMenu {
-        Button(+S.changeCurrency) {
+        Button(+StringKey.changeCurrency) {
           selectedCurrencyValue = value
           isShowingSheet = true
         }
@@ -113,11 +113,11 @@ private struct CurrencyValueRow: View {
         Text(currency.code.value)
       }
       .accessibilityElement(children: .ignore)
-      .accessibilityLabel(+S.currencyWith(currencyName: currency.name))
+      .accessibilityLabel(+StringKey.currencyWithName(currencyName: currency.name))
       Spacer()
       VStack(alignment: .trailing) {
         TextField(
-          +S.value,
+          +StringKey.value,
           value: textFieldBinding,
           format: .number.precision(.fractionLength(2))
         )
