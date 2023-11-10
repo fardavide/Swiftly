@@ -96,20 +96,18 @@ public final class ConverterViewModel: ViewModel {
     }
     self.rates = rates
 
+    let baseCurrencyValue = favoriteCurrencies.currencyCodes.first!
+      .find(from: currencies, with: rates)!
+      .withValue(10)
+    
     emit {
       self.state.isLoading = false
       self.state.error = nil
       self.state.searchCurrencies = currencies
       self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
-        let currency = currencies.first(where: { $0.code == currencyCode })!
-        let rate = rates.first(where: { $0.currencyCode == currencyCode })!
-        return CurrencyValue(
-          value: 10,
-          currencyWithRate: CurrencyWithRate(
-            currency: currency,
-            rate: rate.rate
-          )
-        )
+        currencyCode == baseCurrencyValue.currency.code
+        ? baseCurrencyValue
+        : baseCurrencyValue.convert(to: currencyCode.find(from: currencies, with: rates)!)
       }
     }
   }
@@ -122,6 +120,20 @@ public final class ConverterViewModel: ViewModel {
     return CurrencyValue(
       value: 10,
       currencyWithRate: currencyWithRate
+    )
+  }
+}
+
+fileprivate extension CurrencyCode {
+  func find(
+    from currencies: [Currency],
+    with rates: [CurrencyRate]
+  ) -> CurrencyWithRate? {
+    let currency = currencies.first(where: { $0.code == self })!
+    let rate = rates.first(where: { $0.currencyCode == self })!
+    return CurrencyWithRate(
+      currency: currency,
+      rate: rate.rate
     )
   }
 }

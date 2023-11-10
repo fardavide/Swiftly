@@ -1,3 +1,4 @@
+// swiftlint:disable function_body_length
 import XCTest
 
 import Combine
@@ -17,7 +18,7 @@ final class ConverterViewModelTests: XCTestCase {
     )
 
     // when
-    await test(scenario.sut.$state.map(\.allCurrencies)) { turbine in
+    await test(scenario.sut.$state.map(\.searchCurrencies)) { turbine in
       await turbine.expectInitial(value: [])
 
       // then
@@ -48,23 +49,23 @@ final class ConverterViewModelTests: XCTestCase {
 
       XCTAssertEqual(result[1].currency, .samples.cny)
       XCTAssertEqual(result[1].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(result[1].value, 10)
-
+      XCTAssertEqual(result[1].value, 81, accuracy: 0.4)
+      
       XCTAssertEqual(result[2].currency, .samples.eur)
       XCTAssertEqual(result[2].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(result[2].value, 10)
+      XCTAssertEqual(result[2].value, 10, accuracy: 0.4)
 
       XCTAssertEqual(result[3].currency, .samples.gbp)
       XCTAssertEqual(result[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(result[3].value, 10)
+      XCTAssertEqual(result[3].value, 9, accuracy: 0.4)
 
       XCTAssertEqual(result[4].currency, .samples.jpy)
       XCTAssertEqual(result[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(result[4].value, 10)
+      XCTAssertEqual(result[4].value, 1667, accuracy: 0.4)
 
       XCTAssertEqual(result[5].currency, .samples.usd)
       XCTAssertEqual(result[5].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(result[5].value, 10)
+      XCTAssertEqual(result[5].value, 11, accuracy: 0.4)
     }
   }
 
@@ -88,23 +89,23 @@ final class ConverterViewModelTests: XCTestCase {
 
       XCTAssertEqual(before[1].currency, .samples.cny)
       XCTAssertEqual(before[1].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(before[1].value, 10)
+      XCTAssertEqual(before[1].value, 81, accuracy: 0.4)
 
       XCTAssertEqual(before[2].currency, .samples.eur)
       XCTAssertEqual(before[2].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(before[2].value, 10)
+      XCTAssertEqual(before[2].value, 10, accuracy: 0.4)
 
       XCTAssertEqual(before[3].currency, .samples.gbp)
       XCTAssertEqual(before[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(before[3].value, 10)
+      XCTAssertEqual(before[3].value, 9, accuracy: 0.4)
 
       XCTAssertEqual(before[4].currency, .samples.jpy)
       XCTAssertEqual(before[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(before[4].value, 10)
+      XCTAssertEqual(before[4].value, 1667, accuracy: 0.4)
 
       XCTAssertEqual(before[5].currency, .samples.usd)
       XCTAssertEqual(before[5].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(before[5].value, 10)
+      XCTAssertEqual(before[5].value, 11, accuracy: 0.4)
 
       // when
       scenario.sut.send(
@@ -163,23 +164,23 @@ final class ConverterViewModelTests: XCTestCase {
 
       XCTAssertEqual(before[1].currency, .samples.cny)
       XCTAssertEqual(before[1].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(before[1].value, 10)
+      XCTAssertEqual(before[1].value, 81, accuracy: 0.4)
 
       XCTAssertEqual(before[2].currency, .samples.eur)
       XCTAssertEqual(before[2].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(before[2].value, 10)
+      XCTAssertEqual(before[2].value, 10, accuracy: 0.4)
 
       XCTAssertEqual(before[3].currency, .samples.gbp)
       XCTAssertEqual(before[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(before[3].value, 10)
+      XCTAssertEqual(before[3].value, 9, accuracy: 0.4)
 
       XCTAssertEqual(before[4].currency, .samples.jpy)
       XCTAssertEqual(before[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(before[4].value, 10)
+      XCTAssertEqual(before[4].value, 1667, accuracy: 0.4)
 
       XCTAssertEqual(before[5].currency, .samples.usd)
       XCTAssertEqual(before[5].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(before[5].value, 10)
+      XCTAssertEqual(before[5].value, 11, accuracy: 0.4)
 
       // when
       scenario.sut.send(
@@ -199,23 +200,23 @@ final class ConverterViewModelTests: XCTestCase {
 
       XCTAssertEqual(after[1].currency, .samples.cny)
       XCTAssertEqual(after[1].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(after[1].value, 10)
+      XCTAssertEqual(after[1].value, 81, accuracy: 0.4)
 
       XCTAssertEqual(after[2].currency, .samples.usd)
       XCTAssertEqual(after[2].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(after[2].value, 10)
+      XCTAssertEqual(after[2].value, 10, accuracy: 0.4)
 
       XCTAssertEqual(after[3].currency, .samples.gbp)
       XCTAssertEqual(after[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(after[3].value, 10)
+      XCTAssertEqual(after[3].value, 9, accuracy: 0.4)
 
       XCTAssertEqual(after[4].currency, .samples.jpy)
       XCTAssertEqual(after[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(after[4].value, 10)
+      XCTAssertEqual(after[4].value, 1667, accuracy: 0.4)
 
       XCTAssertEqual(after[5].currency, .samples.eur)
       XCTAssertEqual(after[5].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(after[5].value, 10)
+      XCTAssertEqual(after[5].value, 10, accuracy: 0.4)
     }
   }
 }

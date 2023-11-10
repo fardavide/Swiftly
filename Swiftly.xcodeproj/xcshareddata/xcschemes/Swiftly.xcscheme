@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6BD0FF1A2AF64E7F00CC9579"
-               BuildableName = "Swiftly"
+               BuildableName = "Swiftly.app"
                BlueprintName = "Swiftly"
                ReferencedContainer = "container:Swiftly.xcodeproj">
             </BuildableReference>
@@ -59,17 +59,17 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
+      customWorkingDirectory = "/Users/davide/Dev/Projects/Swiftly"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES"
-      customWorkingDirectory = "/Users/davide/Dev/Projects/Swiftly">
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6BD0FF1A2AF64E7F00CC9579"
-            BuildableName = "Swiftly"
+            BuildableName = "Swiftly.app"
             BlueprintName = "Swiftly"
             ReferencedContainer = "container:Swiftly.xcodeproj">
          </BuildableReference>

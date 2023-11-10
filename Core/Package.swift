@@ -240,14 +240,16 @@ let package = Package(
         "ConverterDomain",
         "Provider",
         "Resources",
-        .product(name: "Nuke", package: "Nuke")
+        .product(name: "Nuke", package: "Nuke"),
+        .product(name: "NukeUI", package: "Nuke")
       ],
       path: "Sources/Converter/Presentation"
     ),
     .testTarget(
       name: "ConverterPresentationTests",
       dependencies: [
-        "ConverterPresentation"
+        "ConverterPresentation",
+        "SwiftlyTest"
       ],
       path: "Tests/Converter/PresentationTests"
     ),
@@ -274,6 +276,7 @@ let package = Package(
       name: "CurrencyApi",
       dependencies: [
         "CurrencyDomain",
+        "DateUtils",
         "Network"
       ],
       path: "Sources/Currency/Data/Api"
