@@ -98,6 +98,8 @@
 				6BD0FF392AF64E8000CC9579 /* SwiftlyUITests */,
 				6BD0FF1C2AF64E7F00CC9579 /* Products */,
 				6BD0FF4A2AF6521D00CC9579 /* Frameworks */,
+				B032C9C847E5B8D0EE43D646 /* xcschemes */,
+				B032C5BB4663CD1DD6C14B14 /* .fleet */,
 			);
 			sourceTree = "<group>";
 		};
@@ -157,6 +159,21 @@
 				6BD0FF522AF6B7B000CC9579 /* XCTest.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B032C5BB4663CD1DD6C14B14 /* .fleet */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = .fleet;
+			sourceTree = "<group>";
+		};
+		B032C9C847E5B8D0EE43D646 /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = xcschemes;
+			path = Swiftly.xcodeproj/project.xcworkspace/xcuserdata/davide.xcuserdatad/xcschemes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,7 +275,7 @@
 			);
 			mainGroup = 6BD0FF122AF64E7F00CC9579;
 			packageReferences = (
-				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */,
+				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference */,
 				6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = 6BD0FF1C2AF64E7F00CC9579 /* Products */;
@@ -691,7 +708,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */ = {
+		6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Core;
 		};
