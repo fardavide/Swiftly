@@ -11,6 +11,7 @@ public final class ConverterViewModel: ViewModel {
   private let currencyRepository: CurrencyRepository
   @Published public var state: State
 
+  private var currencies: [Currency] = []
   private var rates: [CurrencyRate] = []
 
   public init(
@@ -29,16 +30,21 @@ public final class ConverterViewModel: ViewModel {
 
     case let .currencyChange(prev, new):
       let replacedIndex = state.values.firstIndex(where: { $0.currency == prev })!
-      Task {
-        await converterRepository.setCurrencyAt(position: replacedIndex, currency: new)
-      }
+      Task { await converterRepository.setCurrencyAt(position: replacedIndex, currency: new) }
+      let newBaseCurrencyValue = getCurrencyWithRate(for: new.code)
+        .withValue(10)
+      
       state.values = state.values.map { currencyValue in
         if currencyValue.currency == prev {
-          newCurrencyValue(for: new)
+          newBaseCurrencyValue
+          
         } else if currencyValue.currency == new {
-          newCurrencyValue(for: prev)
+          newBaseCurrencyValue
+            .convert(to: getCurrencyWithRate(for: prev.code))
+          
         } else {
-          currencyValue
+          newBaseCurrencyValue
+            .convert(to: getCurrencyWithRate(for: currencyValue.currency.code))
         }
       }
 
@@ -53,13 +59,9 @@ public final class ConverterViewModel: ViewModel {
     case let .valueUpdate(currencyValue):
       state.values = state.values.map { v in
         v.currency == currencyValue.currency
-          ? currencyValue
-          : CurrencyValue(
-            value: currencyValue.value * (v.rate / currencyValue.rate),
-            currencyWithRate: v.currencyWithRate
-          )
+        ? currencyValue
+        : currencyValue.convert(to: v.currencyWithRate)
       }
-
     }
   }
 
@@ -76,6 +78,7 @@ public final class ConverterViewModel: ViewModel {
       }
       return
     }
+    self.currencies = currencies
 
     let favoriteCurrenciesResult = await converterRepository.getFavoriteCurrencies()
     guard let favoriteCurrencies = favoriteCurrenciesResult.orNil() else {
@@ -96,8 +99,7 @@ public final class ConverterViewModel: ViewModel {
     }
     self.rates = rates
 
-    let baseCurrencyValue = favoriteCurrencies.currencyCodes.first!
-      .find(from: currencies, with: rates)!
+    let baseCurrencyValue = getCurrencyWithRate(for: favoriteCurrencies.currencyCodes.first!)
       .withValue(10)
     
     emit {
@@ -107,7 +109,7 @@ public final class ConverterViewModel: ViewModel {
       self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
         ? baseCurrencyValue
-        : baseCurrencyValue.convert(to: currencyCode.find(from: currencies, with: rates)!)
+        : baseCurrencyValue.convert(to: self.getCurrencyWithRate(for: currencyCode))
       }
     }
   }
@@ -122,15 +124,10 @@ public final class ConverterViewModel: ViewModel {
       currencyWithRate: currencyWithRate
     )
   }
-}
-
-fileprivate extension CurrencyCode {
-  func find(
-    from currencies: [Currency],
-    with rates: [CurrencyRate]
-  ) -> CurrencyWithRate? {
-    let currency = currencies.first(where: { $0.code == self })!
-    let rate = rates.first(where: { $0.currencyCode == self })!
+  
+  private func getCurrencyWithRate(for code: CurrencyCode) -> CurrencyWithRate {
+    let currency = currencies.first(where: { $0.code == code })!
+    let rate = rates.first(where: { $0.currencyCode == code })!
     return CurrencyWithRate(
       currency: currency,
       rate: rate.rate
