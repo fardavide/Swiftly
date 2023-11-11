@@ -114,17 +114,6 @@ public final class ConverterViewModel: ViewModel {
     }
   }
 
-  private func newCurrencyValue(for currency: Currency) -> CurrencyValue {
-    let currencyWithRate = CurrencyWithRate(
-      currency: currency,
-      rate: rates.first(where: { $0.currencyCode == currency.code })!.rate
-    )
-    return CurrencyValue(
-      value: 10,
-      currencyWithRate: currencyWithRate
-    )
-  }
-
   private func getCurrencyWithRate(for code: CurrencyCode) -> CurrencyWithRate {
     let currency = currencies.first(where: { $0.code == code })!
     let rate = rates.first(where: { $0.currencyCode == code })!
