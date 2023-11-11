@@ -7,6 +7,7 @@ struct SelectCurrencySheet: View {
   let currencies: [Currency]
   let onCurrencySelected: (Currency) -> Void
   let onSearchCurrencies: (_ query: String) -> Void
+  let onDismiss: () -> Void
 
   @State private var searchQuery = ""
 
@@ -26,6 +27,11 @@ struct SelectCurrencySheet: View {
       }
       .scrollDismissesKeyboard(.automatic)
       .navigationTitle(#string(.changeCurrency))
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) {
+          Button(#string(.close), action: onDismiss)
+        }
+      }
     }
     .searchable(text: searchQueryBinding, prompt: #string(.searchCurrency))
   }
@@ -60,6 +66,7 @@ private struct CurrencyRow: View {
   SelectCurrencySheet(
     currencies: Currency.samples.all(),
     onCurrencySelected: { _ in },
-    onSearchCurrencies: { _ in }
+    onSearchCurrencies: { _ in },
+    onDismiss: {}
   )
 }

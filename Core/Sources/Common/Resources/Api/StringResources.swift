@@ -5,6 +5,7 @@ public enum StringKey {
 
   case appName
   case changeCurrency
+  case close
   case currencyWith(name: String)
   case searchCurrency
   case value

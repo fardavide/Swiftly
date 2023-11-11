@@ -83,9 +83,10 @@ private struct ContentView: View {
           onCurrencyChange(selectedCurrencyValue!.currency, newCurrency)
           isShowingSheet = false
         },
-        onSearchCurrencies: onSearchCurrencies
+        onSearchCurrencies: onSearchCurrencies,
+        onDismiss: { isShowingSheet = false }
       )
-      .frame(idealHeight: 500)
+      .frame(idealWidth: 400, idealHeight: 500)
     }
   }
 }

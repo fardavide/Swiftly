@@ -23,6 +23,17 @@
         }
       }
     },
+    "Close" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
     "CurrencyWithName" : {
       "extractionState" : "manual",
       "localizations" : {
