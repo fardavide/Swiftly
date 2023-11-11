@@ -33,15 +33,15 @@ public final class ConverterViewModel: ViewModel {
       Task { await converterRepository.setCurrencyAt(position: replacedIndex, currency: new) }
       let newBaseCurrencyValue = getCurrencyWithRate(for: new.code)
         .withValue(10)
-      
+
       state.values = state.values.map { currencyValue in
         if currencyValue.currency == prev {
           newBaseCurrencyValue
-          
+
         } else if currencyValue.currency == new {
           newBaseCurrencyValue
             .convert(to: getCurrencyWithRate(for: prev.code))
-          
+
         } else {
           newBaseCurrencyValue
             .convert(to: getCurrencyWithRate(for: currencyValue.currency.code))
@@ -59,8 +59,8 @@ public final class ConverterViewModel: ViewModel {
     case let .valueUpdate(currencyValue):
       state.values = state.values.map { v in
         v.currency == currencyValue.currency
-        ? currencyValue
-        : currencyValue.convert(to: v.currencyWithRate)
+          ? currencyValue
+          : currencyValue.convert(to: v.currencyWithRate)
       }
     }
   }
@@ -101,15 +101,15 @@ public final class ConverterViewModel: ViewModel {
 
     let baseCurrencyValue = getCurrencyWithRate(for: favoriteCurrencies.currencyCodes.first!)
       .withValue(10)
-    
+
     emit {
       self.state.isLoading = false
       self.state.error = nil
       self.state.searchCurrencies = currencies
       self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
-        ? baseCurrencyValue
-        : baseCurrencyValue.convert(to: self.getCurrencyWithRate(for: currencyCode))
+          ? baseCurrencyValue
+          : baseCurrencyValue.convert(to: self.getCurrencyWithRate(for: currencyCode))
       }
     }
   }
@@ -124,7 +124,7 @@ public final class ConverterViewModel: ViewModel {
       currencyWithRate: currencyWithRate
     )
   }
-  
+
   private func getCurrencyWithRate(for code: CurrencyCode) -> CurrencyWithRate {
     let currency = currencies.first(where: { $0.code == code })!
     let rate = rates.first(where: { $0.currencyCode == code })!

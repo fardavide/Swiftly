@@ -21,7 +21,7 @@ public extension CurrencyValue {
   var rate: Double {
     currencyWithRate.rate
   }
-  
+
   func convert(to currencyWithRate: CurrencyWithRate) -> CurrencyValue {
     CurrencyValue(
       value: self.value / self.rate * currencyWithRate.rate,

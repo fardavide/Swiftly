@@ -12,6 +12,6 @@ public enum StringKey {
 
 @freestanding(expression)
 public macro string(_ key: StringKey) -> LocalizedStringKey = #externalMacro(
-  module: "ResourcesMacro",
-  type: "StringResourcesMacro"
+module: "ResourcesMacro",
+type: "StringResourcesMacro"
 )

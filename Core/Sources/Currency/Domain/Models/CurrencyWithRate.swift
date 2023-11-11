@@ -13,19 +13,19 @@ public struct CurrencyWithRate: Equatable, Hashable, Identifiable {
 }
 
 public extension CurrencyWithRate {
-  
+
   func withValue(_ value: Double) -> CurrencyValue {
     CurrencyValue(
       value: value,
       currencyWithRate: self
     )
   }
-  
+
   func withValue(of value: Double, _ currencyWithRate: CurrencyWithRate) -> CurrencyValue {
     currencyWithRate.withValue(value)
       .convert(to: self)
   }
-  
+
   static let samples = CurrencyWithRateSamples()
 }
 

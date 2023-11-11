@@ -8,7 +8,7 @@ import SwiftlyTest
 @testable import ConverterPresentation
 
 final class ConverterViewModelTests: XCTestCase {
-  
+
   private let accuracy = 0.5
 
   func test_loadAllCurrencies() async {
@@ -52,7 +52,7 @@ final class ConverterViewModelTests: XCTestCase {
       XCTAssertEqual(result[1].currency, .samples.cny)
       XCTAssertEqual(result[1].rate, CurrencyRate.samples.cny.rate)
       XCTAssertEqual(result[1].value, 81, accuracy: self.accuracy)
-      
+
       XCTAssertEqual(result[2].currency, .samples.eur)
       XCTAssertEqual(result[2].rate, CurrencyRate.samples.eur.rate)
       XCTAssertEqual(result[2].value, 10, accuracy: self.accuracy)

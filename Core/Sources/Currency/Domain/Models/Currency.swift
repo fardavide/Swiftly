@@ -19,7 +19,7 @@ public extension Currency {
   var flagUrl: URL? {
     URL(
       string: "https://github.com/Lissy93/currency-flags/blob/master/assets/flags_png_rectangle/" +
-      "\(code.value.lowercased()).png?raw=true"
+        "\(code.value.lowercased()).png?raw=true"
     )
   }
 

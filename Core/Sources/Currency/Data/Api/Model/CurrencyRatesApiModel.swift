@@ -8,7 +8,7 @@ public struct CurrencyRatesApiModel: Codable {
 
   public struct Meta: Codable {
     public let lastUpdatedAt: String
-    
+
     enum CodingKeys: String, CodingKey {
       case lastUpdatedAt = "last_updated_at"
     }
