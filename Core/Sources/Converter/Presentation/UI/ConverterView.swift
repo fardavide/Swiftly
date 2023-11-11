@@ -85,6 +85,7 @@ private struct ContentView: View {
         },
         onSearchCurrencies: onSearchCurrencies
       )
+      .frame(idealHeight: 500)
     }
   }
 }
