@@ -13,7 +13,6 @@
 		6BD0FF212AF64E7F00CC9579 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF202AF64E7F00CC9579 /* ContentView.swift */; };
 		6BD0FF232AF64E8000CC9579 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BD0FF222AF64E8000CC9579 /* Assets.xcassets */; };
 		6BD0FF272AF64E8000CC9579 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BD0FF262AF64E8000CC9579 /* Preview Assets.xcassets */; };
-		6BD0FF312AF64E8000CC9579 /* SwiftlyModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF302AF64E8000CC9579 /* SwiftlyModuleTests.swift */; };
 		6BD0FF3B2AF64E8000CC9579 /* SwiftlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF3A2AF64E8000CC9579 /* SwiftlyUITests.swift */; };
 		6BD0FF3D2AF64E8000CC9579 /* SwiftlyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF3C2AF64E8000CC9579 /* SwiftlyUITestsLaunchTests.swift */; };
 		6BD0FF4C2AF6574900CC9579 /* SwiftlyModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF4B2AF6574900CC9579 /* SwiftlyModule.swift */; };
@@ -186,7 +185,7 @@
 				6BD0FF172AF64E7F00CC9579 /* Sources */,
 				6BD0FF182AF64E7F00CC9579 /* Frameworks */,
 				6BD0FF192AF64E7F00CC9579 /* Resources */,
-				6BE4BFB32AF8CEDB00B6BF57 /* ShellScript */,
+				6BE4BFB32AF8CEDB00B6BF57 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -275,7 +274,7 @@
 			);
 			mainGroup = 6BD0FF122AF64E7F00CC9579;
 			packageReferences = (
-				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference */,
+				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */,
 				6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			productRefGroup = 6BD0FF1C2AF64E7F00CC9579 /* Products */;
@@ -317,7 +316,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6BE4BFB32AF8CEDB00B6BF57 /* ShellScript */ = {
+		6BE4BFB32AF8CEDB00B6BF57 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -325,10 +324,13 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/swiftlint",
 			);
+			name = SwiftLint;
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/swiftlint",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -351,7 +353,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BD0FF312AF64E8000CC9579 /* SwiftlyModuleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,7 +709,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference */ = {
+		6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Core;
 		};

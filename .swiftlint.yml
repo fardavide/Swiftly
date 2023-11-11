@@ -2,3 +2,5 @@ disabled_rules:
   - identifier_name
   
 indentation: 2
+nesting:
+  type_level: 2

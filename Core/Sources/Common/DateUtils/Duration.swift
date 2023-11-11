@@ -5,7 +5,7 @@ public struct Duration: Equatable, Comparable {
 }
 
 public extension Duration {
-  static prefix func -(duration: Duration) -> Duration {
+  static prefix func - (duration: Duration) -> Duration {
     Duration(secondsInterval: -duration.secondsInterval)
   }
   static func < (lhs: Duration, rhs: Duration) -> Bool {
