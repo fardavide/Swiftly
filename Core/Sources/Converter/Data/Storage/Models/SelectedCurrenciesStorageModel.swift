@@ -3,7 +3,7 @@ import CurrencyDomain
 import SwiftData
 import SwiftlyUtils
 
-public struct FavoriteCurrenciesStorageModel {
+public struct SelectedCurrenciesStorageModel {
   let currencyCodes: [FavoriteCurrencyPosition: CurrencyCode]
 }
 
@@ -34,13 +34,13 @@ public class FavoriteCurrenciesSwiftDataModel {
   }
 }
 
-extension FavoriteCurrenciesStorageModel {
+extension SelectedCurrenciesStorageModel {
 
-  public func toDomainModel() -> FavoriteCurrencies {
+  public func toDomainModel() -> SelectedCurrencies {
     let maxFavoritePosition = currencyCodes.max(by: { c1, c2 in c1.key > c2.key })?.key.value ?? 0
-    let maxPosition = max(maxFavoritePosition, FavoriteCurrencies.initial.currencyCodes.endIndex)
+    let maxPosition = max(maxFavoritePosition, SelectedCurrencies.initial.currencyCodes.endIndex)
 
-    var nonFavoriteInitials = FavoriteCurrencies.initial.currencyCodes
+    var nonFavoriteInitials = SelectedCurrencies.initial.currencyCodes
       .filter { code in !currencyCodes.contains(where: { favoriteE in favoriteE.value == code }) }
     var dict = [Int: CurrencyCode]()
     for i in 0...maxPosition {
@@ -50,7 +50,7 @@ extension FavoriteCurrenciesStorageModel {
       }
     }
 
-    return FavoriteCurrencies.of(
+    return SelectedCurrencies.of(
       currencyCodes: dict.sorted { e1, e2 in e1.key < e2.key }.map(\.value)
     )
   }
@@ -64,8 +64,8 @@ extension FavoriteCurrenciesStorageModel {
 
 extension FavoriteCurrenciesSwiftDataModel {
 
-  func toStorageModel() -> FavoriteCurrenciesStorageModel {
-    FavoriteCurrenciesStorageModel(
+  func toStorageModel() -> SelectedCurrenciesStorageModel {
+    SelectedCurrenciesStorageModel(
       currencyCodes: currencyCodes
     )
   }

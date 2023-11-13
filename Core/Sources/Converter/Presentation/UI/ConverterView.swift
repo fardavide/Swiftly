@@ -25,17 +25,21 @@ public struct ConverterView: View {
 
       case .none:
         ContentView(
-          searchCurrencies: state.searchCurrencies,
-          values: state.values,
-          onCurrencyValueChange: { currencyValue in
-            viewModel.send(.valueUpdate(currencyValue: currencyValue))
-          },
-          onCurrencyChange: { prev, new in
-            viewModel.send(.currencyChange(prev: prev, new: new))
-          },
-          onSearchCurrencies: { query in
-            viewModel.send(.searchCurrencies(query: query))
-          }
+          state: state,
+          actions: ContentView.Actions(
+            changeCurrency: { prev, new in
+              viewModel.send(.changeCurrency(prev: prev, new: new))
+            },
+            searchCurrencies: { query in
+              viewModel.send(.searchCurrencies(query: query))
+            },
+            setSorting: { sorting in
+              viewModel.send(.setSorting(sorting))
+            },
+            updateValue: { currencyValue in
+              viewModel.send(.updateValue(currencyValue: currencyValue))
+            }
+          )
         )
       }
     }
@@ -43,21 +47,18 @@ public struct ConverterView: View {
 }
 
 private struct ContentView: View {
-  let searchCurrencies: [Currency]
-  let values: [CurrencyValue]
-  let onCurrencyValueChange: (CurrencyValue) -> Void
-  let onCurrencyChange: (_ prev: Currency, _ new: Currency) -> Void
-  let onSearchCurrencies: (_ query: String) -> Void
+  let state: ConverterState
+  let actions: Actions
 
   @State private var isShowingSheet = false
   @State private var selectedCurrencyValue: CurrencyValue?
 
   var body: some View {
-    List(values, id: \.currency) { value in
+    List(state.values, id: \.currency) { value in
       CurrencyValueRow(
         value: value,
         onValueChange: { newValue in
-          onCurrencyValueChange(newValue.of(value.currencyWithRate))
+          actions.updateValue(newValue.of(value.currencyWithRate))
         }
       )
       .swipeActions(edge: .trailing) {
@@ -65,7 +66,7 @@ private struct ContentView: View {
           selectedCurrencyValue = value
           isShowingSheet = true
         } label: {
-          Label(#string(.changeCurrency), systemImage: "arrow.left.arrow.right")
+          Label(#string(.changeCurrency), systemImage: image(.arrowLeftArrowRight))
             .tint(Color.accentColor)
         }
       }
@@ -78,16 +79,34 @@ private struct ContentView: View {
     }
     .sheet(isPresented: $isShowingSheet) {
       SelectCurrencySheet(
-        currencies: searchCurrencies,
-        onCurrencySelected: { newCurrency in
-          onCurrencyChange(selectedCurrencyValue!.currency, newCurrency)
-          isShowingSheet = false
-        },
-        onSearchCurrencies: onSearchCurrencies,
-        onDismiss: { isShowingSheet = false }
+        uiModel: SelectCurrenciesUiModel(
+          currencies: state.searchCurrencies,
+          sorting: state.sorting
+        ),
+        actions: SelectCurrencySheet.Actions(
+          dismiss: {
+            actions.searchCurrencies("")
+            isShowingSheet = false
+          },
+          selectCurrency: { newCurrency in
+            actions.changeCurrency(selectedCurrencyValue!.currency, newCurrency)
+            isShowingSheet = false
+          },
+          searchCurrencies: actions.searchCurrencies,
+          setSorting: actions.setSorting
+        )
       )
+      #if os(macOS)
       .frame(idealWidth: 400, idealHeight: 500)
+      #endif
     }
+  }
+  
+  struct Actions {
+    let changeCurrency: (_ prev: Currency, _ new: Currency) -> Void
+    let searchCurrencies: (_ query: String) -> Void
+    let setSorting: (_ currencyStoring: CurrencySorting) -> Void
+    let updateValue: (CurrencyValue) -> Void
   }
 }
 
@@ -101,17 +120,9 @@ private struct CurrencyValueRow: View {
 
     HStack {
       HStack {
-        LazyImage(
-          request: ImageRequest(
-            url: currency.flagUrl,
-            processors: [
-              .resize(height: 25),
-              .circle(border: .none)
-            ]
-          )
-        )
-        .frame(width: 40, height: 25)
-        .clipShape(.circle)
+        LazyImage(request: ImageRequest(url: currency.flagUrl))
+          .frame(width: 35, height: 30)
+          .clipShape(.capsule)
         Text(currency.code.value)
       }
       .accessibilityElement(children: .ignore)

@@ -45,6 +45,17 @@
         }
       }
     },
+    "FavoritesFirst" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites first"
+          }
+        }
+      }
+    },
     "Hello, world!" : {
 
     },
@@ -60,7 +71,15 @@
       }
     },
     "Value" : {
-      "extractionState" : "manual"
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Value"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

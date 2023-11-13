@@ -7,7 +7,7 @@ final class FavoriteCurrenciesStorageModelTests: XCTestCase {
 
   func test_whenConvertToDomainModel_favoritesAreSortedCorrectly() {
     // given
-    let storageModel = FavoriteCurrenciesStorageModel(
+    let storageModel = SelectedCurrenciesStorageModel(
       currencyCodes: [
         FavoriteCurrencyPosition(value: 1): .samples.usd,
         FavoriteCurrencyPosition(value: 3): .samples.cny,
@@ -24,7 +24,7 @@ final class FavoriteCurrenciesStorageModelTests: XCTestCase {
     // then
     XCTAssertEqual(
       domainModel,
-      FavoriteCurrencies.of(
+      SelectedCurrencies.of(
         currencyCodes: [
           .samples.eur,
           .samples.usd,
@@ -39,7 +39,7 @@ final class FavoriteCurrenciesStorageModelTests: XCTestCase {
 
   func test_whenConvertToDomainModel_andNotEnoughValues_gapsAreFilledWithDefaults() {
     // given
-    let storageModel = FavoriteCurrenciesStorageModel(
+    let storageModel = SelectedCurrenciesStorageModel(
       currencyCodes: [
         FavoriteCurrencyPosition(value: 0): .samples.eur,
         FavoriteCurrencyPosition(value: 2): .samples.jpy,
@@ -53,7 +53,7 @@ final class FavoriteCurrenciesStorageModelTests: XCTestCase {
     // then
     XCTAssertEqual(
       domainModel,
-      FavoriteCurrencies.of(
+      SelectedCurrencies.of(
         currencyCodes: [
           .samples.eur,
           .samples.usd,

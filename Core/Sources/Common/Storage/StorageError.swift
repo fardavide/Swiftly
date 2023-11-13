@@ -24,11 +24,24 @@ public extension Result where Failure == StorageError {
 }
 
 public extension ModelContext {
-  func resultFetch<T>(_ descriptor: FetchDescriptor<T>) -> Result<[T], StorageError> where T: PersistentModel {
+  
+  func fetchAll<T>(_ descriptor: FetchDescriptor<T>) -> Result<[T], StorageError> where T: PersistentModel {
     do {
       return try .success(fetch(descriptor))
     } catch {
       return .failure(.unknown)
+    }
+  }
+  
+  func fetchOne<T>(_ descriptor: FetchDescriptor<T>) -> Result<T, StorageError> where T: PersistentModel {
+    var finalDescriptor = descriptor
+    finalDescriptor.fetchLimit = 1
+    return fetchAll(finalDescriptor).flatMap { array in
+      if let item = array.first {
+        .success(item)
+      } else {
+        .failure(.noCache)
+      }
     }
   }
 }

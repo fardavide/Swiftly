@@ -22,8 +22,9 @@ public final class RealCurrencyRepository: CurrencyRepository {
     self.storage = storage
   }
 
-  public func getCurrencies() async -> Result<[Currency], DataError> {
-    await fetchCurrenciesFromStorage().print { "Get currencies from Storage: \($0.getOr(default: []).count)" }
+  public func getCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
+    await fetchCurrenciesFromStorage(sorting: sorting)
+      .print { "Get currencies from Storage: \($0.getOr(default: []).count)" }
       .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.getOr(default: []).count)" })
   }
 
@@ -37,7 +38,10 @@ public final class RealCurrencyRepository: CurrencyRepository {
     }
   }
 
-  public func searchCurrencies(query q: String) async -> Result<[Currency], DataError> {
+  public func searchCurrencies(
+    query q: String,
+    sorting: CurrencySorting
+  ) async -> Result<[Currency], DataError> {
     let query: String
     let compareOptions: String.CompareOptions
     if q.count > 1 {
@@ -47,7 +51,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
       query = ".*\(q).*"
       compareOptions = [.caseInsensitive, .regularExpression]
     }
-    return await getCurrencies().map { currencies in
+    return await getCurrencies(sorting: sorting).map { currencies in
       currencies.filter { currency in
         currency.code.value.range(of: query, options: compareOptions) ??
           currency.name.range(of: query, options: compareOptions) ??
@@ -74,8 +78,8 @@ public final class RealCurrencyRepository: CurrencyRepository {
     }
   }
 
-  private func fetchCurrenciesFromStorage() async -> Result<[Currency], DataError> {
-    await storage.fetchAllCurrencies()
+  private func fetchCurrenciesFromStorage(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
+    await storage.fetchAllCurrencies(sorting: sorting)
       .flatMap { storageModels in
         switch storageModels.isEmpty {
         case false: .success(storageModels.toDomainModels())

@@ -11,6 +11,11 @@ public final class ConverterDataModule: Module {
 
   public func register(on provider: Provider) {
     provider
-      .register { RealConverterRepository(converterStorage: provider.get()) as ConverterRepository }
+      .register {
+        RealConverterRepository(
+          converterStorage: provider.get(),
+          currencyStorage: provider.get()
+        ) as ConverterRepository
+      }
   }
 }

@@ -7,11 +7,26 @@ import SwiftlyStorage
 
 public protocol ConverterStorage {
 
-  func fetchFavoriteCurrencies() async -> Result<FavoriteCurrenciesStorageModel, StorageError>
+  func fetchSelectedCurrencies() async -> Result<SelectedCurrenciesStorageModel, StorageError>
 
-  func insertFavoriteCurrencies(_ model: FavoriteCurrenciesStorageModel) async
+  func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async
 
   func replaceCurrencyAt(position: Int, currency: Currency) async
+}
+
+public final class FakeConverterStorage: ConverterStorage {
+  
+  public init() {
+    
+  }
+  
+  public func fetchSelectedCurrencies() async -> Result<SelectedCurrenciesStorageModel, StorageError> {
+    fatalError("not implemented")
+  }
+  
+  public func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async {}
+  
+  public func replaceCurrencyAt(position: Int, currency: CurrencyDomain.Currency) async {}
 }
 
 class RealConverterStorage: AppStorage, ConverterStorage {
@@ -22,9 +37,9 @@ class RealConverterStorage: AppStorage, ConverterStorage {
     self.container = container
   }
 
-  func fetchFavoriteCurrencies() async -> Result<FavoriteCurrenciesStorageModel, StorageError> {
+  func fetchSelectedCurrencies() async -> Result<SelectedCurrenciesStorageModel, StorageError> {
     await withContext {
-      $0.resultFetch(FetchDescriptor<FavoriteCurrenciesSwiftDataModel>()).flatMap { models in
+      $0.fetchAll(FetchDescriptor<FavoriteCurrenciesSwiftDataModel>()).flatMap { models in
         if let model = models.first {
           .success(model.toStorageModel())
         } else {
@@ -34,7 +49,7 @@ class RealConverterStorage: AppStorage, ConverterStorage {
     }
   }
 
-  func insertFavoriteCurrencies(_ model: FavoriteCurrenciesStorageModel) async {
+  func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async {
     await withContext {
       $0.insert(model.toSwiftDataModel())
     }
@@ -42,7 +57,7 @@ class RealConverterStorage: AppStorage, ConverterStorage {
 
   func replaceCurrencyAt(position: Int, currency: Currency) async {
     await withContext { context in
-      await context.resultFetch(FetchDescriptor<FavoriteCurrenciesSwiftDataModel>())
+      await context.fetchAll(FetchDescriptor<FavoriteCurrenciesSwiftDataModel>())
         .flatMap { value in !value.isEmpty ? .success(value.first!) : .failure(.noCache) }
         .onSuccess { model in
           model.replaceAt(position: position, newValue: currency.code)

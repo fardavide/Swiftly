@@ -4,10 +4,8 @@ import Resources
 import SwiftUI
 
 struct SelectCurrencySheet: View {
-  let currencies: [Currency]
-  let onCurrencySelected: (Currency) -> Void
-  let onSearchCurrencies: (_ query: String) -> Void
-  let onDismiss: () -> Void
+  let uiModel: SelectCurrenciesUiModel
+  let actions: Actions
 
   @State private var searchQuery = ""
 
@@ -16,24 +14,49 @@ struct SelectCurrencySheet: View {
       get: { searchQuery },
       set: { text in
         searchQuery = text
-        onSearchCurrencies(text)
+        actions.searchCurrencies(text)
       }
     )
 
     NavigationStack {
-      List(currencies, id: \.code) { currency in
+      List(uiModel.currencies, id: \.code) { currency in
         CurrencyRow(currency: currency)
-          .onTapGesture { onCurrencySelected(currency) }
+          .onTapGesture { actions.selectCurrency(currency) }
       }
       .scrollDismissesKeyboard(.automatic)
       .navigationTitle(#string(.changeCurrency))
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
-          Button(#string(.close), action: onDismiss)
+          Button(#string(.close), action: actions.dismiss)
+        }
+        ToolbarItem(placement: .automatic) {
+          let imageKey: SfKey = switch uiModel.sorting {
+          case .alphabetical: .star
+          case .favoritesFirst: .starSlash
+          }
+          Button(
+            #string(.favoritesFirst),
+            systemImage: image(imageKey),
+            action: { actions.setSorting(uiModel.sorting.toggle()) }
+          )
         }
       }
     }
     .searchable(text: searchQueryBinding, prompt: #string(.searchCurrency))
+  }
+
+  struct Actions {
+    let dismiss: () -> Void
+    let selectCurrency: (Currency) -> Void
+    let searchCurrencies: (_ query: String) -> Void
+    let setSorting: (CurrencySorting) -> Void
+
+    static let empty = Actions(
+      dismiss: {},
+      selectCurrency: { _ in },
+      searchCurrencies: { _ in },
+      setSorting: { _ in }
+    )
   }
 }
 
@@ -42,20 +65,17 @@ private struct CurrencyRow: View {
 
   var body: some View {
     HStack {
-      LazyImage(
-        request: ImageRequest(
-          url: currency.flagUrl,
-          processors: [
-            .resize(height: 20),
-            .circle(border: .none)
-          ]
-        )
-      )
-      .frame(width: 32, height: 20)
-      .clipShape(.circle)
+      LazyImage(request: ImageRequest(url: currency.flagUrl))
+        .frame(width: 30, height: 25)
+        .clipShape(.capsule)
+      #if os(macOS)
+        .padding(10)
+      #endif
       Text(currency.code.value)
+        .font(.callout)
       Spacer()
       Text(currency.nameWithSymbol)
+        .font(.callout)
     }
     .accessibilityElement(children: .ignore)
     .accessibilityLabel(#string(.currencyWith(name: currency.name)))
@@ -64,9 +84,7 @@ private struct CurrencyRow: View {
 
 #Preview {
   SelectCurrencySheet(
-    currencies: Currency.samples.all(),
-    onCurrencySelected: { _ in },
-    onSearchCurrencies: { _ in },
-    onDismiss: {}
+    uiModel: .samples.favoritesFirst,
+    actions: .empty
   )
 }

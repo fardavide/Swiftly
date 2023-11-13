@@ -28,7 +28,7 @@ public final class ConverterViewModel: ViewModel {
   public func send(_ action: ConverterAction) {
     switch action {
 
-    case let .currencyChange(prev, new):
+    case let .changeCurrency(prev, new):
       let replacedIndex = state.values.firstIndex(where: { $0.currency == prev })!
       Task { await converterRepository.setCurrencyAt(position: replacedIndex, currency: new) }
       let newBaseCurrencyValue = getCurrencyWithRate(for: new.code)
@@ -50,13 +50,28 @@ public final class ConverterViewModel: ViewModel {
 
     case let .searchCurrencies(query):
       Task {
-        let searchResult = await currencyRepository.searchCurrencies(query: query)
+        let searchResult = await currencyRepository.searchCurrencies(
+          query: query,
+          sorting: state.sorting
+        )
         emit {
           self.state.searchCurrencies = searchResult.getOr(default: [])
         }
       }
+      
+    case let .setSorting(sorting):
+      Task {
+        let searchResult = await currencyRepository.searchCurrencies(
+          query: "",
+          sorting: sorting
+        )
+        emit {
+          self.state.searchCurrencies = searchResult.getOr(default: [])
+          self.state.sorting = sorting
+        }
+      }
 
-    case let .valueUpdate(currencyValue):
+    case let .updateValue(currencyValue):
       state.values = state.values.map { v in
         v.currency == currencyValue.currency
           ? currencyValue
@@ -70,7 +85,7 @@ public final class ConverterViewModel: ViewModel {
       self.state.isLoading = true
     }
 
-    let currenciesResult = await currencyRepository.getCurrencies()
+    let currenciesResult = await currencyRepository.getCurrencies(sorting: state.sorting)
     guard let currencies = currenciesResult.orNil() else {
       emit {
         self.state.isLoading = false
@@ -80,7 +95,7 @@ public final class ConverterViewModel: ViewModel {
     }
     self.currencies = currencies
 
-    let favoriteCurrenciesResult = await converterRepository.getFavoriteCurrencies()
+    let favoriteCurrenciesResult = await converterRepository.getSelectedCurrencies()
     guard let favoriteCurrencies = favoriteCurrenciesResult.orNil() else {
       emit {
         self.state.isLoading = false
@@ -131,7 +146,7 @@ public extension ConverterViewModel {
 public class ConverterViewModelSamples {
   let success = ConverterViewModel(
     converterRepository: FakeConverterRepository(
-      favoriteCurrencies: .initial
+      selectedCurrencies: .initial
     ),
     currencyRepository: FakeCurrencyRepository(
       currencies: Currency.samples.all(),
@@ -140,7 +155,7 @@ public class ConverterViewModelSamples {
   )
   let networkError = ConverterViewModel(
     converterRepository: FakeConverterRepository(
-      favoriteCurrencies: .initial
+      selectedCurrencies: .initial
     ),
     currencyRepository: FakeCurrencyRepository(
       currenciesResult: .failure(.network)
@@ -148,7 +163,7 @@ public class ConverterViewModelSamples {
   )
   let storageError = ConverterViewModel(
     converterRepository: FakeConverterRepository(
-      favoriteCurrencies: .initial
+      selectedCurrencies: .initial
     ),
     currencyRepository: FakeCurrencyRepository(
       currenciesResult: .failure(.storage(cause: .unknown))

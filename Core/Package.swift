@@ -149,7 +149,7 @@ let package = Package(
       path: "Tests/Common/Resources/ApiTests"
     ),
     .testTarget(
-      name: "ResourcesMacoTests",
+      name: "ResourcesMacroTests",
       dependencies: [
         "ResourcesMacro",
         .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
@@ -205,6 +205,7 @@ let package = Package(
       name: "ConverterData",
       dependencies: [
         "ConverterStorage",
+        "CurrencyStorage",
         "Provider"
       ],
       path: "Sources/Converter/Data/Data"
@@ -258,7 +259,9 @@ let package = Package(
     .target(
       name: "ConverterStorage",
       dependencies: [
-        "ConverterDomain"
+        "AppStorage",
+        "ConverterDomain",
+        "SwiftlyStorage"
       ],
       path: "Sources/Converter/Data/Storage"
     ),

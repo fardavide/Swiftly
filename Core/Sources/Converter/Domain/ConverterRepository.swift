@@ -3,30 +3,30 @@ import SwiftlyUtils
 
 public protocol ConverterRepository {
 
-  func getFavoriteCurrencies() async -> Result<FavoriteCurrencies, DataError>
+  func getSelectedCurrencies() async -> Result<SelectedCurrencies, DataError>
   func setCurrencyAt(position: Int, currency: Currency) async
 }
 
 public final class FakeConverterRepository: ConverterRepository {
-
-  private let favoriteCurrenciesResult: Result<FavoriteCurrencies, DataError>
+  
+  private let selectedCurrenciesResult: Result<SelectedCurrencies, DataError>
 
   public init(
-    favoriteCurrenciesResult: Result<FavoriteCurrencies, DataError> = .failure(.unknown)
+    selectedCurrenciesResult: Result<SelectedCurrencies, DataError> = .failure(.unknown)
   ) {
-    self.favoriteCurrenciesResult = favoriteCurrenciesResult
+    self.selectedCurrenciesResult = selectedCurrenciesResult
   }
 
   public convenience init(
-    favoriteCurrencies: FavoriteCurrencies
+    selectedCurrencies: SelectedCurrencies
   ) {
     self.init(
-      favoriteCurrenciesResult: .success(favoriteCurrencies)
+      selectedCurrenciesResult: .success(selectedCurrencies)
     )
   }
 
-  public func getFavoriteCurrencies() async -> Result<FavoriteCurrencies, DataError> {
-    favoriteCurrenciesResult
+  public func getSelectedCurrencies() async -> Result<SelectedCurrencies, DataError> {
+    selectedCurrenciesResult
   }
 
   public func setCurrencyAt(position: Int, currency: Currency) async {}

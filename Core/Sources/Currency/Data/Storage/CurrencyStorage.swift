@@ -1,4 +1,5 @@
 import AppStorage
+import CurrencyDomain
 import Foundation
 import SwiftData
 import SwiftlyStorage
@@ -8,8 +9,9 @@ public protocol CurrencyStorage {
 
   func insertAllCurrencies(_ models: [CurrencyStorageModel]) async
   func insertAllRates(_ models: [CurrencyRateStorageModel]) async
+  func insertCurrencySelected(code: CurrencyCode) async
   func insertUpdateDate(_ model: CurrencyDateStorageModel) async
-  func fetchAllCurrencies() async -> Result<[CurrencyStorageModel], StorageError>
+  func fetchAllCurrencies(sorting: CurrencySorting) async -> Result<[CurrencyStorageModel], StorageError>
   func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError>
   func getUpdateDate() async -> CurrencyDateStorageModel
 }
@@ -37,6 +39,16 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
       }
     }
   }
+  
+  func insertCurrencySelected(code: CurrencyCode) async {
+    await withContext { context in
+      await context.fetchOne(
+        FetchDescriptor<CurrencySwiftDataModel>(
+          predicate: #Predicate { $0.code == code.value }
+        )
+      ).onSuccess { currency in currency.selectCount += 1 }
+    }
+  }
 
   func insertUpdateDate(_ model: CurrencyDateStorageModel) async {
     await withContext {
@@ -44,24 +56,24 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
     }
   }
 
-  func fetchAllCurrencies() async -> Result<[CurrencyStorageModel], StorageError> {
-    await withContext {
-      $0.resultFetch(
-        FetchDescriptor<CurrencySwiftDataModel>(
-          sortBy: [SortDescriptor(\.code)]
-        )
-      )
-      .map { result in
-        result.map { swiftDataModel in
-          swiftDataModel.toStorageModel()
+  func fetchAllCurrencies(sorting: CurrencySorting) async -> Result<[CurrencyStorageModel], StorageError> {
+    let sortDescriptors: [SortDescriptor<CurrencySwiftDataModel>] = switch sorting {
+    case .alphabetical: [SortDescriptor(\.code)]
+    case .favoritesFirst: [SortDescriptor(\.selectCount, order: .reverse), SortDescriptor(\.code)]
+    }
+    return await withContext {
+      $0.fetchAll(FetchDescriptor<CurrencySwiftDataModel>(sortBy: sortDescriptors))
+        .map { result in
+          result.map { swiftDataModel in
+            swiftDataModel.toStorageModel()
+          }
         }
-      }
     }
   }
 
   func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError> {
     await withContext {
-      $0.resultFetch(
+      $0.fetchAll(
         FetchDescriptor<CurrencyRateSwiftDataModel>(
           sortBy: [SortDescriptor(\.code)]
         )
@@ -76,9 +88,9 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
 
   func getUpdateDate() async -> CurrencyDateStorageModel {
     await withContext {
-      let result = $0.resultFetch(FetchDescriptor<CurrencyDateSwiftDataModel>())
-      let fetchDateSwiftDataModel = result.getOr(default: []).first ?? CurrencyDateSwiftDataModel.distantPast
-      return fetchDateSwiftDataModel.toStorageModel()
+      $0.fetchOne(FetchDescriptor<CurrencyDateSwiftDataModel>())
+        .getOr(default: .distantPast)
+        .toStorageModel()
     }
   }
 }

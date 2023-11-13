@@ -3,9 +3,20 @@ import SwiftlyUtils
 
 public protocol CurrencyRepository {
 
-  func getCurrencies() async -> Result<[Currency], DataError>
+  func getCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError>
+  
   func getLatestRates() async -> Result<[CurrencyRate], DataError>
-  func searchCurrencies(query: String) async -> Result<[Currency], DataError>
+  
+  func searchCurrencies(
+    query: String,
+    sorting: CurrencySorting
+  ) async -> Result<[Currency], DataError>
+}
+
+public extension CurrencyRepository {
+  func getCurrencies() async -> Result<[Currency], DataError> {
+    await getCurrencies(sorting: .alphabetical)
+  }
 }
 
 public class FakeCurrencyRepository: CurrencyRepository {
@@ -31,13 +42,18 @@ public class FakeCurrencyRepository: CurrencyRepository {
     )
   }
 
-  public func getCurrencies() async -> Result<[Currency], DataError> {
+  public func getCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
     currenciesResult
   }
+  
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
     currencyRatesResult
   }
-  public func searchCurrencies(query: String) async -> Result<[Currency], DataError> {
+  
+  public func searchCurrencies(
+    query: String,
+    sorting: CurrencySorting
+  ) async -> Result<[Currency], DataError> {
     currenciesResult.map { currencies in
       currencies.filter { currency in
         currency.name.contains(query) || currency.code.value.contains(query)

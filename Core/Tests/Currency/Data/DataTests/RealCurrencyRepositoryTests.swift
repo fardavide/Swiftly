@@ -200,6 +200,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     // then
     XCTAssertEqual(result, .success(Currency.samples.all()))
   }
+  
   func testSearchCurrencies_whenMatchFullNameSameCase_returnsFilteredResults() async {
     // given
     let scenario = Scenario(

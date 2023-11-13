@@ -16,7 +16,7 @@ final class ConverterViewModelTests: XCTestCase {
     let scenario = Scenario(
       currencies: Currency.samples.all(),
       currencyRates: CurrencyRate.samples.all(),
-      favoriteCurrencies: .samples.alphabetical
+      selectedCurrencies: .samples.alphabetical
     )
 
     // when
@@ -34,7 +34,7 @@ final class ConverterViewModelTests: XCTestCase {
     let scenario = Scenario(
       currencies: Currency.samples.all(),
       currencyRates: CurrencyRate.samples.all(),
-      favoriteCurrencies: .samples.alphabetical
+      selectedCurrencies: .samples.alphabetical
     )
 
     // when
@@ -76,7 +76,7 @@ final class ConverterViewModelTests: XCTestCase {
     let scenario = Scenario(
       currencies: Currency.samples.all(),
       currencyRates: CurrencyRate.samples.all(),
-      favoriteCurrencies: .samples.alphabetical
+      selectedCurrencies: .samples.alphabetical
     )
 
     await test(scenario.sut.$state.map(\.values)) { turbine in
@@ -111,7 +111,7 @@ final class ConverterViewModelTests: XCTestCase {
 
       // when
       scenario.sut.send(
-        .valueUpdate(
+        .updateValue(
           currencyValue: CurrencyValue(value: 20, currencyWithRate: CurrencyWithRate.samples.usd)
         )
       )
@@ -151,7 +151,7 @@ final class ConverterViewModelTests: XCTestCase {
     let scenario = Scenario(
       currencies: Currency.samples.all(),
       currencyRates: CurrencyRate.samples.all(),
-      favoriteCurrencies: .samples.alphabetical
+      selectedCurrencies: .samples.alphabetical
     )
 
     await test(scenario.sut.$state.map(\.values)) { turbine in
@@ -186,7 +186,7 @@ final class ConverterViewModelTests: XCTestCase {
 
       // when
       scenario.sut.send(
-        .currencyChange(
+        .changeCurrency(
           prev: Currency.samples.eur,
           new: Currency.samples.cny
         )
@@ -226,12 +226,15 @@ final class ConverterViewModelTests: XCTestCase {
 private class Scenario {
 
   let sut: ConverterViewModel
+  
+  let converterRepository: FakeConverterRepository
 
   init(
-    converterRepository: ConverterRepository,
+    converterRepository: FakeConverterRepository,
     currencyRepository: CurrencyRepository,
     initialState: ConverterState = ConverterState.initial
   ) {
+    self.converterRepository = converterRepository
     self.sut = ConverterViewModel(
       converterRepository: converterRepository,
       currencyRepository: currencyRepository,
@@ -242,12 +245,12 @@ private class Scenario {
   convenience init(
     currencies: [Currency] = [],
     currencyRates: [CurrencyRate] = [],
-    favoriteCurrencies: FavoriteCurrencies = FavoriteCurrencies.initial,
+    selectedCurrencies: SelectedCurrencies = SelectedCurrencies.initial,
     initialState: ConverterState = ConverterState.initial
   ) {
     self.init(
       converterRepository: FakeConverterRepository(
-        favoriteCurrencies: favoriteCurrencies
+        selectedCurrencies: selectedCurrencies
       ),
       currencyRepository: FakeCurrencyRepository(
         currencies: currencies,

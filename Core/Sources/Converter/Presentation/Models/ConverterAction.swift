@@ -2,12 +2,15 @@ import CurrencyDomain
 
 public enum ConverterAction {
 
-  /// Called when the use changes a Currency
-  case currencyChange(prev: Currency, new: Currency)
+  /// Replace a Currency in the Converter
+  case changeCurrency(prev: Currency, new: Currency)
 
-  /// Called when the use search a Currency
+  /// Search for Currencies
   case searchCurrencies(query: String)
+  
+  /// Set default sorting for Currencies
+  case setSorting(_ sorting: CurrencySorting)
 
-  /// Called when the user updates some value for a given Currency
-  case valueUpdate(currencyValue: CurrencyValue)
+  /// Update a Currency value in the Converter
+  case updateValue(currencyValue: CurrencyValue)
 }
