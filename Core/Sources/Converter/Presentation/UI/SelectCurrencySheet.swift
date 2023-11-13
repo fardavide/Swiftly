@@ -23,6 +23,7 @@ struct SelectCurrencySheet: View {
         CurrencyRow(currency: currency)
           .onTapGesture { actions.selectCurrency(currency) }
       }
+      .animation(.smooth, value: uiModel.currencies)
       .scrollDismissesKeyboard(.automatic)
       .navigationTitle(#string(.changeCurrency))
       .toolbar {
