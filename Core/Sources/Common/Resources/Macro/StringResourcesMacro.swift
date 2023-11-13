@@ -50,7 +50,6 @@ public struct StringResourcesMacro: ExpressionMacro {
     }.joined(separator: "")
     let formattedArgs = args.map(\.1).joined(separator: " ")
 
-    // TODO: improve for non-trailing args
     return "\(identifier)\(formattedLabels): \(formattedArgs)"
   }
 
