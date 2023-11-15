@@ -136,6 +136,7 @@ private struct CurrencyValueRow: View {
         )
         .font(.title2)
         .multilineTextAlignment(.trailing)
+        .keyboardType(.decimalPad)
         Text(currency.nameWithSymbol)
           .font(.caption)
       }
