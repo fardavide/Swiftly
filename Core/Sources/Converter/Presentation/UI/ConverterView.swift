@@ -116,7 +116,14 @@ private struct CurrencyValueRow: View {
 
   var body: some View {
     let currency = value.currency
-    let textFieldBinding = Binding(get: { value.value }, set: onValueChange)
+    let textFieldBinding = Binding(
+      get: { value.value },
+      set: { newValue in
+        if newValue != value.value {
+          onValueChange(newValue)
+        }
+      }
+    )
 
     HStack {
       HStack {
