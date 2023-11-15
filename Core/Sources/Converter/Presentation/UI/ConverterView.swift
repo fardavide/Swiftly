@@ -56,7 +56,7 @@ private struct ContentView: View {
   var body: some View {
     List(state.values, id: \.currency) { value in
       CurrencyValueRow(
-        value: value,
+        currencyValue: value,
         onValueChange: { newValue in
           actions.updateValue(newValue.of(value.currencyWithRate))
         }
@@ -111,18 +111,16 @@ private struct ContentView: View {
 }
 
 private struct CurrencyValueRow: View {
-  let value: CurrencyValue
+  let currencyValue: CurrencyValue
   let onValueChange: (Double) -> Void
+  
+  @FocusState private var isFocused: Bool
 
   var body: some View {
-    let currency = value.currency
-    let textFieldBinding = Binding(
-      get: { value.value },
-      set: { newValue in
-        if newValue != value.value {
-          onValueChange(newValue)
-        }
-      }
+    let currency = currencyValue.currency
+    var textFieldBinding = Binding(
+      get: { currencyValue.value },
+      set: onValueChange
     )
 
     HStack {
@@ -136,19 +134,22 @@ private struct CurrencyValueRow: View {
       .accessibilityLabel(#string(.currencyWith(name: currency.name)))
       Spacer()
       VStack(alignment: .trailing) {
+        
         TextField(
           #string(.value),
           value: textFieldBinding,
-          format: .number.precision(.fractionLength(2))
+          format: isFocused ? .number : .number.precision(.fractionLength(2))
         )
+        .focused($isFocused)
         .font(.title2)
         .multilineTextAlignment(.trailing)
         .keyboardType(.decimalPad)
+        
         Text(currency.nameWithSymbol)
           .font(.caption)
       }
       .accessibilityElement(children: .ignore)
-      .accessibilityLabel("\(value.value) \(currency.symbol)")
+      .accessibilityLabel("\(currencyValue.value) \(currency.symbol)")
     }
   }
 }
