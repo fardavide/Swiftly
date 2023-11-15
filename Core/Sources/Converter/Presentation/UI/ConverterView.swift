@@ -120,7 +120,11 @@ private struct CurrencyValueRow: View {
     let currency = currencyValue.currency
     var textFieldBinding = Binding(
       get: { currencyValue.value },
-      set: onValueChange
+      set: { newValue in
+        if newValue != currencyValue.value {
+          onValueChange(newValue)
+        }
+      }
     )
 
     HStack {
