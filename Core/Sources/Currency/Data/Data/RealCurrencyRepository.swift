@@ -23,7 +23,14 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
 
   public func getCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
-    await fetchCurrenciesFromStorage(sorting: sorting)
+    let updateDate = await storage.getUpdateDate()
+    let isValid = updateDate.updatedAt > getCurrentDate.run() - 1.days()
+    
+    let fromStorage = isValid
+    ? await fetchCurrenciesFromStorage(sorting: sorting)
+    : Result.failure(DataError.storage(cause: .noCache))
+    
+    return await fromStorage
       .print { "Get currencies from Storage: \($0.getOr(default: []).count)" }
       .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.getOr(default: []).count)" })
   }

@@ -186,6 +186,63 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     // then
     XCTAssertEqual(result, .success([Currency.samples.eur]))
   }
+  
+  func testCurrencies_whenNotExpiredCache_fetchFromStorage() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all(),
+      updateDate: currentDate
+    )
+    
+    // when
+    _ = await scenario.sut.getCurrencies()
+    
+    // then
+    XCTAssertFalse(scenario.api.didFetchCurrencies)
+  }
+  
+  func testCurrencies_whenNotExpiredCache_returnsResultFromStorage() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all(),
+      updateDate: currentDate
+    )
+    
+    // when
+    let result = await scenario.sut.getCurrencies()
+    
+    // then
+    XCTAssertEqual(result, .success(Currency.samples.all()))
+  }
+  
+  func testCurrencies_whenExpiredCache_fetchFromApi() async {
+    // given
+    let scenario = Scenario(
+      fetchCurrenciesStorageModels: CurrencyStorageModel.samples.all(),
+      updateDate: currentDate - 25.hours()
+    )
+    
+    // when
+    _ = await scenario.sut.getCurrencies()
+    
+    // then
+    XCTAssertTrue(scenario.api.didFetchCurrencies)
+  }
+  
+  func testCurrencies_whenExpiredCache_returnsResultFromApi() async {
+    // given
+    let scenario = Scenario(
+      currenciesApiModel: CurrenciesApiModel.samples.usdOnly,
+      fetchCurrenciesStorageModels: [CurrencyStorageModel.samples.eur],
+      updateDate: currentDate - 25.hours()
+    )
+    
+    // when
+    let result = await scenario.sut.getCurrencies()
+    
+    // then
+    XCTAssertEqual(result, .success([Currency.samples.usd]))
+  }
 
   // MARK: - search currencies
   func testSearchCurrencies_whenEmpty_returnsAllCurrencies() async {
@@ -195,7 +252,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "")
+    let result = await scenario.sut.searchCurrencies(query: "", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success(Currency.samples.all()))
@@ -208,7 +265,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "Euro")
+    let result = await scenario.sut.searchCurrencies(query: "Euro", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.eur]))
@@ -221,7 +278,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "eUrO")
+    let result = await scenario.sut.searchCurrencies(query: "eUrO", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.eur]))
@@ -234,7 +291,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "ur")
+    let result = await scenario.sut.searchCurrencies(query: "ur", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.eur]))
@@ -247,7 +304,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "CNY")
+    let result = await scenario.sut.searchCurrencies(query: "CNY", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.cny]))
@@ -260,7 +317,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "CnY")
+    let result = await scenario.sut.searchCurrencies(query: "CnY", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.cny]))
@@ -273,7 +330,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "Y")
+    let result = await scenario.sut.searchCurrencies(query: "Y", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.cny, .samples.jpy]))
@@ -286,7 +343,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "CN¥")
+    let result = await scenario.sut.searchCurrencies(query: "CN¥", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.cny]))
@@ -299,7 +356,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "Cn¥")
+    let result = await scenario.sut.searchCurrencies(query: "Cn¥", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.cny]))
@@ -312,7 +369,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "¥")
+    let result = await scenario.sut.searchCurrencies(query: "¥", sorting: .alphabetical)
 
     // then
     XCTAssertEqual(result, .success([Currency.samples.cny, .samples.jpy]))
@@ -366,7 +423,7 @@ private final class Scenario {
     fetchCurrenciesStorageModels: [CurrencyStorageModel]? = nil,
     latestRatesApiModel: CurrencyRatesApiModel? = nil,
     fetchAllRatesStorageModels: [CurrencyRateStorageModel]? = nil,
-    updateDate: Date = Date.distantPast
+    updateDate: Date = currentDate
   ) {
     self.init(
       currenciesApiResult:
