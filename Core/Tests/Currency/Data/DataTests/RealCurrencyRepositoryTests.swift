@@ -1,3 +1,4 @@
+// swiftlint:disable file_length
 import XCTest
 
 import CurrencyApi
@@ -438,3 +439,4 @@ private final class Scenario {
     )
   }
 }
+// swiftlint:enable file_length

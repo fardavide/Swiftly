@@ -2,6 +2,7 @@ import CurrencyDomain
 
 struct SelectCurrenciesUiModel {
   let currencies: [Currency]
+  let searchQuery: String
   let sorting: CurrencySorting
 }
 
@@ -13,6 +14,7 @@ class SelectCurrenciesUiModelSamples {
   
   let alphabetical = SelectCurrenciesUiModel(
     currencies: Currency.samples.all(),
+    searchQuery: "",
     sorting: .alphabetical
   )
   
@@ -25,6 +27,7 @@ class SelectCurrenciesUiModelSamples {
       .samples.gbp,
       .samples.jpy
     ],
+    searchQuery: "",
     sorting: .favoritesFirst
   )
 }

@@ -31,8 +31,8 @@ public final class RealCurrencyRepository: CurrencyRepository {
     : Result.failure(DataError.storage(cause: .noCache))
     
     return await fromStorage
-      .print { "Get currencies from Storage: \($0.getOr(default: []).count)" }
-      .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.getOr(default: []).count)" })
+      .print { "Get currencies from Storage: \($0.or(default: []).count)" }
+      .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.or(default: []).count)" })
   }
 
   public func getLatestRates() async -> Result<[CurrencyRate], DataError> {

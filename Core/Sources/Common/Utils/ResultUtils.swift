@@ -5,7 +5,7 @@ public extension Result {
   /// Return value of `Success` or `defaultValue`
   /// - Parameter defaultValue: value to retuns if `.failure`
   /// - Returns: value of `Success` or `defaultValue`
-  @inlinable func getOr(default defaultValue: Success) -> Success {
+  @inlinable func or(default defaultValue: Success) -> Success {
     orNil() ?? defaultValue
   }
 
@@ -17,6 +17,12 @@ public extension Result {
     case let .success(success): success
     case let .failure(failure): handle(failure)
     }
+  }
+  
+  /// Return value of `Success` or throw `Failure`
+  /// - Returns: value of `Success` or throw `Failure
+  func orThrow() -> Success {
+    getOr { error in fatalError("\(error)") }
   }
 
   /// Executes `f` in case of `Failure`

@@ -20,3 +20,10 @@ public extension Date {
     return fixedInterval.seconds()
   }
 }
+
+extension Duration {
+  var secondsInterval: Double {
+    let v = components
+    return Double(v.seconds) + Double(v.attoseconds) * 1e-12
+  }
+}

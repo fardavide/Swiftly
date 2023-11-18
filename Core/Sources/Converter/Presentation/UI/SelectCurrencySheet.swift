@@ -6,8 +6,14 @@ import SwiftUI
 struct SelectCurrencySheet: View {
   let uiModel: SelectCurrenciesUiModel
   let actions: Actions
-
-  @State private var searchQuery = ""
+  
+  @State private var searchQuery: String
+  
+  init(uiModel: SelectCurrenciesUiModel, actions: Actions) {
+    self.uiModel = uiModel
+    self.actions = actions
+    self.searchQuery = uiModel.searchQuery
+  }
 
   var body: some View {
     let searchQueryBinding = Binding(

@@ -1,18 +1,5 @@
 import Foundation
 
-public struct Duration: Equatable, Comparable {
-  let secondsInterval: TimeInterval
-}
-
-public extension Duration {
-  static prefix func - (duration: Duration) -> Duration {
-    Duration(secondsInterval: -duration.secondsInterval)
-  }
-  static func < (lhs: Duration, rhs: Duration) -> Bool {
-    lhs.secondsInterval < rhs.secondsInterval
-  }
-}
-
 public extension Double {
 
   func milliseconds() -> Duration {
@@ -20,7 +7,7 @@ public extension Double {
   }
 
   func seconds() -> Duration {
-    Duration(secondsInterval: self)
+    Duration(secondsComponent: Int64(self), attosecondsComponent: Int64(self.truncatingRemainder(dividingBy: 1)))
   }
 
   func minutes() -> Duration {
@@ -47,7 +34,7 @@ public extension BinaryInteger {
   }
 
   func seconds() -> Duration {
-    Duration(secondsInterval: Double(self))
+    Duration(secondsComponent: Int64(self), attosecondsComponent: 0)
   }
 
   func minutes() -> Duration {

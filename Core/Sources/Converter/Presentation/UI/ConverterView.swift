@@ -81,6 +81,7 @@ private struct ContentView: View {
       SelectCurrencySheet(
         uiModel: SelectCurrenciesUiModel(
           currencies: state.searchCurrencies,
+          searchQuery: state.searchQuery,
           sorting: state.sorting
         ),
         actions: SelectCurrencySheet.Actions(
@@ -118,7 +119,7 @@ private struct CurrencyValueRow: View {
 
   var body: some View {
     let currency = currencyValue.currency
-    var textFieldBinding = Binding(
+    let textFieldBinding = Binding(
       get: { currencyValue.value },
       set: { newValue in
         if newValue != currencyValue.value {
@@ -147,7 +148,9 @@ private struct CurrencyValueRow: View {
         .focused($isFocused)
         .font(.title2)
         .multilineTextAlignment(.trailing)
+        #if os(iOS)
         .keyboardType(.decimalPad)
+        #endif
         
         Text(currency.nameWithSymbol)
           .font(.caption)

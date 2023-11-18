@@ -89,7 +89,7 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
   func getUpdateDate() async -> CurrencyDateStorageModel {
     await withContext {
       $0.fetchOne(FetchDescriptor<CurrencyDateSwiftDataModel>())
-        .getOr(default: .distantPast)
+        .or(default: .distantPast)
         .toStorageModel()
     }
   }

@@ -221,6 +221,39 @@ final class ConverterViewModelTests: XCTestCase {
       XCTAssertEqual(after[5].value, 1, accuracy: self.accuracy)
     }
   }
+  
+  func test_whenSearch_currenciesAreFiltered() async {
+    // given
+    let scenario = Scenario()
+    await test(scenario.sut.$state.map(\.searchCurrencies)) { turbine in
+      await turbine.expectInitial(value: [])
+      let notFiltered = await turbine.value()
+      XCTAssertEqual(notFiltered, Currency.samples.all())
+      
+      // when
+      scenario.sut.send(.searchCurrencies(query: "Eur"))
+      
+      // then
+      let filtered = await turbine.value()
+      XCTAssertEqual(filtered, [Currency.samples.eur])
+    }
+  }
+  
+  func test_whenSearch_queryIsSaved() async {
+    // given
+    let scenario = Scenario()
+    
+    // when
+    scenario.sut.send(.searchCurrencies(query: "Eur"))
+    
+    await test(scenario.sut.$state.map(\.searchQuery)) { turbine in
+      await turbine.expectInitial(value: "")
+      
+      // then
+      let result = await turbine.value()
+      XCTAssertEqual(result, "Eur")
+    }
+  }
 }
 
 private class Scenario {
@@ -243,8 +276,8 @@ private class Scenario {
   }
 
   convenience init(
-    currencies: [Currency] = [],
-    currencyRates: [CurrencyRate] = [],
+    currencies: [Currency] = Currency.samples.all(),
+    currencyRates: [CurrencyRate] = CurrencyRate.samples.all(),
     selectedCurrencies: SelectedCurrencies = SelectedCurrencies.initial,
     initialState: ConverterState = ConverterState.initial
   ) {
