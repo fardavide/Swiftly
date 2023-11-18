@@ -114,9 +114,6 @@ public final class ConverterViewModel: ViewModel {
       return
     }
     self.rates = rates.items
-    emit {
-      self.state.updatedAt = rates.updatedAt.formatted(date: .abbreviated, time: .shortened)
-    }
 
     let baseCurrencyValue = getCurrencyWithRate(for: favoriteCurrencies.currencyCodes.first!)
       .withValue(10)
@@ -125,6 +122,7 @@ public final class ConverterViewModel: ViewModel {
       self.state.isLoading = false
       self.state.error = nil
       self.state.searchCurrencies = currencies
+      self.state.updatedAt = rates.updatedAt.formatted(date: .abbreviated, time: .shortened)
       self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
           ? baseCurrencyValue
