@@ -1,3 +1,4 @@
+// swiftlint:disable all
 // TODO: Blocked my MacOS runner
 
 //import XCTest
@@ -35,3 +36,4 @@
 //    }
 //  }
 //}
+// swiftlint:enable all
