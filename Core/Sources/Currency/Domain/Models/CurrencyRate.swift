@@ -1,3 +1,5 @@
+import Foundation
+
 public struct CurrencyRate: Hashable, Identifiable {
   public let currencyCode: CurrencyCode
   public let rate: Double
@@ -26,5 +28,12 @@ public struct CurrencyRateSamples {
 
   public func all() -> [CurrencyRate] {
     [chf, cny, eur, gbp, jpy, usd]
+  }
+}
+
+public extension [CurrencyRate] {
+  
+  func updatedAt(_ date: Date) -> CurrencyRates {
+    CurrencyRates(items: self, updatedAt: date)
   }
 }

@@ -6,6 +6,7 @@ public struct ConverterState {
   var searchCurrencies: [Currency]
   var searchQuery: String
   var sorting: CurrencySorting
+  var updatedAt: String?
   var values: [CurrencyValue]
 }
 
@@ -16,6 +17,7 @@ public extension ConverterState {
     searchCurrencies: [],
     searchQuery: "",
     sorting: .favoritesFirst,
+    updatedAt: nil,
     values: []
   )
   
@@ -24,6 +26,7 @@ public extension ConverterState {
     searchCurrencies: Currency.samples.all(),
     searchQuery: "",
     sorting: .favoritesFirst,
+    updatedAt: "2023-12-25 12:44:00 +0000",
     values: CurrencyValue.samples.all()
   )
 }

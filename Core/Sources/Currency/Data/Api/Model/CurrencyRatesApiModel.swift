@@ -40,13 +40,17 @@ public extension CurrencyRatesApiModel {
     ]
   )
 
-  func toDomainModels() -> [CurrencyRate] {
-    self.data.map { code, currencyApiModel in
+  func toDomainModel(fallbackUpdateAt: @autoclosure () -> Date) -> CurrencyRates {
+    let items = data.map { code, currencyApiModel in
       CurrencyRate(
         currencyCode: CurrencyCode(value: code),
         rate: currencyApiModel.value
       )
     }
+    return CurrencyRates(
+      items: items,
+      updatedAt: updatedAt() ?? fallbackUpdateAt()
+    )
   }
 
   func updatedAt() -> Date? {
@@ -74,7 +78,7 @@ public class CurrencyRatesApiModelSamples {
 
   public let eurOnly = CurrencyRatesApiModel(
     meta: CurrencyRatesApiModel.Meta(
-      lastUpdatedAt: "2023-10-29T16:30:00+0000"
+      lastUpdatedAt: "2023-12-25 12:44:00 +0000"
     ),
     data: [
       "EUR": CurrencyRateApiModel(
@@ -86,7 +90,7 @@ public class CurrencyRatesApiModelSamples {
 
   public let usdOnly = CurrencyRatesApiModel(
     meta: CurrencyRatesApiModel.Meta(
-      lastUpdatedAt: "2023-10-29T16:30:00+0000"
+      lastUpdatedAt: "2023-12-25 12:44:00 +0000"
     ),
     data: [
       "USD": CurrencyRateApiModel(

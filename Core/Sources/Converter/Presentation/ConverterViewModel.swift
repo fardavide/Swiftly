@@ -113,7 +113,10 @@ public final class ConverterViewModel: ViewModel {
       }
       return
     }
-    self.rates = rates
+    self.rates = rates.items
+    emit {
+      self.state.updatedAt = rates.updatedAt.formatted(date: .abbreviated, time: .shortened)
+    }
 
     let baseCurrencyValue = getCurrencyWithRate(for: favoriteCurrencies.currencyCodes.first!)
       .withValue(10)
@@ -151,7 +154,7 @@ public class ConverterViewModelSamples {
     ),
     currencyRepository: FakeCurrencyRepository(
       currencies: Currency.samples.all(),
-      currencyRates: CurrencyRate.samples.all()
+      currencyRates: .samples.all
     )
   )
   let networkError = ConverterViewModel(

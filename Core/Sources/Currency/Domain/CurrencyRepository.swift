@@ -5,7 +5,7 @@ public protocol CurrencyRepository {
 
   func getCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError>
   
-  func getLatestRates() async -> Result<[CurrencyRate], DataError>
+  func getLatestRates() async -> Result<CurrencyRates, DataError>
   
   func searchCurrencies(
     query: String,
@@ -22,11 +22,11 @@ public extension CurrencyRepository {
 public class FakeCurrencyRepository: CurrencyRepository {
 
   let currenciesResult: Result<[Currency], DataError>
-  let currencyRatesResult: Result<[CurrencyRate], DataError>
+  let currencyRatesResult: Result<CurrencyRates, DataError>
 
   public init(
     currenciesResult: Result<[Currency], DataError> = .failure(.unknown),
-    currencyRatesResult: Result<[CurrencyRate], DataError> = .failure(.unknown)
+    currencyRatesResult: Result<CurrencyRates, DataError> = .failure(.unknown)
   ) {
     self.currenciesResult = currenciesResult
     self.currencyRatesResult = currencyRatesResult
@@ -34,7 +34,7 @@ public class FakeCurrencyRepository: CurrencyRepository {
 
   public convenience init(
     currencies: [Currency]? = nil,
-    currencyRates: [CurrencyRate]? = nil
+    currencyRates: CurrencyRates? = nil
   ) {
     self.init(
       currenciesResult: currencies != nil ? .success(currencies!) : .failure(.unknown),
@@ -46,7 +46,7 @@ public class FakeCurrencyRepository: CurrencyRepository {
     currenciesResult
   }
   
-  public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
+  public func getLatestRates() async -> Result<CurrencyRates, DataError> {
     currencyRatesResult
   }
   

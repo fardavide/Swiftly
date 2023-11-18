@@ -35,12 +35,13 @@ public final class RealCurrencyRepository: CurrencyRepository {
       .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.or(default: []).count)" })
   }
 
-  public func getLatestRates() async -> Result<[CurrencyRate], DataError> {
+  public func getLatestRates() async -> Result<CurrencyRates, DataError> {
     let updatedAt = await storage.getUpdateDate().updatedAt
     return if getCurrentDate.run() % updatedAt > 1.days() {
       await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" }
     } else {
-      await fetchRatesFromStorage().print(enabled: false) { "Get latest rates from Storage: \($0)" }
+      await fetchRatesFromStorage().map { $0.updatedAt(updatedAt) }
+        .print(enabled: false) { "Get latest rates from Storage: \($0)" }
         .recover(await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" })
     }
   }
@@ -96,15 +97,14 @@ public final class RealCurrencyRepository: CurrencyRepository {
       .mapErrorToDataError()
   }
 
-  private func fetchRatesFromApi() async -> Result<[CurrencyRate], DataError> {
+  private func fetchRatesFromApi() async -> Result<CurrencyRates, DataError> {
     let ratesApiModelResult = await api.latestRates()
 
     switch ratesApiModelResult {
 
     case let .success(apiModel):
-      let domainModels = apiModel.toDomainModels()
-      let updatedAt = apiModel.updatedAt() ?? getCurrentDate.run()
-      await storeRates(rates: domainModels, updatedAt: updatedAt)
+      let domainModels = apiModel.toDomainModel(fallbackUpdateAt: getCurrentDate.run())
+      await storeRates(rates: domainModels)
       return .success(domainModels)
 
     case let .failure(apiError):
@@ -130,8 +130,8 @@ public final class RealCurrencyRepository: CurrencyRepository {
     await storage.insertAllCurrencies(currencies.toStorageModels())
   }
 
-  private func storeRates(rates: [CurrencyRate], updatedAt: Date) async {
-    await storage.insertAllRates(rates.toStorageModels())
-    await storage.insertUpdateDate(updatedAt.toCurrencyDateStorageModel())
+  private func storeRates(rates: CurrencyRates) async {
+    await storage.insertAllRates(rates.items.toStorageModels())
+    await storage.insertUpdateDate(rates.updatedAt.toCurrencyDateStorageModel())
   }
 }

@@ -11,6 +11,7 @@ public enum StringKey {
   case currencyWith(name: String)
   case favoritesFirst
   case searchCurrency
+  case updated(at: String)
   case value
 }
 

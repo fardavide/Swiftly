@@ -15,7 +15,7 @@ final class ConverterViewModelTests: XCTestCase {
     // given
     let scenario = Scenario(
       currencies: Currency.samples.all(),
-      currencyRates: CurrencyRate.samples.all(),
+      currencyRates: .samples.all,
       selectedCurrencies: .samples.alphabetical
     )
 
@@ -33,7 +33,7 @@ final class ConverterViewModelTests: XCTestCase {
     // given
     let scenario = Scenario(
       currencies: Currency.samples.all(),
-      currencyRates: CurrencyRate.samples.all(),
+      currencyRates: .samples.all,
       selectedCurrencies: .samples.alphabetical
     )
 
@@ -75,7 +75,7 @@ final class ConverterViewModelTests: XCTestCase {
     // given
     let scenario = Scenario(
       currencies: Currency.samples.all(),
-      currencyRates: CurrencyRate.samples.all(),
+      currencyRates: .samples.all,
       selectedCurrencies: .samples.alphabetical
     )
 
@@ -150,7 +150,7 @@ final class ConverterViewModelTests: XCTestCase {
     // given
     let scenario = Scenario(
       currencies: Currency.samples.all(),
-      currencyRates: CurrencyRate.samples.all(),
+      currencyRates: .samples.all,
       selectedCurrencies: .samples.alphabetical
     )
 
@@ -277,7 +277,7 @@ private class Scenario {
 
   convenience init(
     currencies: [Currency] = Currency.samples.all(),
-    currencyRates: [CurrencyRate] = CurrencyRate.samples.all(),
+    currencyRates: CurrencyRates = .samples.all,
     selectedCurrencies: SelectedCurrencies = SelectedCurrencies.initial,
     initialState: ConverterState = ConverterState.initial
   ) {

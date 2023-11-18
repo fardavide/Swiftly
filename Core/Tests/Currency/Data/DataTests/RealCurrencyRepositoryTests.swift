@@ -38,7 +38,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates()
 
     // then
-    XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
+    XCTAssertEqual(result, .success([CurrencyRate.samples.eur].updatedAt(currentDate)))
   }
 
   func testLatestRates_whenErrorFromCache_fetchFromApi() async throws {
@@ -68,7 +68,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates()
 
     // then
-    XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
+    XCTAssertEqual(result, .success([CurrencyRate.samples.eur].updatedAt(currentDate)))
   }
 
   func testLatestRates_whenCacheNotExpired_dontFetchFromApi() async throws {
@@ -88,17 +88,18 @@ final class RealCurrencyRepositoryTests: XCTestCase {
 
   func testLatestRates_whenCacheNotExpired_returnsResultFromStorage() async throws {
     // given
+    let updateDate = currentDate - 2.hours()
     let scenario = Scenario(
       latestRatesApiModel: CurrencyRatesApiModel.samples.all,
       fetchAllRatesStorageModels: [CurrencyRateStorageModel.samples.eur],
-      updateDate: currentDate - 2.hours()
+      updateDate: updateDate
     )
 
     // when
     let result = await scenario.sut.getLatestRates()
 
     // then
-    XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
+    XCTAssertEqual(result, .success([CurrencyRate.samples.eur].updatedAt(updateDate)))
   }
 
   func testLatestRates_whenCacheExpired_fetchFromApi() async throws {
@@ -128,7 +129,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates()
 
     // then
-    XCTAssertEqual(result, .success([CurrencyRate.samples.eur]))
+    XCTAssertEqual(result, .success(.samples.eurOnly))
   }
 
   // MARK: - all currencies

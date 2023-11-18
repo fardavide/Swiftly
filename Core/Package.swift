@@ -314,6 +314,7 @@ let package = Package(
     .target(
       name: "CurrencyDomain",
       dependencies: [
+        "DateUtils",
         "SwiftlyUtils"
       ],
       path: "Sources/Currency/Domain"

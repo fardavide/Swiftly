@@ -70,6 +70,17 @@
         }
       }
     },
+    "UpdatedAt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updated at: %s"
+          }
+        }
+      }
+    },
     "Value" : {
       "extractionState" : "manual",
       "localizations" : {

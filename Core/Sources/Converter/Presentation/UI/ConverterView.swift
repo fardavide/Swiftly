@@ -24,23 +24,34 @@ public struct ConverterView: View {
         Text(error)
 
       case .none:
-        ContentView(
-          state: state,
-          actions: ContentView.Actions(
-            changeCurrency: { prev, new in
-              viewModel.send(.changeCurrency(prev: prev, new: new))
-            },
-            searchCurrencies: { query in
-              viewModel.send(.searchCurrencies(query: query))
-            },
-            setSorting: { sorting in
-              viewModel.send(.setSorting(sorting))
-            },
-            updateValue: { currencyValue in
-              viewModel.send(.updateValue(currencyValue: currencyValue))
-            }
+        NavigationStack {
+          ContentView(
+            state: state,
+            actions: ContentView.Actions(
+              changeCurrency: { prev, new in
+                viewModel.send(.changeCurrency(prev: prev, new: new))
+              },
+              searchCurrencies: { query in
+                viewModel.send(.searchCurrencies(query: query))
+              },
+              setSorting: { sorting in
+                viewModel.send(.setSorting(sorting))
+              },
+              updateValue: { currencyValue in
+                viewModel.send(.updateValue(currencyValue: currencyValue))
+              }
+            )
           )
-        )
+          .navigationTitle(#string(.appName))
+          .toolbar {
+            if let updatedAt = state.updatedAt {
+              ToolbarItem(placement: .status) {
+                Text(#string(.updated(at: updatedAt)))
+                  .font(.caption2)
+              }
+            }
+          }
+        }
       }
     }
   }
