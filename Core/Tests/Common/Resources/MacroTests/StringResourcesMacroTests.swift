@@ -25,7 +25,7 @@ final class StringResourcesMacroTests: XCTestCase {
         #string(.currencyWithName("Euro"))
       """#,
       expandedSource: #"""
-        LocalizedStringKey("CurrencyWithName: Euro")
+        LocalizedStringKey("CurrencyWithName Euro")
       """#,
       macros: testMacros
     )
@@ -37,7 +37,7 @@ final class StringResourcesMacroTests: XCTestCase {
         #string(.currencyWith(name: "Euro"))
       """#,
       expandedSource: #"""
-        LocalizedStringKey("CurrencyWithName: Euro")
+        LocalizedStringKey("CurrencyWithName Euro")
       """#,
       macros: testMacros
     )
@@ -49,7 +49,7 @@ final class StringResourcesMacroTests: XCTestCase {
         #string(.currencyWith(name: name))
       """#,
       expandedSource: #"""
-        LocalizedStringKey("CurrencyWithName: \(name)")
+        LocalizedStringKey("CurrencyWithName \(name)")
       """#,
       macros: testMacros
     )

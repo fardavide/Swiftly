@@ -50,7 +50,7 @@ public struct StringResourcesMacro: ExpressionMacro {
     }.joined(separator: "")
     let formattedArgs = args.map(\.1).joined(separator: " ")
 
-    return "\(identifier)\(formattedLabels): \(formattedArgs)"
+    return "\(identifier)\(formattedLabels) \(formattedArgs)"
   }
 
   enum Error: Swift.Error, CustomStringConvertible {
