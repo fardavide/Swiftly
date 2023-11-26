@@ -1,6 +1,6 @@
 import Foundation
 
-func getFlagUrl(for code: CurrencyCode, size: FlagSize = .w300) -> URL? {
+func getFlagUrl(for code: CurrencyCode, size: FlagSize) -> URL? {
   let url = baseUrl
     .replacing(widthPlaceholder, with: "\(size)")
     .replacing(codePlaceholder, with: code.value.lowercased())
@@ -8,6 +8,7 @@ func getFlagUrl(for code: CurrencyCode, size: FlagSize = .w300) -> URL? {
 }
 
 enum FlagSize {
+  case w150
   case w300
 }
 
