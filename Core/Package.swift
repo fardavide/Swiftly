@@ -43,7 +43,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-syntax.git", from: Version(509, 0, 0)),
-    .package(url: "https://github.com/kean/Nuke", from: Version(12, 1, 6))
+    .package(url: "https://github.com/kean/Nuke", from: Version(12, 2, 0))
   ],
   targets: [
 
