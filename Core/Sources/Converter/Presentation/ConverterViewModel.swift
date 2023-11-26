@@ -34,8 +34,8 @@ public final class ConverterViewModel: ViewModel {
       let newBaseCurrencyValue = getCurrencyWithRate(for: new.code)
         .withValue(10)
 
-      state.values = state.values.map { currencyValue in
-        if currencyValue.currency == prev {
+      state.values = state.values.mapWithIndices { (index, currencyValue) in
+        if index == replacedIndex {
           newBaseCurrencyValue
 
         } else if currencyValue.currency == new {
