@@ -73,6 +73,7 @@ private struct CurrencyRow: View {
   var body: some View {
     HStack {
       LazyImage(request: ImageRequest(url: currency.flagUrl))
+        .processors([.resize(width: 35, unit: .pixels)])
         .frame(width: 30, height: 25)
         .clipShape(.capsule)
       #if os(macOS)

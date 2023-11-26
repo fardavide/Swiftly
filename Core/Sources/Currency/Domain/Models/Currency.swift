@@ -17,10 +17,7 @@ public extension Currency {
   static let samples = CurrencySamples()
 
   var flagUrl: URL? {
-    URL(
-      string: "https://github.com/Lissy93/currency-flags/blob/master/assets/flags_png_rectangle/" +
-        "\(code.value.lowercased()).png?raw=true"
-    )
+    getFlagUrl(for: code, size: .w300)
   }
 
   var nameWithSymbol: String {
