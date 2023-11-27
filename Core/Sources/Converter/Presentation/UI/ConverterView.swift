@@ -88,6 +88,7 @@ private struct ContentView: View {
         }
       }
     }
+    .animation(.smooth, value: state.values)
     .sheet(isPresented: $isShowingSheet) {
       SelectCurrencySheet(
         uiModel: SelectCurrenciesUiModel(

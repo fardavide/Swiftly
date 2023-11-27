@@ -17,7 +17,7 @@ public extension Currency {
   static let samples = CurrencySamples()
 
   var flagUrl: URL? {
-    getFlagUrl(for: code, size: .w300)
+    getFlagUrl(for: code, size: .w150)
   }
 
   var nameWithSymbol: String {
