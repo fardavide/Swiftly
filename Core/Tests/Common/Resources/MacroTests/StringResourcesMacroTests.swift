@@ -3,7 +3,7 @@ import XCTest
 import SwiftSyntaxMacrosTestSupport
 @testable import ResourcesMacro
 
-private let testMacros = ["string": StringResourcesMacro.self]
+private let testMacros = ["string": LocalizedStringKeyMacro.self]
 
 final class StringResourcesMacroTests: XCTestCase {
 

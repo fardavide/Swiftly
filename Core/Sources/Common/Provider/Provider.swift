@@ -42,18 +42,14 @@ public struct ProviderError: Error, Equatable {
 }
 
 public func getProvider() -> Provider {
-  Provider.require()
+  Provider.get()
 }
 
 public extension Provider {
   private static var instance: Provider?
 
-  static func require() -> Provider {
-    if let safeInstance = instance {
-      safeInstance
-    } else {
-      fatalError("Provider not initialized")
-    }
+  static func get() -> Provider {
+    instance ?? start()
   }
 
   static func start(registry: [String: () -> Any] = [:]) -> Provider {

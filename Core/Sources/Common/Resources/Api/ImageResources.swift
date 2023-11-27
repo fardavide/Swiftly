@@ -4,6 +4,7 @@ import SwiftlyUtils
 /// Use with `image` func to resolve a `String`
 public enum SfKey {
   case arrowLeftArrowRight
+  case coloncurrencysign
   case star
   case starSlash
   case xmarkCircleFill

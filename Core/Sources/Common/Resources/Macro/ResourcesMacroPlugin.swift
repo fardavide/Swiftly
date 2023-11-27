@@ -4,6 +4,7 @@ import SwiftSyntaxMacros
 @main
 struct ResourcesMacroPlugin: CompilerPlugin {
   let providingMacros: [Macro.Type] = [
-    StringResourcesMacro.self
+    LocalizedStringKeyMacro.self,
+    RawStringResourcesMacro.self
   ]
 }

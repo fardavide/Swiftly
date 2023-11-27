@@ -1,7 +1,8 @@
 import SwiftSyntax
 import SwiftSyntaxMacros
 
-public struct StringResourcesMacro: ExpressionMacro {
+public struct RawStringResourcesMacro: ExpressionMacro {
+  
   public static func expansion(
     of node: some FreestandingMacroExpansionSyntax,
     in context: some MacroExpansionContext
@@ -16,17 +17,17 @@ public struct StringResourcesMacro: ExpressionMacro {
     } else {
       throw Error.unexpectedArg(type: "\(type(of: argument))")
     }
-
-    return "LocalizedStringKey(\"\(raw: identifier)\")"
+    
+    return "\"\(raw: identifier)\""
   }
-
+  
   private static func extractIdentifier(
     memberAccess: MemberAccessExprSyntax
   ) -> String {
     let identifier = memberAccess.declName.baseName.text
     return identifier.capitalizedFirst
   }
-
+  
   private static func extractIdentifierWithArgs(
     syntax: FunctionCallExprSyntax
   ) throws -> String {
@@ -49,16 +50,16 @@ public struct StringResourcesMacro: ExpressionMacro {
       }
     }.joined(separator: "")
     let formattedArgs = args.map(\.1).joined(separator: " ")
-
+    
     return "\(identifier)\(formattedLabels) \(formattedArgs)"
   }
-
+  
   enum Error: Swift.Error, CustomStringConvertible {
     case noArg
     case unexpectedArg(type: String)
     case unexpectedMemberType(type: String)
     case unxepectedMemberArg(type: String)
-
+    
     var description: String {
       switch self {
       case .noArg: "No arguments provided"

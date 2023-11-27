@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B598BB32B151CFC00E43BA5 /* ShortcutsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */; };
+		6B598BB42B151CFC00E43BA5 /* ConvertIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */; };
 		6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5F9C982AF8078100CBFD19 /* NukeExtensions */; };
 		6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */; };
 		6BD0FF1F2AF64E7F00CC9579 /* SwiftlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsProvider.swift; sourceTree = "<group>"; };
+		6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertIntent.swift; sourceTree = "<group>"; };
 		6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		6BD0FF1B2AF64E7F00CC9579 /* Swiftly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftlyApp.swift; sourceTree = "<group>"; };
@@ -88,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B598BB52B151D9900E43BA5 /* Shortcuts */ = {
+			isa = PBXGroup;
+			children = (
+				6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */,
+				6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */,
+			);
+			path = Shortcuts;
+			sourceTree = "<group>";
+		};
 		6BD0FF122AF64E7F00CC9579 = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +128,7 @@
 		6BD0FF1D2AF64E7F00CC9579 /* Swiftly */ = {
 			isa = PBXGroup;
 			children = (
+				6B598BB52B151D9900E43BA5 /* Shortcuts */,
 				6BD0FF5B2AF7C9B000CC9579 /* Info.plist */,
 				6BD0FF222AF64E8000CC9579 /* Assets.xcassets */,
 				6BD0FF202AF64E7F00CC9579 /* ContentView.swift */,
@@ -343,6 +357,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B598BB42B151CFC00E43BA5 /* ConvertIntent.swift in Sources */,
+				6B598BB32B151CFC00E43BA5 /* ShortcutsProvider.swift in Sources */,
 				6BD0FF4C2AF6574900CC9579 /* SwiftlyModule.swift in Sources */,
 				6BD0FF212AF64E7F00CC9579 /* ContentView.swift in Sources */,
 				6BD0FF1F2AF64E7F00CC9579 /* SwiftlyApp.swift in Sources */,

@@ -8,6 +8,8 @@ public enum StringKey {
   case appName
   case changeCurrency
   case close
+  case convertCurrency
+  case convert(with: String)
   case currencyWith(name: String)
   case favoritesFirst
   case searchCurrency
@@ -19,5 +21,5 @@ public enum StringKey {
 @freestanding(expression)
 public macro string(_ key: StringKey) -> LocalizedStringKey = #externalMacro(
   module: "ResourcesMacro",
-  type: "StringResourcesMacro"
+  type: "LocalizedStringKeyMacro"
 )
