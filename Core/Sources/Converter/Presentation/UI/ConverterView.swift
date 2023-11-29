@@ -1,4 +1,5 @@
 import CurrencyDomain
+import Design
 import NukeUI
 import Provider
 import Resources
@@ -142,10 +143,7 @@ private struct CurrencyValueRow: View {
 
     HStack {
       HStack {
-        LazyImage(request: ImageRequest(url: currency.flagUrl))
-          .processors([.resize(width: 42, unit: .pixels)])
-          .frame(width: 35, height: 30)
-          .clipShape(.capsule)
+        CurrencyFlagImage(for: currency, size: .medium)
         Text(currency.code.value)
       }
       .accessibilityElement(children: .ignore)

@@ -21,6 +21,7 @@ let package = Package(
         "RealAppStorage",
         // MARK: - Common declaration
         "DateUtils",
+        "Design",
         "Network",
         "Provider",
         "Resources",
@@ -96,6 +97,13 @@ let package = Package(
         "DateUtils"
       ],
       path: "Tests/Common/DateUtilsTests"
+    ),
+    
+    // MARK: Design
+    .target(
+      name: "Design",
+      dependencies: [],
+      path: "Sources/Common/Design"
     ),
 
     // MARK: Network
