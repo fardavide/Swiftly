@@ -20,7 +20,7 @@ public extension Result {
   }
   
   /// Return value of `Success` or throw `Failure`
-  /// - Returns: value of `Success` or throw `Failure
+  /// - Returns: value of `Success` or throw `Failure`
   func orThrow() -> Success {
     getOr { error in fatalError("\(error)") }
   }
@@ -77,6 +77,15 @@ public extension Result {
     switch self {
     case let .success(success): .success(success)
     case .failure: await handle()
+    }
+  }
+  
+  /// Returns `Failure` or throw fatal error
+  /// - Returns: `Failure` or throw fatal error
+  func requireFailure() -> Failure {
+    switch self {
+    case .success: fatalError("Expected Failure, but got Success")
+    case let .failure(error): error
     }
   }
 

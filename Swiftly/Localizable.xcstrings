@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lf" : {
+
+    },
     "Amount" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -22,6 +25,12 @@
           }
         }
       }
+    },
+    "Cannot get \"from currency\" rate" : {
+
+    },
+    "Cannot get \"to currency\" rate" : {
+
     },
     "ChangeCurrency" : {
       "extractionState" : "manual",
@@ -109,6 +118,9 @@
     "From currency" : {
 
     },
+    "From which currency?" : {
+
+    },
     "FromCurrency" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -134,9 +146,6 @@
         }
       }
     },
-    "ok" : {
-
-    },
     "SearchCurrency" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -149,6 +158,9 @@
       }
     },
     "To currency" : {
+
+    },
+    "To which currency?" : {
 
     },
     "ToCurrency" : {

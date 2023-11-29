@@ -10,16 +10,36 @@ struct ConvertIntent: AppIntent {
   var amount: Double
   
   @Parameter(title: "From currency")
-  var fromCurrency: CurrencyEntity
+  var fromCurrency: CurrencyEntity?
   
   @Parameter(title: "To currency")
-  var toCurrency: CurrencyEntity
+  var toCurrency: CurrencyEntity?
   
-  func perform() async throws -> some ReturnsValue & ProvidesDialog {
-    return .result(
-      value: "success",
-      dialog: "ok"
+  func perform() async throws -> some ProvidesDialog {
+    let currencyRepository: CurrencyRepository = getProvider().get()
+    let currencyWithRates = await currencyRepository
+      .getLatestCurrenciesWithRates()
+      .orThrow()
+    
+    let fromCurrency = try await $fromCurrency.requestDisambiguation(
+      among: CurrencyQuery().suggestedEntities(),
+      dialog: "From which currency?"
     )
+    
+    let toCurrency = try await $fromCurrency.requestDisambiguation(
+      among: CurrencyQuery().suggestedEntities(),
+      dialog: "To which currency?"
+    )
+    
+    guard let fromCurrencyWithRate = currencyWithRates.findFor(fromCurrency) else {
+      return .result(dialog: "Cannot get \"from currency\" rate")
+    }
+    guard let toCurrencyWithRate = currencyWithRates.findFor(toCurrency) else {
+      return .result(dialog: "Cannot get \"to currency\" rate")
+    }
+    
+    let resultValue = fromCurrencyWithRate.withValue(amount).convert(to: toCurrencyWithRate)
+    return .result(dialog: "\(resultValue.value)")
   }
 }
 
@@ -35,11 +55,28 @@ public struct CurrencyEntity: AppEntity {
   }
 }
 
+extension CurrencyWithRate {
+  func toEntity() -> CurrencyEntity {
+    CurrencyEntity(id: currency.code.id, name: currency.name)
+  }
+}
+
+extension [CurrencyWithRate] {
+  func findFor(_ entity: CurrencyEntity) -> CurrencyWithRate? {
+    first(where: { $0.currency.code.id == entity.id })
+  }
+}
+
 public struct CurrencyQuery: EntityQuery {
   
   public init() {}
   
-  public func entities(for identifiers: [String]) async throws -> [CurrencyEntity] {
+  public func entities(for identifiers: [String]) async -> [CurrencyEntity] {
+    await suggestedEntities()
+      .filter { identifiers.contains($0.id) }
+  }
+  
+  public func suggestedEntities() async -> [CurrencyEntity] {
     let currencyRepository: CurrencyRepository = getProvider().get()
     return await currencyRepository.getCurrencies(sorting: .favoritesFirst)
       .orThrow()
@@ -49,6 +86,5 @@ public struct CurrencyQuery: EntityQuery {
           name: currency.name
         )
       }
-      .filter { identifiers.contains($0.id) }
   }
 }

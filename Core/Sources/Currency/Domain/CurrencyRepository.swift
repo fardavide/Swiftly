@@ -14,8 +14,33 @@ public protocol CurrencyRepository {
 }
 
 public extension CurrencyRepository {
+  
   func getCurrencies() async -> Result<[Currency], DataError> {
     await getCurrencies(sorting: .alphabetical)
+  }
+  
+  func getLatestCurrenciesWithRates(
+    query: String = "",
+    sorting: CurrencySorting = .alphabetical
+  ) async -> Result<[CurrencyWithRate], DataError> {
+    let currenciesResult = await searchCurrencies(query: query, sorting: sorting)
+    guard let currencies = currenciesResult.orNil() else {
+      return .failure(currenciesResult.requireFailure())
+    }
+    
+    let ratesResult = await getLatestRates()
+    guard let rates = ratesResult.orNil() else {
+      return .failure(ratesResult.requireFailure())
+    }
+    
+    return .success(
+      currencies.map { currency in
+        CurrencyWithRate(
+          currency: currency,
+          rate: rates.requireRate(for: currency.code).rate
+        )
+      }
+    )
   }
 }
 

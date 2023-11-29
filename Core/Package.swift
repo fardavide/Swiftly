@@ -102,7 +102,9 @@ let package = Package(
     // MARK: Design
     .target(
       name: "Design",
-      dependencies: [],
+      dependencies: [
+        "CurrencyDomain"
+      ],
       path: "Sources/Common/Design"
     ),
 
