@@ -28,6 +28,6 @@ public final class FakeConverterRepository: ConverterRepository {
   public func getSelectedCurrencies() async -> Result<SelectedCurrencies, DataError> {
     selectedCurrenciesResult
   }
-
+  
   public func setCurrencyAt(position: Int, currency: Currency) async {}
 }

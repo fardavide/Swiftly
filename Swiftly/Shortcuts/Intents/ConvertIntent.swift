@@ -13,10 +13,10 @@ struct ConvertIntent: AppIntent {
   var amount: Double
   
   @Parameter(title: "From currency")
-  var fromCurrency: CurrencyEntity?
+  var fromCurrency: CurrencyEntity
   
   @Parameter(title: "To currency")
-  var toCurrency: CurrencyEntity?
+  var toCurrency: CurrencyEntity
   
   private var currencyQuery: CurrencyQuery {
     getProvider().get()
@@ -26,34 +26,14 @@ struct ConvertIntent: AppIntent {
   }
   
   func perform() async throws -> some ProvidesDialog {
-    let currencyWithRates = await currencyRepository
-      .getLatestCurrenciesWithRates()
-      .orThrow()
+    let fromCurrencyWithRate = fromCurrency.toDomainModel()
+    let toCurrencyWithRate = toCurrency.toDomainModel()
     
-    let fromCurrency = try await $fromCurrency.requestDisambiguation(
-      among: currencyQuery.suggestedEntities(),
-      dialog: "From which currency?"
+    await currencyRepository.markCurrenciesUsed(
+      from: fromCurrencyWithRate.currency,
+      to: toCurrencyWithRate.currency
     )
-    
-    let toCurrency = try await $fromCurrency.requestDisambiguation(
-      among: currencyQuery.suggestedEntities(),
-      dialog: "To which currency?"
-    )
-    
-    guard let fromCurrencyWithRate = currencyWithRates.findFor(fromCurrency) else {
-      return .result(dialog: "Cannot get \"from currency\" rate")
-    }
-    guard let toCurrencyWithRate = currencyWithRates.findFor(toCurrency) else {
-      return .result(dialog: "Cannot get \"to currency\" rate")
-    }
-    
     let resultValue = fromCurrencyWithRate.withValue(amount).convert(to: toCurrencyWithRate)
     return .result(dialog: "\(resultValue.value)")
-  }
-}
-
-extension [CurrencyWithRate] {
-  func findFor(_ entity: CurrencyEntity) -> CurrencyWithRate? {
-    first(where: { $0.currency.code.id == entity.id })
   }
 }

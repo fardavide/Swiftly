@@ -21,32 +21,8 @@ public final class RealCurrencyRepository: CurrencyRepository {
     self.getCurrentDate = getCurrentDate
     self.storage = storage
   }
-
-  public func getCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
-    let updateDate = await storage.getUpdateDate()
-    let isValid = updateDate.updatedAt > getCurrentDate.run() - 1.days()
-    
-    let fromStorage = isValid
-    ? await fetchCurrenciesFromStorage(sorting: sorting)
-    : Result.failure(DataError.storage(cause: .noCache))
-    
-    return await fromStorage
-      .print { "Get currencies from Storage: \($0.or(default: []).count)" }
-      .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.or(default: []).count)" })
-  }
-
-  public func getLatestRates() async -> Result<CurrencyRates, DataError> {
-    let updatedAt = await storage.getUpdateDate().updatedAt
-    return if getCurrentDate.run() % updatedAt > 1.days() {
-      await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" }
-    } else {
-      await fetchRatesFromStorage().map { $0.updatedAt(updatedAt) }
-        .print(enabled: false) { "Get latest rates from Storage: \($0)" }
-        .recover(await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" })
-    }
-  }
-
-  public func searchCurrencies(
+  
+  public func getCurrencies(
     query q: String,
     sorting: CurrencySorting
   ) async -> Result<[Currency], DataError> {
@@ -59,13 +35,45 @@ public final class RealCurrencyRepository: CurrencyRepository {
       query = ".*\(q).*"
       compareOptions = [.caseInsensitive, .regularExpression]
     }
-    return await getCurrencies(sorting: sorting).map { currencies in
+    return await getAllCurrencies(sorting: sorting).map { currencies in
       currencies.filter { currency in
         currency.code.value.range(of: query, options: compareOptions) ??
-          currency.name.range(of: query, options: compareOptions) ??
-          currency.symbol.range(of: query, options: compareOptions) != nil
+        currency.name.range(of: query, options: compareOptions) ??
+        currency.symbol.range(of: query, options: compareOptions) != nil
       }
     }
+  }
+
+  public func getLatestRates() async -> Result<CurrencyRates, DataError> {
+    let updatedAt = await storage.getUpdateDate().updatedAt
+    return if getCurrentDate.run() % updatedAt > 1.days() {
+      await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" }
+    } else {
+      await fetchRatesFromStorage().map { $0.updatedAt(updatedAt) }
+        .print(enabled: false) { "Get latest rates from Storage: \($0)" }
+        .recover(await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" })
+    }
+  }
+  
+  public func markCurrenciesUsed(
+    from firstCurrency: Currency,
+    to secondCurrency: Currency
+  ) async {
+    await storage.insertCurrencySelected(code: firstCurrency.code)
+    await storage.insertCurrencySelected(code: secondCurrency.code)
+  }
+  
+  private func getAllCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
+    let updateDate = await storage.getUpdateDate()
+    let isValid = updateDate.updatedAt > getCurrentDate.run() - 1.days()
+    
+    let fromStorage = isValid
+    ? await fetchCurrenciesFromStorage(sorting: sorting)
+    : Result.failure(DataError.storage(cause: .noCache))
+    
+    return await fromStorage
+      .print { "Get currencies from Storage: \($0.or(default: []).count)" }
+      .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.or(default: []).count)" })
   }
 
   private func fetchCurrenciesFromApi() async -> Result<[Currency], DataError> {

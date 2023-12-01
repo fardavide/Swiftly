@@ -54,7 +54,7 @@ public final class ConverterViewModel: ViewModel {
     case let .searchCurrencies(query):
       self.state.searchQuery = query
       Task {
-        let searchResult = await currencyRepository.searchCurrencies(
+        let searchResult = await currencyRepository.getCurrencies(
           query: query,
           sorting: state.sorting
         )
@@ -65,7 +65,7 @@ public final class ConverterViewModel: ViewModel {
       
     case let .setSorting(sorting):
       Task {
-        let searchResult = await currencyRepository.searchCurrencies(
+        let searchResult = await currencyRepository.getCurrencies(
           query: "",
           sorting: sorting
         )

@@ -2,7 +2,7 @@ import AppIntents
 import CurrencyDomain
 import Provider
 
-struct CurrencyQuery: EntityQuery {
+struct CurrencyQuery: EntityStringQuery {
   private var currencyRepository: CurrencyRepository {
     getProvider().get()
   }
@@ -12,14 +12,15 @@ struct CurrencyQuery: EntityQuery {
       .filter { identifiers.contains($0.id) }
   }
   
-  func suggestedEntities() async -> [CurrencyEntity] {
-    return await currencyRepository.getCurrencies(sorting: .favoritesFirst)
+  func entities(matching string: String) async -> [CurrencyEntity] {
+    await currencyRepository.getLatestCurrenciesWithRates(query: string, sorting: .favoritesFirst)
       .orThrow()
-      .map { currency in
-        CurrencyEntity(
-          id: currency.code.id,
-          name: currency.name
-        )
-      }
+      .map { $0.toEntity() }
+  }
+  
+  func suggestedEntities() async -> [CurrencyEntity] {
+    await currencyRepository.getLatestCurrenciesWithRates(sorting: .favoritesFirst)
+      .orThrow()
+      .map { $0.toEntity() }
   }
 }

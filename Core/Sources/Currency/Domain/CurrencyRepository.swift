@@ -3,27 +3,39 @@ import SwiftlyUtils
 
 public protocol CurrencyRepository {
 
-  func getCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError>
-  
-  func getLatestRates() async -> Result<CurrencyRates, DataError>
-  
-  func searchCurrencies(
+  /// Get `[Currency]` for given `query` and `sorting`, from cache or remote source
+  func getCurrencies(
     query: String,
     sorting: CurrencySorting
   ) async -> Result<[Currency], DataError>
+  
+  /// Get latest `[CurrencyRate]`, from cache or remote source
+  func getLatestRates() async -> Result<CurrencyRates, DataError>
+  
+  /// Mark `currency` as used, to increase its popularity (i.e. suggested first)
+  func markCurrenciesUsed(
+    from firstCurrency: Currency,
+    to secondCurrency: Currency
+  ) async
 }
 
 public extension CurrencyRepository {
   
-  func getCurrencies() async -> Result<[Currency], DataError> {
-    await getCurrencies(sorting: .alphabetical)
+  func getCurrencies(
+    query: String = "",
+    sorting: CurrencySorting = .alphabetical
+  ) async -> Result<[Currency], DataError> {
+    await getCurrencies(
+      query: query,
+      sorting: .alphabetical
+    )
   }
   
   func getLatestCurrenciesWithRates(
     query: String = "",
     sorting: CurrencySorting = .alphabetical
   ) async -> Result<[CurrencyWithRate], DataError> {
-    let currenciesResult = await searchCurrencies(query: query, sorting: sorting)
+    let currenciesResult = await getCurrencies(query: query, sorting: sorting)
     guard let currencies = currenciesResult.orNil() else {
       return .failure(currenciesResult.requireFailure())
     }
@@ -67,7 +79,10 @@ public class FakeCurrencyRepository: CurrencyRepository {
     )
   }
 
-  public func getCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
+  public func getCurrencies(
+    query: String,
+    sorting: CurrencySorting
+  ) async -> Result<[Currency], DataError> {
     currenciesResult
   }
   
@@ -75,14 +90,8 @@ public class FakeCurrencyRepository: CurrencyRepository {
     currencyRatesResult
   }
   
-  public func searchCurrencies(
-    query: String,
-    sorting: CurrencySorting
-  ) async -> Result<[Currency], DataError> {
-    currenciesResult.map { currencies in
-      currencies.filter { currency in
-        currency.name.contains(query) || currency.code.value.contains(query)
-      }
-    }
-  }
+  public func markCurrenciesUsed(
+    from firstCurrency: Currency,
+    to secondCurrency: Currency
+  ) async {}
 }

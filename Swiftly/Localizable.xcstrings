@@ -26,12 +26,6 @@
         }
       }
     },
-    "Cannot get \"from currency\" rate" : {
-
-    },
-    "Cannot get \"to currency\" rate" : {
-
-    },
     "ChangeCurrency" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -118,9 +112,6 @@
     "From currency" : {
 
     },
-    "From which currency?" : {
-
-    },
     "FromCurrency" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -158,9 +149,6 @@
       }
     },
     "To currency" : {
-
-    },
-    "To which currency?" : {
 
     },
     "ToCurrency" : {
