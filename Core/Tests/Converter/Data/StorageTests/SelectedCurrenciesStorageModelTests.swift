@@ -3,18 +3,18 @@ import XCTest
 import ConverterDomain
 @testable import ConverterStorage
 
-final class FavoriteCurrenciesStorageModelTests: XCTestCase {
+final class SelectedCurrenciesStorageModelTests: XCTestCase {
 
-  func test_whenConvertToDomainModel_favoritesAreSortedCorrectly() {
+  func test_whenConvertToDomainModel_selectedAreSortedCorrectly() {
     // given
     let storageModel = SelectedCurrenciesStorageModel(
       currencyCodes: [
-        FavoriteCurrencyPosition(value: 1): .samples.usd,
-        FavoriteCurrencyPosition(value: 3): .samples.cny,
-        FavoriteCurrencyPosition(value: 5): .samples.gbp,
-        FavoriteCurrencyPosition(value: 4): .samples.chf,
-        FavoriteCurrencyPosition(value: 2): .samples.jpy,
-        FavoriteCurrencyPosition(value: 0): .samples.eur
+        SelectedCurrencyPosition(value: 1): .samples.usd,
+        SelectedCurrencyPosition(value: 3): .samples.cny,
+        SelectedCurrencyPosition(value: 5): .samples.gbp,
+        SelectedCurrencyPosition(value: 4): .samples.chf,
+        SelectedCurrencyPosition(value: 2): .samples.jpy,
+        SelectedCurrencyPosition(value: 0): .samples.eur
       ]
     )
 
@@ -41,9 +41,9 @@ final class FavoriteCurrenciesStorageModelTests: XCTestCase {
     // given
     let storageModel = SelectedCurrenciesStorageModel(
       currencyCodes: [
-        FavoriteCurrencyPosition(value: 0): .samples.eur,
-        FavoriteCurrencyPosition(value: 2): .samples.jpy,
-        FavoriteCurrencyPosition(value: 4): .samples.chf
+        SelectedCurrencyPosition(value: 0): .samples.eur,
+        SelectedCurrencyPosition(value: 2): .samples.jpy,
+        SelectedCurrencyPosition(value: 4): .samples.chf
       ]
     )
 

@@ -4,10 +4,10 @@ import SwiftData
 import SwiftlyUtils
 
 public struct SelectedCurrenciesStorageModel {
-  let currencyCodes: [FavoriteCurrencyPosition: CurrencyCode]
+  let currencyCodes: [SelectedCurrencyPosition: CurrencyCode]
 }
 
-public struct FavoriteCurrencyPosition: Comparable, Decodable, Encodable, Hashable {
+public struct SelectedCurrencyPosition: Comparable, Decodable, Encodable, Hashable {
 
   let value: Int
 
@@ -15,22 +15,22 @@ public struct FavoriteCurrencyPosition: Comparable, Decodable, Encodable, Hashab
     self.value = value
   }
 
-  public static func < (lhs: FavoriteCurrencyPosition, rhs: FavoriteCurrencyPosition) -> Bool {
+  public static func < (lhs: SelectedCurrencyPosition, rhs: SelectedCurrencyPosition) -> Bool {
     lhs.value < rhs.value
   }
 }
 
 @Model
-public class FavoriteCurrenciesSwiftDataModel {
+public class SelectedCurrenciesSwiftDataModel {
   @Attribute(.unique) public let id = 0
-  var currencyCodes: [FavoriteCurrencyPosition: CurrencyCode]
+  var currencyCodes: [SelectedCurrencyPosition: CurrencyCode]
 
-  init(currencyCodes: [FavoriteCurrencyPosition: CurrencyCode]) {
+  init(currencyCodes: [SelectedCurrencyPosition: CurrencyCode]) {
     self.currencyCodes = currencyCodes
   }
 
   func replaceAt(position: Int, newValue: CurrencyCode) {
-    currencyCodes.updateValue(newValue, forKey: FavoriteCurrencyPosition(value: position))
+    currencyCodes.updateValue(newValue, forKey: SelectedCurrencyPosition(value: position))
   }
 }
 
@@ -40,11 +40,13 @@ extension SelectedCurrenciesStorageModel {
     let maxFavoritePosition = currencyCodes.max(by: { c1, c2 in c1.key > c2.key })?.key.value ?? 0
     let maxPosition = max(maxFavoritePosition, SelectedCurrencies.initial.currencyCodes.endIndex)
 
-    var nonFavoriteInitials = SelectedCurrencies.initial.currencyCodes
-      .filter { code in !currencyCodes.contains(where: { favoriteE in favoriteE.value == code }) }
+    var nonSelectedInitials = SelectedCurrencies.initial.currencyCodes
+      .filter { selectedCode in
+        !currencyCodes.contains(where: { (_, code) in selectedCode == code })
+      }
     var dict = [Int: CurrencyCode]()
     for i in 0...maxPosition {
-      let code = currencyCodes[FavoriteCurrencyPosition(value: i)] ?? nonFavoriteInitials.removeFirstOrNil()
+      let code = currencyCodes[SelectedCurrencyPosition(value: i)] ?? nonSelectedInitials.removeFirstOrNil()
       if let c = code {
         dict[i] = c
       }
@@ -55,14 +57,14 @@ extension SelectedCurrenciesStorageModel {
     )
   }
 
-  func toSwiftDataModel() -> FavoriteCurrenciesSwiftDataModel {
-    FavoriteCurrenciesSwiftDataModel(
+  func toSwiftDataModel() -> SelectedCurrenciesSwiftDataModel {
+    SelectedCurrenciesSwiftDataModel(
       currencyCodes: currencyCodes
     )
   }
 }
 
-extension FavoriteCurrenciesSwiftDataModel {
+extension SelectedCurrenciesSwiftDataModel {
 
   func toStorageModel() -> SelectedCurrenciesStorageModel {
     SelectedCurrenciesStorageModel(

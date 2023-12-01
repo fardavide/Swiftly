@@ -13,7 +13,7 @@ public final class RealAppStorage: AppStorage {
       CurrencyDateSwiftDataModel.self,
       CurrencyRateSwiftDataModel.self,
       CurrencySwiftDataModel.self,
-      FavoriteCurrenciesSwiftDataModel.self
+      SelectedCurrenciesSwiftDataModel.self
     ],
     version: .init(0, 0, 1)
   )
