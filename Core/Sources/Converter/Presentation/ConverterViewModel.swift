@@ -47,6 +47,9 @@ public final class ConverterViewModel: ViewModel {
             .convert(to: getCurrencyWithRate(for: currencyValue.currency.code))
         }
       }
+      
+    case .refresh:
+      Task { await load() }
 
     case let .searchCurrencies(query):
       self.state.searchQuery = query

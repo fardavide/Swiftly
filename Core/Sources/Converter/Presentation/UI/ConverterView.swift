@@ -43,11 +43,14 @@ public struct ConverterView: View {
               }
             )
           )
+          .refreshable {
+            viewModel.send(.refresh)
+          }
           .navigationTitle(#string(.appName))
           .toolbar {
             if let updatedAt = state.updatedAt {
               ToolbarItem(placement: .status) {
-                Text(#string(.updated(at: updatedAt)))
+                Text("Updated at: \(updatedAt)")
                   .font(.caption2)
               }
             }

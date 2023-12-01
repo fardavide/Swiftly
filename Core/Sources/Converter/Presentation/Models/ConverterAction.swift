@@ -4,6 +4,9 @@ public enum ConverterAction {
 
   /// Replace a Currency in the Converter
   case changeCurrency(prev: Currency, new: Currency)
+  
+  /// Refresh the data
+  case refresh
 
   /// Search for Currencies
   case searchCurrencies(query: String)
