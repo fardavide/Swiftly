@@ -11,6 +11,9 @@
 		6B598BB42B151CFC00E43BA5 /* ConvertIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */; };
 		6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5F9C982AF8078100CBFD19 /* NukeExtensions */; };
 		6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */; };
+		6BC467602B1A5FCE0076CEE9 /* CurrencyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */; };
+		6BC467622B1A60100076CEE9 /* CurrencyQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC467612B1A60100076CEE9 /* CurrencyQuery.swift */; };
+		6BC467642B1A60A30076CEE9 /* ShortcutsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC467632B1A60A30076CEE9 /* ShortcutsModule.swift */; };
 		6BD0FF1F2AF64E7F00CC9579 /* SwiftlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */; };
 		6BD0FF212AF64E7F00CC9579 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF202AF64E7F00CC9579 /* ContentView.swift */; };
 		6BD0FF232AF64E8000CC9579 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BD0FF222AF64E8000CC9579 /* Assets.xcassets */; };
@@ -45,6 +48,9 @@
 		6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsProvider.swift; sourceTree = "<group>"; };
 		6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertIntent.swift; sourceTree = "<group>"; };
 		6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEntity.swift; sourceTree = "<group>"; };
+		6BC467612B1A60100076CEE9 /* CurrencyQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyQuery.swift; sourceTree = "<group>"; };
+		6BC467632B1A60A30076CEE9 /* ShortcutsModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsModule.swift; sourceTree = "<group>"; };
 		6BD0FF1B2AF64E7F00CC9579 /* Swiftly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftlyApp.swift; sourceTree = "<group>"; };
 		6BD0FF202AF64E7F00CC9579 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -95,10 +101,21 @@
 		6B598BB52B151D9900E43BA5 /* Shortcuts */ = {
 			isa = PBXGroup;
 			children = (
-				6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */,
+				6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */,
+				6BC4675D2B1A5F520076CEE9 /* Intents */,
 				6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */,
+				6BC467612B1A60100076CEE9 /* CurrencyQuery.swift */,
+				6BC467632B1A60A30076CEE9 /* ShortcutsModule.swift */,
 			);
 			path = Shortcuts;
+			sourceTree = "<group>";
+		};
+		6BC4675D2B1A5F520076CEE9 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */,
+			);
+			path = Intents;
 			sourceTree = "<group>";
 		};
 		6BD0FF122AF64E7F00CC9579 = {
@@ -362,6 +379,9 @@
 				6BD0FF4C2AF6574900CC9579 /* SwiftlyModule.swift in Sources */,
 				6BD0FF212AF64E7F00CC9579 /* ContentView.swift in Sources */,
 				6BD0FF1F2AF64E7F00CC9579 /* SwiftlyApp.swift in Sources */,
+				6BC467642B1A60A30076CEE9 /* ShortcutsModule.swift in Sources */,
+				6BC467602B1A5FCE0076CEE9 /* CurrencyEntity.swift in Sources */,
+				6BC467622B1A60100076CEE9 /* CurrencyQuery.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

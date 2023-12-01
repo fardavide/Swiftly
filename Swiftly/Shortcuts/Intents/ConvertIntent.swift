@@ -4,7 +4,10 @@ import Provider
 import Resources
 
 struct ConvertIntent: AppIntent {
-  public static let title: LocalizedStringResource = "Convert Currency"
+  static let title: LocalizedStringResource = "Convert Currency"
+  static var parameterSummary: some ParameterSummary {
+    Summary("Convert \(\.$amount) \(\.$fromCurrency) to \(\.$toCurrency)")
+  }
   
   @Parameter(title: "Amount")
   var amount: Double
@@ -15,19 +18,25 @@ struct ConvertIntent: AppIntent {
   @Parameter(title: "To currency")
   var toCurrency: CurrencyEntity?
   
+  private var currencyQuery: CurrencyQuery {
+    getProvider().get()
+  }
+  private var currencyRepository: CurrencyRepository {
+    getProvider().get()
+  }
+  
   func perform() async throws -> some ProvidesDialog {
-    let currencyRepository: CurrencyRepository = getProvider().get()
     let currencyWithRates = await currencyRepository
       .getLatestCurrenciesWithRates()
       .orThrow()
     
     let fromCurrency = try await $fromCurrency.requestDisambiguation(
-      among: CurrencyQuery().suggestedEntities(),
+      among: currencyQuery.suggestedEntities(),
       dialog: "From which currency?"
     )
     
     let toCurrency = try await $fromCurrency.requestDisambiguation(
-      among: CurrencyQuery().suggestedEntities(),
+      among: currencyQuery.suggestedEntities(),
       dialog: "To which currency?"
     )
     
@@ -43,48 +52,8 @@ struct ConvertIntent: AppIntent {
   }
 }
 
-public struct CurrencyEntity: AppEntity {
-  
-  public static let typeDisplayRepresentation: TypeDisplayRepresentation = "Currency"
-  public static let defaultQuery = CurrencyQuery()
-  
-  public let id: String
-  public let name: String
-  public var displayRepresentation: DisplayRepresentation {
-    DisplayRepresentation(stringLiteral: name)
-  }
-}
-
-extension CurrencyWithRate {
-  func toEntity() -> CurrencyEntity {
-    CurrencyEntity(id: currency.code.id, name: currency.name)
-  }
-}
-
 extension [CurrencyWithRate] {
   func findFor(_ entity: CurrencyEntity) -> CurrencyWithRate? {
     first(where: { $0.currency.code.id == entity.id })
-  }
-}
-
-public struct CurrencyQuery: EntityQuery {
-  
-  public init() {}
-  
-  public func entities(for identifiers: [String]) async -> [CurrencyEntity] {
-    await suggestedEntities()
-      .filter { identifiers.contains($0.id) }
-  }
-  
-  public func suggestedEntities() async -> [CurrencyEntity] {
-    let currencyRepository: CurrencyRepository = getProvider().get()
-    return await currencyRepository.getCurrencies(sorting: .favoritesFirst)
-      .orThrow()
-      .map { currency in
-        CurrencyEntity(
-          id: currency.code.id,
-          name: currency.name
-        )
-      }
   }
 }
