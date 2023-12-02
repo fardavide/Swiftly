@@ -83,7 +83,9 @@ public class FakeCurrencyRepository: CurrencyRepository {
     query: String,
     sorting: CurrencySorting
   ) async -> Result<[Currency], DataError> {
-    currenciesResult
+    currenciesResult.map { currencies in
+      currencies.search(by: query)
+    }
   }
   
   public func getLatestRates() async -> Result<CurrencyRates, DataError> {

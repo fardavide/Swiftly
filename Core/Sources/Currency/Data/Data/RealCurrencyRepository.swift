@@ -23,25 +23,10 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
   
   public func getCurrencies(
-    query q: String,
+    query query: String,
     sorting: CurrencySorting
   ) async -> Result<[Currency], DataError> {
-    let query: String
-    let compareOptions: String.CompareOptions
-    if q.count > 1 {
-      query = q
-      compareOptions = [.caseInsensitive]
-    } else {
-      query = ".*\(q).*"
-      compareOptions = [.caseInsensitive, .regularExpression]
-    }
-    return await getAllCurrencies(sorting: sorting).map { currencies in
-      currencies.filter { currency in
-        currency.code.value.range(of: query, options: compareOptions) ??
-        currency.name.range(of: query, options: compareOptions) ??
-        currency.symbol.range(of: query, options: compareOptions) != nil
-      }
-    }
+    await getAllCurrencies(sorting: sorting).map { $0.search(by: query) }
   }
 
   public func getLatestRates() async -> Result<CurrencyRates, DataError> {

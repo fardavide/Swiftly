@@ -25,6 +25,28 @@ public extension Currency {
   }
 }
 
+public extension [Currency] {
+  /// Filter `Currency`s using `by` query
+  /// - Parameter q: the query to filter by
+  /// - Returns: filtered `[Currency]`
+  func search(by q: String) -> [Currency] {
+    let query: String
+    let compareOptions: String.CompareOptions
+    if q.count > 1 {
+      query = q
+      compareOptions = [.caseInsensitive]
+    } else {
+      query = ".*\(q).*"
+      compareOptions = [.caseInsensitive, .regularExpression]
+    }
+    return filter { currency in
+      currency.code.value.range(of: query, options: compareOptions) ??
+      currency.name.range(of: query, options: compareOptions) ??
+      currency.symbol.range(of: query, options: compareOptions) != nil
+    }
+  }
+}
+
 public class CurrencySamples {
 
   public let chf = Currency(code: .samples.chf, name: "Swiss Franc", symbol: "CHF")

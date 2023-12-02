@@ -294,7 +294,7 @@ private class Scenario {
 }
 
 private extension CurrencyValue {
-  static func ~=(currencyValue: CurrencyValue, value: Double) -> Bool {
+  static func ~= (currencyValue: CurrencyValue, value: Double) -> Bool {
     let accuracy = 0.5
     return currencyValue.value > value - accuracy && currencyValue.value < value + accuracy
   }
