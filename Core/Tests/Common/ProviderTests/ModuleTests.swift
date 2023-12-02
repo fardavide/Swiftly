@@ -1,4 +1,6 @@
 import XCTest
+
+import PowerAssert
 @testable import Provider
 
 final class ModuleTests: XCTestCase {
@@ -11,9 +13,9 @@ final class ModuleTests: XCTestCase {
     module.start(with: provider)
 
     // then
-    XCTAssertEqual(getCount(type: ThirdTestModule.self), 1)
-    XCTAssertEqual(getCount(type: SecondTestModule.self), 1)
-    XCTAssertEqual(getCount(type: FirstTestModule.self), 1)
+    #assert(getCount(type: ThirdTestModule.self) == 1)
+    #assert(getCount(type: SecondTestModule.self) == 1)
+    #assert(getCount(type: FirstTestModule.self) == 1)
   }
 }
 

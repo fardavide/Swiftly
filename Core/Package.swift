@@ -44,7 +44,8 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-syntax.git", from: Version(509, 0, 0)),
-    .package(url: "https://github.com/kean/Nuke", from: Version(12, 2, 0))
+    .package(url: "https://github.com/kean/Nuke", from: Version(12, 2, 0)),
+    .package(url: "https://github.com/kishikawakatsumi/swift-power-assert", from: Version(0, 12, 0))
   ],
   targets: [
 
@@ -75,7 +76,7 @@ let package = Package(
       path: "Sources/AppStorage/Real"
     ),
     .testTarget(
-      name: "ARealppStorageTests",
+      name: "RealppStorageTests",
       dependencies: [
         "RealAppStorage"
       ],
@@ -94,7 +95,8 @@ let package = Package(
     .testTarget(
       name: "DateUtilsTest",
       dependencies: [
-        "DateUtils"
+        "DateUtils",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Common/DateUtilsTests"
     ),
@@ -129,7 +131,8 @@ let package = Package(
     .testTarget(
       name: "ProviderTests",
       dependencies: [
-        "Provider"
+        "Provider",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Common/ProviderTests"
     ),
@@ -154,7 +157,8 @@ let package = Package(
     .testTarget(
       name: "ResourcesTests",
       dependencies: [
-        "Resources"
+        "Resources",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Common/Resources/ApiTests"
     ),
@@ -162,6 +166,7 @@ let package = Package(
       name: "ResourcesMacroTests",
       dependencies: [
         "ResourcesMacro",
+        .product(name: "PowerAssert", package: "swift-power-assert"),
         .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
       ],
       path: "Tests/Common/Resources/MacroTests"
@@ -204,7 +209,8 @@ let package = Package(
     .testTarget(
       name: "SwiftlyUtilsTests",
       dependencies: [
-        "SwiftlyUtils"
+        "SwiftlyUtils",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Common/UtilsTests"
     ),
@@ -223,7 +229,8 @@ let package = Package(
     .testTarget(
       name: "ConverterDataTests",
       dependencies: [
-        "ConverterData"
+        "ConverterData",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Converter/Data/DataTests"
     ),
@@ -249,6 +256,7 @@ let package = Package(
       name: "ConverterPresentation",
       dependencies: [
         "ConverterDomain",
+        "Design",
         "Provider",
         "Resources",
         .product(name: "Nuke", package: "Nuke"),
@@ -259,8 +267,10 @@ let package = Package(
     .testTarget(
       name: "ConverterPresentationTests",
       dependencies: [
+        "ConverterDomain",
         "ConverterPresentation",
-        "SwiftlyTest"
+        "SwiftlyTest",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Converter/PresentationTests"
     ),
@@ -278,7 +288,8 @@ let package = Package(
     .testTarget(
       name: "ConverterStorageTests",
       dependencies: [
-        "ConverterStorage"
+        "ConverterStorage",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Converter/Data/StorageTests"
     ),
@@ -315,7 +326,8 @@ let package = Package(
     .testTarget(
       name: "CurrencyDataTests",
       dependencies: [
-        "CurrencyData"
+        "CurrencyData",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Currency/Data/DataTests"
     ),
@@ -332,7 +344,8 @@ let package = Package(
     .testTarget(
       name: "CurrencyDomainTests",
       dependencies: [
-        "CurrencyDomain"
+        "CurrencyDomain",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Currency/DomainTests"
     ),
@@ -351,7 +364,8 @@ let package = Package(
     .testTarget(
       name: "CurrencyStorageTests",
       dependencies: [
-        "CurrencyStorage"
+        "CurrencyStorage",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Currency/Data/StorageTests"
     )

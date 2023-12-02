@@ -1,5 +1,6 @@
 import XCTest
 
+import PowerAssert
 @testable import Resources
 
 final class ImageResourcesTests: XCTestCase {
@@ -12,6 +13,6 @@ final class ImageResourcesTests: XCTestCase {
     let result = image(key)
 
     // then
-    XCTAssertEqual("arrow.left.arrow.right", result)
+    #assert("arrow.left.arrow.right" == result)
   }
 }

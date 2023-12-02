@@ -4,13 +4,12 @@ import XCTest
 import Combine
 import ConverterDomain
 import CurrencyDomain
+import PowerAssert
 import SwiftlyTest
 @testable import ConverterPresentation
 
 final class ConverterViewModelTests: XCTestCase {
-
-  private let accuracy = 0.5
-
+  
   func test_loadAllCurrencies() async {
     // given
     let scenario = Scenario(
@@ -18,17 +17,17 @@ final class ConverterViewModelTests: XCTestCase {
       currencyRates: .samples.all,
       selectedCurrencies: .samples.alphabetical
     )
-
+    
     // when
     await test(scenario.sut.$state.map(\.searchCurrencies)) { turbine in
       await turbine.expectInitial(value: [])
-
+      
       // then
       let result = await turbine.value()
-      XCTAssertEqual(result, Currency.samples.all())
+      #assert(result == Currency.samples.all())
     }
   }
-
+  
   func test_loadCurrencyValues() async {
     // given
     let scenario = Scenario(
@@ -36,41 +35,41 @@ final class ConverterViewModelTests: XCTestCase {
       currencyRates: .samples.all,
       selectedCurrencies: .samples.alphabetical
     )
-
+    
     // when
     await test(scenario.sut.$state.map(\.values)) { turbine in
       await turbine.expectInitial(value: [])
-
+      
       // then
       let result = await turbine.value()
-      XCTAssertEqual(result.count, 6)
-
-      XCTAssertEqual(result[0].currency, .samples.chf)
-      XCTAssertEqual(result[0].rate, CurrencyRate.samples.chf.rate)
-      XCTAssertEqual(result[0].value, 10)
-
-      XCTAssertEqual(result[1].currency, .samples.cny)
-      XCTAssertEqual(result[1].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(result[1].value, 81, accuracy: self.accuracy)
-
-      XCTAssertEqual(result[2].currency, .samples.eur)
-      XCTAssertEqual(result[2].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(result[2].value, 10, accuracy: self.accuracy)
-
-      XCTAssertEqual(result[3].currency, .samples.gbp)
-      XCTAssertEqual(result[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(result[3].value, 9, accuracy: self.accuracy)
-
-      XCTAssertEqual(result[4].currency, .samples.jpy)
-      XCTAssertEqual(result[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(result[4].value, 1667, accuracy: self.accuracy)
-
-      XCTAssertEqual(result[5].currency, .samples.usd)
-      XCTAssertEqual(result[5].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(result[5].value, 11, accuracy: self.accuracy)
+      #assert(result.count == 6)
+      
+      #assert(result[0].currency == Currency.samples.chf)
+      #assert(result[0].rate == CurrencyRate.samples.chf.rate)
+      #assert(result[0].value == 10)
+      
+      #assert(result[1].currency == Currency.samples.cny)
+      #assert(result[1].rate == CurrencyRate.samples.cny.rate)
+      #assert(result[1] ~= 81)
+      
+      #assert(result[2].currency == Currency.samples.eur)
+      #assert(result[2].rate == CurrencyRate.samples.eur.rate)
+      #assert(result[2] ~= 10)
+      
+      #assert(result[3].currency == Currency.samples.gbp)
+      #assert(result[3].rate == CurrencyRate.samples.gbp.rate)
+      #assert(result[3] ~= 9)
+      
+      #assert(result[4].currency == Currency.samples.jpy)
+      #assert(result[4].rate == CurrencyRate.samples.jpy.rate)
+      #assert(result[4] ~= 1667)
+      
+      #assert(result[5].currency == Currency.samples.usd)
+      #assert(result[5].rate == CurrencyRate.samples.usd.rate)
+      #assert(result[5] ~= 11)
     }
   }
-
+  
   func test_whenValueUpdate_ratesAreUpdated() async {
     // given
     let scenario = Scenario(
@@ -78,74 +77,74 @@ final class ConverterViewModelTests: XCTestCase {
       currencyRates: .samples.all,
       selectedCurrencies: .samples.alphabetical
     )
-
+    
     await test(scenario.sut.$state.map(\.values)) { turbine in
       await turbine.expectInitial(value: [])
-
+      
       let before = await turbine.value()
-      XCTAssertEqual(before.count, 6)
-
-      XCTAssertEqual(before[0].currency, .samples.chf)
-      XCTAssertEqual(before[0].rate, CurrencyRate.samples.chf.rate)
-      XCTAssertEqual(before[0].value, 10)
-
-      XCTAssertEqual(before[1].currency, .samples.cny)
-      XCTAssertEqual(before[1].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(before[1].value, 81, accuracy: self.accuracy)
-
-      XCTAssertEqual(before[2].currency, .samples.eur)
-      XCTAssertEqual(before[2].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(before[2].value, 10, accuracy: self.accuracy)
-
-      XCTAssertEqual(before[3].currency, .samples.gbp)
-      XCTAssertEqual(before[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(before[3].value, 9, accuracy: self.accuracy)
-
-      XCTAssertEqual(before[4].currency, .samples.jpy)
-      XCTAssertEqual(before[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(before[4].value, 1667, accuracy: self.accuracy)
-
-      XCTAssertEqual(before[5].currency, .samples.usd)
-      XCTAssertEqual(before[5].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(before[5].value, 11, accuracy: self.accuracy)
-
+      #assert(before.count == 6)
+      
+      #assert(before[0].currency == Currency.samples.chf)
+      #assert(before[0].rate == CurrencyRate.samples.chf.rate)
+      #assert(before[0].value == 10)
+      
+      #assert(before[1].currency == Currency.samples.cny)
+      #assert(before[1].rate == CurrencyRate.samples.cny.rate)
+      #assert(before[1] ~= 81)
+      
+      #assert(before[2].currency == Currency.samples.eur)
+      #assert(before[2].rate == CurrencyRate.samples.eur.rate)
+      #assert(before[2] ~= 10)
+      
+      #assert(before[3].currency == Currency.samples.gbp)
+      #assert(before[3].rate == CurrencyRate.samples.gbp.rate)
+      #assert(before[3] ~= 9)
+      
+      #assert(before[4].currency == Currency.samples.jpy)
+      #assert(before[4].rate == CurrencyRate.samples.jpy.rate)
+      #assert(before[4] ~= 1667)
+      
+      #assert(before[5].currency == Currency.samples.usd)
+      #assert(before[5].rate == CurrencyRate.samples.usd.rate)
+      #assert(before[5] ~= 11)
+      
       // when
       scenario.sut.send(
         .updateValue(
           currencyValue: CurrencyValue(value: 20, currencyWithRate: CurrencyWithRate.samples.usd)
         )
       )
-
+      
       // then
       let after = await turbine.value()
-      XCTAssertEqual(after.count, 6)
-
-      XCTAssertEqual(after[0].currency, .samples.chf)
-      XCTAssertEqual(after[0].rate, CurrencyRate.samples.chf.rate)
-      XCTAssertEqual(after[0].value, 18, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[1].currency, .samples.cny)
-      XCTAssertEqual(after[1].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(after[1].value, 146, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[2].currency, .samples.eur)
-      XCTAssertEqual(after[2].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(after[2].value, 18, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[3].currency, .samples.gbp)
-      XCTAssertEqual(after[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(after[3].value, 16, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[4].currency, .samples.jpy)
-      XCTAssertEqual(after[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(after[4].value, 3000, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[5].currency, .samples.usd)
-      XCTAssertEqual(after[5].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(after[5].value, 20)
+      #assert(after.count == 6)
+      
+      #assert(after[0].currency == Currency.samples.chf)
+      #assert(after[0].rate == CurrencyRate.samples.chf.rate)
+      #assert(after[0] ~= 18)
+      
+      #assert(after[1].currency == Currency.samples.cny)
+      #assert(after[1].rate == CurrencyRate.samples.cny.rate)
+      #assert(after[1] ~= 146)
+      
+      #assert(after[2].currency == Currency.samples.eur)
+      #assert(after[2].rate == CurrencyRate.samples.eur.rate)
+      #assert(after[2] ~= 18)
+      
+      #assert(after[3].currency == Currency.samples.gbp)
+      #assert(after[3].rate == CurrencyRate.samples.gbp.rate)
+      #assert(after[3] ~= 16)
+      
+      #assert(after[4].currency == Currency.samples.jpy)
+      #assert(after[4].rate == CurrencyRate.samples.jpy.rate)
+      #assert(after[4] ~= 3000)
+      
+      #assert(after[5].currency == Currency.samples.usd)
+      #assert(after[5].rate == CurrencyRate.samples.usd.rate)
+      #assert(after[5].value == 20)
     }
   }
-
+  
   func test_whenCurrencyChange_otherRatesAreUpdated() async {
     // given
     let scenario = Scenario(
@@ -153,37 +152,37 @@ final class ConverterViewModelTests: XCTestCase {
       currencyRates: .samples.all,
       selectedCurrencies: .samples.alphabetical
     )
-
+    
     await test(scenario.sut.$state.map(\.values)) { turbine in
       await turbine.expectInitial(value: [])
-
+      
       let before = await turbine.value()
-      XCTAssertEqual(before.count, 6)
-
-      XCTAssertEqual(before[0].currency, .samples.chf)
-      XCTAssertEqual(before[0].rate, CurrencyRate.samples.chf.rate)
-      XCTAssertEqual(before[0].value, 10)
-
-      XCTAssertEqual(before[1].currency, .samples.cny)
-      XCTAssertEqual(before[1].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(before[1].value, 81, accuracy: self.accuracy)
-
-      XCTAssertEqual(before[2].currency, .samples.eur)
-      XCTAssertEqual(before[2].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(before[2].value, 10, accuracy: self.accuracy)
-
-      XCTAssertEqual(before[3].currency, .samples.gbp)
-      XCTAssertEqual(before[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(before[3].value, 9, accuracy: self.accuracy)
-
-      XCTAssertEqual(before[4].currency, .samples.jpy)
-      XCTAssertEqual(before[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(before[4].value, 1667, accuracy: self.accuracy)
-
-      XCTAssertEqual(before[5].currency, .samples.usd)
-      XCTAssertEqual(before[5].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(before[5].value, 11, accuracy: self.accuracy)
-
+      #assert(before.count == 6)
+      
+      #assert(before[0].currency == Currency.samples.chf)
+      #assert(before[0].rate == CurrencyRate.samples.chf.rate)
+      #assert(before[0].value == 10)
+      
+      #assert(before[1].currency == Currency.samples.cny)
+      #assert(before[1].rate == CurrencyRate.samples.cny.rate)
+      #assert(before[1] ~= 81)
+      
+      #assert(before[2].currency == Currency.samples.eur)
+      #assert(before[2].rate == CurrencyRate.samples.eur.rate)
+      #assert(before[2] ~= 10)
+      
+      #assert(before[3].currency == Currency.samples.gbp)
+      #assert(before[3].rate == CurrencyRate.samples.gbp.rate)
+      #assert(before[3] ~= 9)
+      
+      #assert(before[4].currency == Currency.samples.jpy)
+      #assert(before[4].rate == CurrencyRate.samples.jpy.rate)
+      #assert(before[4] ~= 1667)
+      
+      #assert(before[5].currency == Currency.samples.usd)
+      #assert(before[5].rate == CurrencyRate.samples.usd.rate)
+      #assert(before[5] ~= 11)
+      
       // when
       scenario.sut.send(
         .changeCurrency(
@@ -191,34 +190,34 @@ final class ConverterViewModelTests: XCTestCase {
           new: Currency.samples.cny
         )
       )
-
+      
       // then
       let after = await turbine.value()
-      XCTAssertEqual(after.count, 6)
-
-      XCTAssertEqual(after[0].currency, .samples.chf)
-      XCTAssertEqual(after[0].rate, CurrencyRate.samples.chf.rate)
-      XCTAssertEqual(after[0].value, 1, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[1].currency, .samples.eur)
-      XCTAssertEqual(after[1].rate, CurrencyRate.samples.eur.rate)
-      XCTAssertEqual(after[1].value, 1.2, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[2].currency, .samples.cny)
-      XCTAssertEqual(after[2].rate, CurrencyRate.samples.cny.rate)
-      XCTAssertEqual(after[2].value, 10)
-
-      XCTAssertEqual(after[3].currency, .samples.gbp)
-      XCTAssertEqual(after[3].rate, CurrencyRate.samples.gbp.rate)
-      XCTAssertEqual(after[3].value, 1, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[4].currency, .samples.jpy)
-      XCTAssertEqual(after[4].rate, CurrencyRate.samples.jpy.rate)
-      XCTAssertEqual(after[4].value, 205, accuracy: self.accuracy)
-
-      XCTAssertEqual(after[5].currency, .samples.usd)
-      XCTAssertEqual(after[5].rate, CurrencyRate.samples.usd.rate)
-      XCTAssertEqual(after[5].value, 1, accuracy: self.accuracy)
+      #assert(after.count == 6)
+      
+      #assert(after[0].currency == Currency.samples.chf)
+      #assert(after[0].rate == CurrencyRate.samples.chf.rate)
+      #assert(after[0] ~= 1)
+      
+      #assert(after[1].currency == Currency.samples.eur)
+      #assert(after[1].rate == CurrencyRate.samples.eur.rate)
+      #assert(after[1] ~= 1.2)
+      
+      #assert(after[2].currency == Currency.samples.cny)
+      #assert(after[2].rate == CurrencyRate.samples.cny.rate)
+      #assert(after[2].value == 10)
+      
+      #assert(after[3].currency == Currency.samples.gbp)
+      #assert(after[3].rate == CurrencyRate.samples.gbp.rate)
+      #assert(after[3] ~= 1)
+      
+      #assert(after[4].currency == Currency.samples.jpy)
+      #assert(after[4].rate == CurrencyRate.samples.jpy.rate)
+      #assert(after[4] ~= 205)
+      
+      #assert(after[5].currency == Currency.samples.usd)
+      #assert(after[5].rate == CurrencyRate.samples.usd.rate)
+      #assert(after[5] ~= 1)
     }
   }
   
@@ -228,14 +227,14 @@ final class ConverterViewModelTests: XCTestCase {
     await test(scenario.sut.$state.map(\.searchCurrencies)) { turbine in
       await turbine.expectInitial(value: [])
       let notFiltered = await turbine.value()
-      XCTAssertEqual(notFiltered, Currency.samples.all())
+      #assert(notFiltered == Currency.samples.all())
       
       // when
       scenario.sut.send(.searchCurrencies(query: "Eur"))
       
       // then
       let filtered = await turbine.value()
-      XCTAssertEqual(filtered, [Currency.samples.eur])
+      #assert(filtered == [Currency.samples.eur])
     }
   }
   
@@ -251,17 +250,17 @@ final class ConverterViewModelTests: XCTestCase {
       
       // then
       let result = await turbine.value()
-      XCTAssertEqual(result, "Eur")
+      #assert(result == "Eur")
     }
   }
 }
 
 private class Scenario {
-
+  
   let sut: ConverterViewModel
   
   let converterRepository: FakeConverterRepository
-
+  
   init(
     converterRepository: FakeConverterRepository,
     currencyRepository: CurrencyRepository,
@@ -274,7 +273,7 @@ private class Scenario {
       initialState: initialState
     )
   }
-
+  
   convenience init(
     currencies: [Currency] = Currency.samples.all(),
     currencyRates: CurrencyRates = .samples.all,
@@ -291,6 +290,13 @@ private class Scenario {
       ),
       initialState: initialState
     )
+  }
+}
+
+private extension CurrencyValue {
+  static func ~=(currencyValue: CurrencyValue, value: Double) -> Bool {
+    let accuracy = 0.5
+    return currencyValue.value > value - accuracy && currencyValue.value < value + accuracy
   }
 }
 // swiftlint:enable function_body_length

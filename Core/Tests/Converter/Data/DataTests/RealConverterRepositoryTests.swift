@@ -2,6 +2,7 @@ import XCTest
 
 import ConverterStorage
 import CurrencyStorage
+import PowerAssert
 @testable import ConverterData
 
 final class RealConverterRepositoryTests: XCTestCase {
@@ -14,7 +15,7 @@ final class RealConverterRepositoryTests: XCTestCase {
     await scenario.sut.setCurrencyAt(position: 0, currency: .samples.eur)
     
     // then
-    XCTAssertEqual(1, scenario.currencyStorage.selectedCurrencies[.samples.eur])
+    #assert(scenario.currencyStorage.selectedCurrencies[.samples.eur] == 1)
   }
 }
 

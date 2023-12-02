@@ -1,4 +1,6 @@
 import XCTest
+
+import PowerAssert
 @testable import Provider
 
 final class ProviderTests: XCTestCase {
@@ -9,7 +11,7 @@ final class ProviderTests: XCTestCase {
     let result = provider.safeGet(Int.self)
 
     // then
-    XCTAssertEqual(result, Result.failure(ProviderError(key: "Int")))
+    #assert(result == Result.failure(ProviderError(key: "Int")))
   }
 
   func test_whenRegistered_rightInstanceIsReturned() throws {
@@ -24,7 +26,7 @@ final class ProviderTests: XCTestCase {
     let result = provider.get(TestData.self)
 
     // then
-    XCTAssertEqual(result.value, "Hello test")
+    #assert(result.value == "Hello test")
   }
 
   func test_whenRegisteredForParent_rightInstanceIsReturned() throws {
@@ -39,7 +41,7 @@ final class ProviderTests: XCTestCase {
     let result = provider.get(TestParent.self)
 
     // then
-    XCTAssertEqual(result.value, "Hello parent")
+    #assert(result.value == "Hello parent")
   }
 }
 

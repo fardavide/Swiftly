@@ -14,6 +14,7 @@
 		6BC467602B1A5FCE0076CEE9 /* CurrencyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */; };
 		6BC467622B1A60100076CEE9 /* CurrencyQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC467612B1A60100076CEE9 /* CurrencyQuery.swift */; };
 		6BC467642B1A60A30076CEE9 /* ShortcutsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC467632B1A60A30076CEE9 /* ShortcutsModule.swift */; };
+		6BC467672B1BAB940076CEE9 /* PowerAssert in Frameworks */ = {isa = PBXBuildFile; productRef = 6BC467662B1BAB940076CEE9 /* PowerAssert */; };
 		6BD0FF1F2AF64E7F00CC9579 /* SwiftlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF1E2AF64E7F00CC9579 /* SwiftlyApp.swift */; };
 		6BD0FF212AF64E7F00CC9579 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF202AF64E7F00CC9579 /* ContentView.swift */; };
 		6BD0FF232AF64E8000CC9579 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BD0FF222AF64E8000CC9579 /* Assets.xcassets */; };
@@ -76,6 +77,7 @@
 				6BD0FF512AF6696700CC9579 /* Core in Frameworks */,
 				6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */,
 				6BD0FF562AF6C77C00CC9579 /* Nuke in Frameworks */,
+				6BC467672B1BAB940076CEE9 /* PowerAssert in Frameworks */,
 				6BD0FF5A2AF6C77C00CC9579 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,6 +230,7 @@
 				6BD0FF552AF6C77C00CC9579 /* Nuke */,
 				6BD0FF592AF6C77C00CC9579 /* NukeUI */,
 				6B5F9C982AF8078100CBFD19 /* NukeExtensions */,
+				6BC467662B1BAB940076CEE9 /* PowerAssert */,
 			);
 			productName = Swiftly;
 			productReference = 6BD0FF1B2AF64E7F00CC9579 /* Swiftly.app */;
@@ -307,6 +310,7 @@
 			packageReferences = (
 				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */,
 				6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */,
+				6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */,
 			);
 			productRefGroup = 6BD0FF1C2AF64E7F00CC9579 /* Products */;
 			projectDirPath = "";
@@ -752,6 +756,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/swift-power-assert";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.12.0;
+			};
+		};
 		6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke";
@@ -767,6 +779,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeExtensions;
+		};
+		6BC467662B1BAB940076CEE9 /* PowerAssert */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */;
+			productName = PowerAssert;
 		};
 		6BD0FF4D2AF668BC00CC9579 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;

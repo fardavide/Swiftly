@@ -1,6 +1,7 @@
 import XCTest
 
 import ConverterDomain
+import PowerAssert
 @testable import ConverterStorage
 
 final class SelectedCurrenciesStorageModelTests: XCTestCase {
@@ -17,13 +18,13 @@ final class SelectedCurrenciesStorageModelTests: XCTestCase {
         SelectedCurrencyPosition(value: 0): .samples.eur
       ]
     )
-
+    
     // when
     let domainModel = storageModel.toDomainModel()
-
+    
     // then
-    XCTAssertEqual(
-      domainModel,
+    #assert(
+      domainModel ==
       SelectedCurrencies.of(
         currencyCodes: [
           .samples.eur,
@@ -51,8 +52,8 @@ final class SelectedCurrenciesStorageModelTests: XCTestCase {
     let domainModel = storageModel.toDomainModel()
 
     // then
-    XCTAssertEqual(
-      domainModel,
+    #assert(
+      domainModel ==
       SelectedCurrencies.of(
         currencyCodes: [
           .samples.eur,

@@ -1,5 +1,6 @@
 import XCTest
 
+import PowerAssert
 @testable import CurrencyDomain
 
 final class CurrencyValueTests: XCTestCase {
@@ -15,6 +16,6 @@ final class CurrencyValueTests: XCTestCase {
     let result = input.convert(to: .samples.eur)
 
     // then
-    XCTAssertEqual(9, result.value)
+    #assert(result.value == 9)
   }
 }
