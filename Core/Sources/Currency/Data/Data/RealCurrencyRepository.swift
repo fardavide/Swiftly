@@ -62,21 +62,9 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
 
   private func fetchCurrenciesFromApi() async -> Result<[Currency], DataError> {
-    let currenciesApiModelResult = await api.currencies()
-
-    switch currenciesApiModelResult {
-
-    case let .success(apiModel):
-      let domainModels = apiModel.toDomainModels()
-      await storeCurrencies(currencies: domainModels)
-      return .success(domainModels.sorted { $0.code < $1.code })
-
-    case let .failure(apiError):
-      return switch apiError {
-      case .unknown: .failure(.network)
-      case .jsonError: .failure(.network)
-      }
-    }
+    await api.currencies()
+      .map { $0.toDomainModels() }
+      .mapError { _ in DataError.network }
   }
 
   private func fetchCurrenciesFromStorage(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
@@ -91,21 +79,9 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
 
   private func fetchRatesFromApi() async -> Result<CurrencyRates, DataError> {
-    let ratesApiModelResult = await api.latestRates()
-
-    switch ratesApiModelResult {
-
-    case let .success(apiModel):
-      let domainModels = apiModel.toDomainModel(fallbackUpdateAt: getCurrentDate.run())
-      await storeRates(rates: domainModels)
-      return .success(domainModels)
-
-    case let .failure(apiError):
-      return switch apiError {
-      case .unknown: .failure(.network)
-      case .jsonError: .failure(.network)
-      }
-    }
+    await api.latestRates()
+      .map { $0.toDomainModel(fallbackUpdateAt: getCurrentDate.run()) }
+      .mapError { _ in DataError.network }
   }
 
   private func fetchRatesFromStorage() async -> Result<[CurrencyRate], DataError> {
