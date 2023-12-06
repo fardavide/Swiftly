@@ -130,7 +130,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates()
 
     // then
-    #assert(result == .success(.samples.eurOnly))
+    #assert(result == .success(CurrencyRates.samples.eurOnly))
   }
 
   // MARK: - all currencies
@@ -255,7 +255,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "", sorting: .alphabetical)
 
     // then
     #assert(result == .success(Currency.samples.all()))
@@ -268,7 +268,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "Euro", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "Euro", sorting: .alphabetical)
 
     // then
     #assert(result == .success([Currency.samples.eur]))
@@ -281,7 +281,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "eUrO", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "eUrO", sorting: .alphabetical)
 
     // then
     #assert(result == .success([Currency.samples.eur]))
@@ -294,7 +294,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "ur", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "ur", sorting: .alphabetical)
 
     // then
     #assert(result == .success([Currency.samples.eur]))
@@ -307,7 +307,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "CNY", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "CNY", sorting: .alphabetical)
 
     // then
     #assert(result == .success([Currency.samples.cny]))
@@ -320,7 +320,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "CnY", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "CnY", sorting: .alphabetical)
 
     // then
     #assert(result == .success([Currency.samples.cny]))
@@ -333,10 +333,10 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "Y", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "Y", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.cny, .samples.jpy]))
+    #assert(result == .success([Currency.samples.cny, Currency.samples.jpy]))
   }
 
   func testSearchCurrencies_whenMatchFullSymbolSameCase_returnsFilteredResults() async {
@@ -346,7 +346,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "CN¥", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "CN¥", sorting: .alphabetical)
 
     // then
     #assert(result == .success([Currency.samples.cny]))
@@ -359,7 +359,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "Cn¥", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "Cn¥", sorting: .alphabetical)
 
     // then
     #assert(result == .success([Currency.samples.cny]))
@@ -372,10 +372,10 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     )
 
     // when
-    let result = await scenario.sut.searchCurrencies(query: "¥", sorting: .alphabetical)
+    let result = await scenario.sut.getCurrencies(query: "¥", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.cny, .samples.jpy]))
+    #assert(result == .success([Currency.samples.cny, Currency.samples.jpy]))
   }
 }
 

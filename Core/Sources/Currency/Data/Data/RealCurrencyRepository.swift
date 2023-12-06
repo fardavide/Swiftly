@@ -23,7 +23,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
   
   public func getCurrencies(
-    query query: String,
+    query: String,
     sorting: CurrencySorting
   ) async -> Result<[Currency], DataError> {
     await getAllCurrencies(sorting: sorting).map { $0.search(by: query) }
