@@ -6,7 +6,7 @@ import PowerAssert
 final class ProviderTests: XCTestCase {
   private let provider = Provider.test()
 
-  func test_whenNotRegistered_errorWithType() throws {
+  func test_whenNotRegistered_errorWithType() {
     // when
     let result = provider.safeGet(Int.self)
 
@@ -14,37 +14,37 @@ final class ProviderTests: XCTestCase {
     #assert(result == Result.failure(ProviderError(key: "Int")))
   }
 
-  func test_whenRegistered_rightInstanceIsReturned() throws {
+  func test_whenRegistered_rightInstanceIsReturned() {
     // given
-    struct TestData {
-      let value: String
+    provider.register {
+      Child(value: "Hello test")
     }
-    let data = TestData(value: "Hello test")
-    provider.register { data }
 
     // when
-    let result = provider.get(TestData.self)
+    let result = provider.get(Child.self)
 
     // then
     #assert(result.value == "Hello test")
   }
 
-  func test_whenRegisteredForParent_rightInstanceIsReturned() throws {
+  func test_whenRegisteredForParent_rightInstanceIsReturned() {
     // given
-    struct Child: TestParent {
-      let value: String
+    provider.register {
+      Child(value: "Hello parent") as Parent
     }
-    let child = Child(value: "Hello parent")
-    provider.register { child as TestParent }
 
     // when
-    let result = provider.get(TestParent.self)
+    let result = provider.get(Parent.self)
 
     // then
     #assert(result.value == "Hello parent")
   }
 }
 
-private protocol TestParent {
+private protocol Parent {
   var value: String { get }
+}
+
+private struct Child: Parent {
+  let value: String
 }

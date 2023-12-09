@@ -1,23 +1,20 @@
 import Combine
-import XCTest
+import Foundation
 
-extension XCTestCase {
-
-  public func test<Value: Equatable>(
-    _ publisher: any Publisher<Value, Never>,
-    block: @escaping (any Turbine<Value>) async -> Void
-  ) async {
-    let turbine = RealTurbine<Value>(
-      publisher: publisher
-        .eraseToAnyPublisher()
-        .removeDuplicates()
-        .eraseToAnyPublisher()
-    )
-
-    await block(turbine)
-
-    turbine.complete()
-  }
+public func test<Value: Equatable>(
+  _ publisher: any Publisher<Value, Never>,
+  block: @escaping (any Turbine<Value>) async -> Void
+) async {
+  let turbine = RealTurbine<Value>(
+    publisher: publisher
+      .eraseToAnyPublisher()
+      .removeDuplicates()
+      .eraseToAnyPublisher()
+  )
+  
+  await block(turbine)
+  
+  turbine.complete()
 }
 
 public protocol Turbine<Value> {

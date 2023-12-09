@@ -137,7 +137,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
   func testCurrencies_whenEmptyCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
-      currenciesApiModel: CurrenciesApiModel.samples.all,
+      currenciesApiModel: AnyCurrenciesApiModel.samples.all,
       fetchCurrenciesStorageModels: []
     )
 
@@ -151,7 +151,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
   func testCurrencies_whenEmptyCache_returnsResultFromApi() async throws {
     // given
     let scenario = Scenario(
-      currenciesApiModel: CurrenciesApiModel.samples.eurOnly,
+      currenciesApiModel: AnyCurrenciesApiModel.samples.eurOnly,
       fetchCurrenciesStorageModels: []
     )
 
@@ -165,7 +165,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
   func testCurrencies_whenErrorFromCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
-      currenciesApiResult: .success(CurrenciesApiModel.samples.all),
+      currenciesApiResult: .success(AnyCurrenciesApiModel.samples.all),
       fetchAllCurrenciesStorageResult: .failure(.unknown)
     )
 
@@ -179,7 +179,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
   func testCurrencies_whenErrorFromCache_returnsResultFromApi() async {
     // given
     let scenario = Scenario(
-      currenciesApiResult: .success(CurrenciesApiModel.samples.eurOnly),
+      currenciesApiResult: .success(AnyCurrenciesApiModel.samples.eurOnly),
       fetchAllCurrenciesStorageResult: .failure(.unknown)
     )
 
@@ -235,7 +235,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
   func testCurrencies_whenExpiredCache_returnsResultFromApi() async {
     // given
     let scenario = Scenario(
-      currenciesApiModel: CurrenciesApiModel.samples.usdOnly,
+      currenciesApiModel: AnyCurrenciesApiModel.samples.usdOnly,
       fetchCurrenciesStorageModels: [CurrencyStorageModel.samples.eur],
       updateDate: currentDate - 25.hours()
     )
@@ -398,7 +398,7 @@ private final class Scenario {
   }
 
   convenience init(
-    currenciesApiResult: Result<CurrenciesApiModel, ApiError> =
+    currenciesApiResult: Result<any CurrenciesApiModel, ApiError> =
       .failure(.unknown),
     fetchAllCurrenciesStorageResult: Result<[CurrencyStorageModel], StorageError> =
       .failure(.unknown),
@@ -422,7 +422,7 @@ private final class Scenario {
   }
 
   convenience init(
-    currenciesApiModel: CurrenciesApiModel? = nil,
+    currenciesApiModel: (any CurrenciesApiModel)? = nil,
     fetchCurrenciesStorageModels: [CurrencyStorageModel]? = nil,
     latestRatesApiModel: CurrencyRatesApiModel? = nil,
     fetchAllRatesStorageModels: [CurrencyRateStorageModel]? = nil,

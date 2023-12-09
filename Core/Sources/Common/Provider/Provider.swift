@@ -28,7 +28,7 @@ final public class Provider {
     let result = safeGet(type)
     switch result {
     case let .success(success): return success
-    case let .failure(error): fatalError("key '\(error.key)' not registered")
+    case let .failure(error): fatalError("key '\(error.key)' not registered. Registered types: \(registry.keys)")
     }
   }
 
