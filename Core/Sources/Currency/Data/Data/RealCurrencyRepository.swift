@@ -64,7 +64,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
   private func fetchCurrenciesFromApi() async -> Result<[Currency], DataError> {
     await api.currencies()
       .map { $0.toDomainModels() }
-      .mapError { _ in DataError.network }
+      .mapErrorToDataError()
   }
 
   private func fetchCurrenciesFromStorage(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
@@ -81,7 +81,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
   private func fetchRatesFromApi() async -> Result<CurrencyRates, DataError> {
     await api.latestRates()
       .map { $0.toDomainModel(fallbackUpdateAt: getCurrentDate.run()) }
-      .mapError { _ in DataError.network }
+      .mapErrorToDataError()
   }
 
   private func fetchRatesFromStorage() async -> Result<[CurrencyRate], DataError> {

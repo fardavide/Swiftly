@@ -1,7 +1,7 @@
 import CurrencyDomain
 
-struct CurrenciesCurrencyApiDotComModel: Codable, CurrenciesApiModel {
-  public let data: [String: CurrencyCurrencyApiDotComModel]
+struct CurrenciesCurrencyApiComModel: Codable, CurrenciesApiModel {
+  let data: [String: CurrencyCurrencyApiDotComModel]
   
   func toDomainModels() -> [Currency] {
     self.data.map { code, currencyApiModel in
@@ -20,7 +20,7 @@ struct CurrencyCurrencyApiDotComModel: Codable {
   let symbol: String
 }
 
-extension CurrenciesCurrencyApiDotComModel {
+extension CurrenciesCurrencyApiComModel {
   
   func any() -> AnyCurrenciesApiModel {
     AnyCurrenciesApiModel(self)

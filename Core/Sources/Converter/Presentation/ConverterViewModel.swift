@@ -163,7 +163,7 @@ public class ConverterViewModelSamples {
       selectedCurrencies: .initial
     ),
     currencyRepository: FakeCurrencyRepository(
-      currenciesResult: .failure(.network)
+      currenciesResult: .failure(.network(cause: .unknown))
     )
   )
   let storageError = ConverterViewModel(

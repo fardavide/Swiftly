@@ -113,6 +113,9 @@ let package = Package(
     // MARK: Network
     .target(
       name: "Network",
+      dependencies: [
+        "SwiftlyUtils"
+      ],
       path: "Sources/Common/Network"
     ),
     .testTarget(

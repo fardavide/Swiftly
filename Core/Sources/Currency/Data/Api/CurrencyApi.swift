@@ -9,6 +9,24 @@ public protocol CurrencyApi {
   func latestRates() async -> Result<CurrencyRatesApiModel, ApiError>
 }
 
+final class RealCurrencyApi: CurrencyApi {
+  private let currencyServce: CurrencyService
+  private let currencyRateService: CurrencyRateService
+  
+  init(currencyServce: CurrencyService, currencyRateService: CurrencyRateService) {
+    self.currencyServce = currencyServce
+    self.currencyRateService = currencyRateService
+  }
+  
+  func currencies() async -> Result<CurrenciesApiModel, ApiError> {
+    await currencyServce.currencies()
+  }
+  
+  func latestRates() async -> Result<CurrencyRatesApiModel, ApiError> {
+    await currencyRateService.latestRates()
+  }
+}
+
 public class FakeCurrencyApi: CurrencyApi {
   
   public private(set) var didFetchCurrencies = false

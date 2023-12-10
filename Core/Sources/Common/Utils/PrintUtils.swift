@@ -7,12 +7,14 @@ public extension Printable {
     enabled: Bool = true,
     message: (Self) -> String = { "\($0)" }
   ) -> Self {
-    if enabled {
+    if verbose || enabled {
       Swift.print(message(self))
     }
     return self
   }
 }
+
+private let verbose = false
 
 extension Array: Printable {}
 extension Result: Printable {}
