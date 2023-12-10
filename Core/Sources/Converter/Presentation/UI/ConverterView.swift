@@ -13,12 +13,11 @@ public struct ConverterView: View {
 
   public var body: some View {
     let state = viewModel.state
-    switch state.isLoading {
-
-    case true:
+    
+    if state.isLoading && state.values.isEmpty {
       ProgressView()
-
-    case false:
+      
+    } else {
       switch state.error {
 
       case let .some(error):
