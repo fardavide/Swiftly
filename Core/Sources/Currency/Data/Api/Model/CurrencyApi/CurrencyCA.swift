@@ -1,10 +1,10 @@
 import CurrencyDomain
 
 struct CurrenciesCurrencyApiComModel: Codable, CurrenciesApiModel {
-  let data: [String: CurrencyCurrencyApiDotComModel]
+  let data: [String: CurrencyModel]
   
   func toDomainModels() -> [Currency] {
-    self.data.map { code, currencyApiModel in
+    data.map { code, currencyApiModel in
       Currency(
         code: CurrencyCode(value: code),
         name: currencyApiModel.name,
@@ -12,22 +12,15 @@ struct CurrenciesCurrencyApiComModel: Codable, CurrenciesApiModel {
       )
     }
   }
-}
-
-struct CurrencyCurrencyApiDotComModel: Codable {
-  let code: String
-  let name: String
-  let symbol: String
-}
-
-extension CurrenciesCurrencyApiComModel {
   
-  func any() -> AnyCurrenciesApiModel {
-    AnyCurrenciesApiModel(self)
+  struct CurrencyModel: Codable {
+    let code: String
+    let name: String
+    let symbol: String
   }
 }
 
-extension CurrencyCurrencyApiDotComModel {
+extension CurrenciesCurrencyApiComModel.CurrencyModel {
     
   func toDomainModel() -> Currency {
     Currency(
