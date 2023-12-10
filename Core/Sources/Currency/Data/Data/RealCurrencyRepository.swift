@@ -31,12 +31,13 @@ public final class RealCurrencyRepository: CurrencyRepository {
 
   public func getLatestRates() async -> Result<CurrencyRates, DataError> {
     let updatedAt = await storage.getUpdateDate().updatedAt
+    print("Rates updated at: \(updatedAt)")
     return if getCurrentDate.run() % updatedAt > 1.days() {
-      await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" }
+      await fetchRatesFromApi().print { _ in "Get latest rates from API" }
     } else {
       await fetchRatesFromStorage().map { $0.updatedAt(updatedAt) }
-        .print(enabled: false) { "Get latest rates from Storage: \($0)" }
-        .recover(await fetchRatesFromApi().print(enabled: false) { "Get latest rates from API: \($0)" })
+        .print { _ in "Get latest rates from Storage" }
+        .recover(await fetchRatesFromApi().print { _ in "Fallback to get latest rates from API" })
     }
   }
   
@@ -54,7 +55,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
     
     let fromStorage = isValid
     ? await fetchCurrenciesFromStorage(sorting: sorting)
-    : Result.failure(DataError.storage(cause: .noCache))
+    : .failure(DataError.storage(cause: .noCache))
     
     return await fromStorage
       .print { "Get currencies from Storage: \($0.or(default: []).count)" }
@@ -82,6 +83,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
     await api.latestRates()
       .map { $0.toDomainModel(fallbackUpdateAt: getCurrentDate.run()) }
       .mapErrorToDataError()
+      .onSuccess(storeRates)
   }
 
   private func fetchRatesFromStorage() async -> Result<[CurrencyRate], DataError> {
