@@ -29,8 +29,8 @@ jobs:
 
     - name: Build
       run: |
-        xcodebuild build -project Swiftly.xcodeproj -scheme Swiftly clean build -sdk iphoneos CODE_SIGNING_ALLOWED=No
+        xcodebuild build -project Swiftly.xcodeproj -scheme Swiftly clean build -sdk iphoneos CODE_SIGNING_ALLOWED=No -skipMacroValidation
 
     - name: Run tests
       run: |
-        xcodebuild test -project Swiftly.xcodeproj -scheme Swiftly clean build -sdk iphoneos -destination "platform=iOS Simulator,OS=17.1,name=iPhone 15 Pro" CODE_SIGNING_ALLOWED=No
+        xcodebuild test -project Swiftly.xcodeproj -scheme Swiftly clean build -sdk iphoneos -destination "platform=iOS Simulator,OS=17.1,name=iPhone 15 Pro" -skipMacroValidation CODE_SIGNING_ALLOWED=No
