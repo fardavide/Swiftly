@@ -10,7 +10,7 @@ public protocol CurrencyRepository {
   ) async -> Result<[Currency], DataError>
   
   /// Get latest `[CurrencyRate]`, from cache or remote source
-  func getLatestRates() async -> Result<CurrencyRates, DataError>
+  func getLatestRates(forceRefresh: Bool) async -> Result<CurrencyRates, DataError>
   
   /// Mark `currency` as used, to increase its popularity (i.e. suggested first)
   func markCurrenciesUsed(
@@ -33,14 +33,15 @@ public extension CurrencyRepository {
   
   func getLatestCurrenciesWithRates(
     query: String = "",
-    sorting: CurrencySorting = .alphabetical
+    sorting: CurrencySorting = .alphabetical,
+    forceRefresh: Bool = false
   ) async -> Result<[CurrencyWithRate], DataError> {
     let currenciesResult = await getCurrencies(query: query, sorting: sorting)
     guard let currencies = currenciesResult.orNil() else {
       return .failure(currenciesResult.requireFailure())
     }
     
-    let ratesResult = await getLatestRates()
+    let ratesResult = await getLatestRates(forceRefresh: forceRefresh)
     guard let rates = ratesResult.orNil() else {
       return .failure(ratesResult.requireFailure())
     }
@@ -88,7 +89,7 @@ public class FakeCurrencyRepository: CurrencyRepository {
     }
   }
   
-  public func getLatestRates() async -> Result<CurrencyRates, DataError> {
+  public func getLatestRates(forceRefresh: Bool) async -> Result<CurrencyRates, DataError> {
     currencyRatesResult
   }
   

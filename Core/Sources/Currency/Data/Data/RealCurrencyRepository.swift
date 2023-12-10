@@ -29,10 +29,12 @@ public final class RealCurrencyRepository: CurrencyRepository {
     await getAllCurrencies(sorting: sorting).map { $0.search(by: query) }
   }
 
-  public func getLatestRates() async -> Result<CurrencyRates, DataError> {
+  public func getLatestRates(forceRefresh: Bool) async -> Result<CurrencyRates, DataError> {
     let updatedAt = await storage.getUpdateDate().updatedAt
-    print("Rates updated at: \(updatedAt)")
-    return if getCurrentDate.run() % updatedAt > 1.days() {
+    let updateAtDelta = getCurrentDate.run() % updatedAt
+    let shouldRefresh = (forceRefresh && updateAtDelta > 1.minutes()) || updateAtDelta > 1.days()
+    print("Rates updated at: \(updatedAt), refreshing: \(shouldRefresh)")
+    return if shouldRefresh {
       await fetchRatesFromApi().print { _ in "Get latest rates from API" }
     } else {
       await fetchRatesFromStorage().map { $0.updatedAt(updatedAt) }

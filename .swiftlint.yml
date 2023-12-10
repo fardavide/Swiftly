@@ -7,3 +7,5 @@ disabled_rules:
 indentation: 2
 nesting:
   type_level: 2
+
+function_parameter_count: 6

@@ -22,7 +22,7 @@ public final class ConverterViewModel: ViewModel {
     self.converterRepository = converterRepository
     self.currencyRepository = currencyRepository
     state = initialState
-    Task { await load() }
+    Task { await load(forceRefresh: false) }
   }
 
   public func send(_ action: ConverterAction) {
@@ -49,7 +49,7 @@ public final class ConverterViewModel: ViewModel {
       }
       
     case .refresh:
-      Task { await load() }
+      Task { await load(forceRefresh: true) }
 
     case let .searchCurrencies(query):
       self.state.searchQuery = query
@@ -84,7 +84,7 @@ public final class ConverterViewModel: ViewModel {
     }
   }
 
-  private func load() async {
+  private func load(forceRefresh: Bool) async {
     emit {
       self.state.isLoading = true
     }
@@ -108,7 +108,7 @@ public final class ConverterViewModel: ViewModel {
       return
     }
 
-    let ratesResult = await currencyRepository.getLatestRates()
+    let ratesResult = await currencyRepository.getLatestRates(forceRefresh: forceRefresh)
     guard let rates = ratesResult.orNil() else {
       emit {
         self.state.isLoading = false
