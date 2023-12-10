@@ -308,7 +308,8 @@ let package = Package(
     .testTarget(
       name: "CurrencyApiTests",
       dependencies: [
-        "CurrencyApi"
+        "CurrencyApi",
+        .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Currency/Data/ApiTests"
     ),

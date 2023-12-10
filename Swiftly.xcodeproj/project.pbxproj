@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6B598BB32B151CFC00E43BA5 /* ShortcutsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */; };
 		6B598BB42B151CFC00E43BA5 /* ConvertIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */; };
+		6B5AA2A62B25A8BE00827B19 /* PowerAssert in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5AA2A52B25A8BE00827B19 /* PowerAssert */; };
+		6B5AA2A82B25A8FD00827B19 /* PowerAssert in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5AA2A72B25A8FD00827B19 /* PowerAssert */; };
 		6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5F9C982AF8078100CBFD19 /* NukeExtensions */; };
 		6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */; };
 		6BC467602B1A5FCE0076CEE9 /* CurrencyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */; };
@@ -84,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B5AA2A62B25A8BE00827B19 /* PowerAssert in Frameworks */,
 				6BD0FF4E2AF668BC00CC9579 /* Core in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B5AA2A82B25A8FD00827B19 /* PowerAssert in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +253,7 @@
 			name = SwiftlyTests;
 			packageProductDependencies = (
 				6BD0FF4D2AF668BC00CC9579 /* Core */,
+				6B5AA2A52B25A8BE00827B19 /* PowerAssert */,
 			);
 			productName = SwiftlyTests;
 			productReference = 6BD0FF2C2AF64E8000CC9579 /* SwiftlyTests.xctest */;
@@ -268,6 +273,9 @@
 				6BD0FF382AF64E8000CC9579 /* PBXTargetDependency */,
 			);
 			name = SwiftlyUITests;
+			packageProductDependencies = (
+				6B5AA2A72B25A8FD00827B19 /* PowerAssert */,
+			);
 			productName = SwiftlyUITests;
 			productReference = 6BD0FF362AF64E8000CC9579 /* SwiftlyUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -772,6 +780,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6B5AA2A52B25A8BE00827B19 /* PowerAssert */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */;
+			productName = PowerAssert;
+		};
+		6B5AA2A72B25A8FD00827B19 /* PowerAssert */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */;
+			productName = PowerAssert;
+		};
 		6B5F9C982AF8078100CBFD19 /* NukeExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;

@@ -1,6 +1,6 @@
 import Provider
 
-private let apiType: ApiType = .currencyApiDotCom
+private let currencyService: CurrencyService = .currencyApiDotCom
 
 public final class CurrencyApiModule: Module {
   public init() {}
@@ -8,13 +8,10 @@ public final class CurrencyApiModule: Module {
   public func register(on provider: Provider) {
     provider
       .register {
-        switch apiType {
-        case .currencyApiDotCom: CurrencyApiDotComApi()
+        switch currencyService {
+        case .currencyApiDotCom: CurrencyApiDotComApi(endpoints: Endpoints(for: .currencyApiDotCom))
+        case .exchangeRatesDotIo: fatalError("not implemented")
         } as any CurrencyApi
       }
   }
-}
-
-private enum ApiType {
-  case currencyApiDotCom
 }
