@@ -34,10 +34,10 @@ public struct ConverterView: View {
           }
           .navigationTitle(#string(.appName))
           .toolbar {
-            if !state.values.isEmpty {
+            if !state.values.isEmpty, let currency = state.selectedCurrency {
               ToolbarItem(placement: .keyboard) {
                 Button("Change currency") {
-                  // TODO: show sheet
+                  viewModel.send(.openSelectCurrency(selectedCurrency: currency))
                 }
               }
             }
@@ -47,6 +47,20 @@ public struct ConverterView: View {
                   .font(.caption2)
               }
             }
+          }
+          .sheet(isPresented: $viewModel.state.isSelectCurrencyOpen) {
+            SelectCurrencySheet(
+              uiModel: SelectCurrenciesUiModel(
+                currencies: state.searchCurrencies,
+                searchQuery: state.searchQuery,
+                selectedCurrency: state.requireSelectedCurrency(),
+                sorting: state.sorting
+              ),
+              send: viewModel.send
+            )
+#if os(macOS)
+            .frame(idealWidth: 400, idealHeight: 500)
+#endif
           }
         }
       }
@@ -58,8 +72,6 @@ private struct ContentView: View {
   let state: ConverterState
   let send: (ConverterAction) -> Void
   
-  @State private var sheetState: SelectCurrencySheetState = .close
-
   var body: some View {
     List(state.values, id: \.currency) { value in
       CurrencyValueRow(
@@ -70,7 +82,7 @@ private struct ContentView: View {
       )
       .swipeActions(edge: .trailing) {
         Button {
-          sheetState = .open(selectedCurrency: value.currency)
+          send(.openSelectCurrency(selectedCurrency: value.currency))
         } label: {
           Label(#string(.changeCurrency), systemImage: image(.arrowLeftArrowRight))
             .tint(Color.accentColor)
@@ -78,26 +90,11 @@ private struct ContentView: View {
       }
       .contextMenu {
         Button(#string(.changeCurrency)) {
-          sheetState = .open(selectedCurrency: value.currency)
+          send(.openSelectCurrency(selectedCurrency: value.currency))
         }
       }
     }
     .animation(.smooth, value: state.values)
-    .sheet(isPresented: $sheetState.isOpen) {
-      SelectCurrencySheet(
-        uiModel: SelectCurrenciesUiModel(
-          currencies: state.searchCurrencies,
-          searchQuery: state.searchQuery,
-          selectedCurrency: sheetState.requireSelectedCurrency(),
-          sorting: state.sorting
-        ),
-        send: send,
-        dismiss: { sheetState = .close }
-      )
-      #if os(macOS)
-      .frame(idealWidth: 400, idealHeight: 500)
-      #endif
-    }
   }
 }
 

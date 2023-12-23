@@ -7,18 +7,15 @@ import SwiftUI
 struct SelectCurrencySheet: View {
   let uiModel: SelectCurrenciesUiModel
   let send: (ConverterAction) -> Void
-  let dismiss: () -> Void
 
   @State private var searchQuery: String
   
   init(
     uiModel: SelectCurrenciesUiModel,
-    send: @escaping (ConverterAction) -> Void,
-    dismiss: @escaping () -> Void
+    send: @escaping (ConverterAction) -> Void
   ) {
     self.uiModel = uiModel
     self.send = send
-    self.dismiss = dismiss
     self.searchQuery = uiModel.searchQuery
   }
 
@@ -36,7 +33,6 @@ struct SelectCurrencySheet: View {
         CurrencyRow(currency: currency)
           .onTapGesture {
             send(.changeCurrency(prev: uiModel.selectedCurrency, new: currency))
-            dismiss()
           }
       }
       .animation(.smooth, value: uiModel.currencies)
@@ -45,8 +41,7 @@ struct SelectCurrencySheet: View {
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(#string(.close)) {
-            send(.searchCurrencies(query: ""))
-            dismiss()
+            send(.closeSelectCurrency)
           }
         }
         ToolbarItem(placement: .automatic) {
@@ -89,7 +84,6 @@ private struct CurrencyRow: View {
 #Preview {
   SelectCurrencySheet(
     uiModel: .samples.favoritesFirst,
-    send: { _ in },
-    dismiss: {}
+    send: { _ in }
   )
 }

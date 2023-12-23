@@ -25,10 +25,12 @@ public final class ConverterViewModel: ViewModel {
     Task { await load(forceRefresh: false) }
   }
 
+  // swiftlint:disable function_body_length
   public func send(_ action: ConverterAction) {
     switch action {
 
     case let .changeCurrency(prev, new):
+      state.isSelectCurrencyOpen = false
       let replacedIndex = state.values.firstIndex(where: { $0.currency == prev })!
       Task { await converterRepository.setCurrencyAt(position: replacedIndex, currency: new) }
       let newBaseCurrencyValue = getCurrencyWithRate(for: new.code)
@@ -47,6 +49,15 @@ public final class ConverterViewModel: ViewModel {
             .convert(to: getCurrencyWithRate(for: currencyValue.currency.code))
         }
       }
+      
+    case .closeSelectCurrency:
+      state.searchQuery = ""
+      state.searchCurrencies = currencies
+      state.isSelectCurrencyOpen = false
+      
+    case let .openSelectCurrency(selectedCurrency):
+      state.selectedCurrency = selectedCurrency
+      state.isSelectCurrencyOpen = true
       
     case .refresh:
       Task { await load(forceRefresh: true) }
@@ -76,6 +87,7 @@ public final class ConverterViewModel: ViewModel {
       }
 
     case let .updateValue(currencyValue):
+      state.selectedCurrency = currencyValue.currency
       state.values = state.values.map { v in
         v.currency == currencyValue.currency
           ? currencyValue
@@ -83,6 +95,7 @@ public final class ConverterViewModel: ViewModel {
       }
     }
   }
+  // swiftlint:enable function_body_length
 
   private func load(forceRefresh: Bool) async {
     emit {
