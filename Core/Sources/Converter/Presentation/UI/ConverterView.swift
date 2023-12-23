@@ -34,6 +34,13 @@ public struct ConverterView: View {
           }
           .navigationTitle(#string(.appName))
           .toolbar {
+            if !state.values.isEmpty {
+              ToolbarItem(placement: .keyboard) {
+                Button("Change currency") {
+                  // TODO: show sheet
+                }
+              }
+            }
             if let updatedAt = state.updatedAt {
               ToolbarItem(placement: .status) {
                 Text("Updated at: \(updatedAt)")
@@ -50,9 +57,8 @@ public struct ConverterView: View {
 private struct ContentView: View {
   let state: ConverterState
   let send: (ConverterAction) -> Void
-
-  @State private var isShowingSheet = false
-  @State private var selectedCurrencyValue: CurrencyValue?
+  
+  @State private var sheetState: SelectCurrencySheetState = .close
 
   var body: some View {
     List(state.values, id: \.currency) { value in
@@ -64,8 +70,7 @@ private struct ContentView: View {
       )
       .swipeActions(edge: .trailing) {
         Button {
-          selectedCurrencyValue = value
-          isShowingSheet = true
+          sheetState = .open(selectedCurrency: value.currency)
         } label: {
           Label(#string(.changeCurrency), systemImage: image(.arrowLeftArrowRight))
             .tint(Color.accentColor)
@@ -73,22 +78,21 @@ private struct ContentView: View {
       }
       .contextMenu {
         Button(#string(.changeCurrency)) {
-          selectedCurrencyValue = value
-          isShowingSheet = true
+          sheetState = .open(selectedCurrency: value.currency)
         }
       }
     }
     .animation(.smooth, value: state.values)
-    .sheet(isPresented: $isShowingSheet) {
+    .sheet(isPresented: $sheetState.isOpen) {
       SelectCurrencySheet(
         uiModel: SelectCurrenciesUiModel(
           currencies: state.searchCurrencies,
           searchQuery: state.searchQuery,
-          selectedCurrency: selectedCurrencyValue!.currency,
+          selectedCurrency: sheetState.requireSelectedCurrency(),
           sorting: state.sorting
         ),
         send: send,
-        dismiss: { isShowingSheet = false }
+        dismiss: { sheetState = .close }
       )
       #if os(macOS)
       .frame(idealWidth: 400, idealHeight: 500)
