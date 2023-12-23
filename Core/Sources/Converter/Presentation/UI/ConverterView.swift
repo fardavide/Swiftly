@@ -27,20 +27,7 @@ public struct ConverterView: View {
         NavigationStack {
           ContentView(
             state: state,
-            actions: ContentView.Actions(
-              changeCurrency: { prev, new in
-                viewModel.send(.changeCurrency(prev: prev, new: new))
-              },
-              searchCurrencies: { query in
-                viewModel.send(.searchCurrencies(query: query))
-              },
-              setSorting: { sorting in
-                viewModel.send(.setSorting(sorting))
-              },
-              updateValue: { currencyValue in
-                viewModel.send(.updateValue(currencyValue: currencyValue))
-              }
-            )
+            send: viewModel.send
           )
           .refreshable {
             viewModel.send(.refresh)
@@ -62,7 +49,7 @@ public struct ConverterView: View {
 
 private struct ContentView: View {
   let state: ConverterState
-  let actions: Actions
+  let send: (ConverterAction) -> Void
 
   @State private var isShowingSheet = false
   @State private var selectedCurrencyValue: CurrencyValue?
@@ -72,7 +59,7 @@ private struct ContentView: View {
       CurrencyValueRow(
         currencyValue: value,
         onValueChange: { newValue in
-          actions.updateValue(newValue.of(value.currencyWithRate))
+          send(.updateValue(currencyValue: newValue.of(value.currencyWithRate)))
         }
       )
       .swipeActions(edge: .trailing) {
@@ -97,32 +84,16 @@ private struct ContentView: View {
         uiModel: SelectCurrenciesUiModel(
           currencies: state.searchCurrencies,
           searchQuery: state.searchQuery,
+          selectedCurrency: selectedCurrencyValue!.currency,
           sorting: state.sorting
         ),
-        actions: SelectCurrencySheet.Actions(
-          dismiss: {
-            actions.searchCurrencies("")
-            isShowingSheet = false
-          },
-          selectCurrency: { newCurrency in
-            actions.changeCurrency(selectedCurrencyValue!.currency, newCurrency)
-            isShowingSheet = false
-          },
-          searchCurrencies: actions.searchCurrencies,
-          setSorting: actions.setSorting
-        )
+        send: send,
+        dismiss: { isShowingSheet = false }
       )
       #if os(macOS)
       .frame(idealWidth: 400, idealHeight: 500)
       #endif
     }
-  }
-  
-  struct Actions {
-    let changeCurrency: (_ prev: Currency, _ new: Currency) -> Void
-    let searchCurrencies: (_ query: String) -> Void
-    let setSorting: (_ currencyStoring: CurrencySorting) -> Void
-    let updateValue: (CurrencyValue) -> Void
   }
 }
 

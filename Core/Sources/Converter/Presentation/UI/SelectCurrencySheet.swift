@@ -6,13 +6,19 @@ import SwiftUI
 
 struct SelectCurrencySheet: View {
   let uiModel: SelectCurrenciesUiModel
-  let actions: Actions
-  
+  let send: (ConverterAction) -> Void
+  let dismiss: () -> Void
+
   @State private var searchQuery: String
   
-  init(uiModel: SelectCurrenciesUiModel, actions: Actions) {
+  init(
+    uiModel: SelectCurrenciesUiModel,
+    send: @escaping (ConverterAction) -> Void,
+    dismiss: @escaping () -> Void
+  ) {
     self.uiModel = uiModel
-    self.actions = actions
+    self.send = send
+    self.dismiss = dismiss
     self.searchQuery = uiModel.searchQuery
   }
 
@@ -21,21 +27,27 @@ struct SelectCurrencySheet: View {
       get: { searchQuery },
       set: { text in
         searchQuery = text
-        actions.searchCurrencies(text)
+        send(.searchCurrencies(query: text))
       }
     )
 
     NavigationStack {
       List(uiModel.currencies, id: \.code) { currency in
         CurrencyRow(currency: currency)
-          .onTapGesture { actions.selectCurrency(currency) }
+          .onTapGesture {
+            send(.changeCurrency(prev: uiModel.selectedCurrency, new: currency))
+            dismiss()
+          }
       }
       .animation(.smooth, value: uiModel.currencies)
       .scrollDismissesKeyboard(.automatic)
       .navigationTitle(#string(.changeCurrency))
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
-          Button(#string(.close), action: actions.dismiss)
+          Button(#string(.close)) {
+            send(.searchCurrencies(query: ""))
+            dismiss()
+          }
         }
         ToolbarItem(placement: .automatic) {
           let imageKey: SfKey = switch uiModel.sorting {
@@ -45,26 +57,12 @@ struct SelectCurrencySheet: View {
           Button(
             #string(.favoritesFirst),
             systemImage: image(imageKey),
-            action: { actions.setSorting(uiModel.sorting.toggle()) }
+            action: { send(.setSorting(uiModel.sorting.toggle())) }
           )
         }
       }
     }
     .searchable(text: searchQueryBinding, prompt: #string(.searchCurrency))
-  }
-
-  struct Actions {
-    let dismiss: () -> Void
-    let selectCurrency: (Currency) -> Void
-    let searchCurrencies: (_ query: String) -> Void
-    let setSorting: (CurrencySorting) -> Void
-
-    static let empty = Actions(
-      dismiss: {},
-      selectCurrency: { _ in },
-      searchCurrencies: { _ in },
-      setSorting: { _ in }
-    )
   }
 }
 
@@ -91,6 +89,7 @@ private struct CurrencyRow: View {
 #Preview {
   SelectCurrencySheet(
     uiModel: .samples.favoritesFirst,
-    actions: .empty
+    send: { _ in },
+    dismiss: {}
   )
 }

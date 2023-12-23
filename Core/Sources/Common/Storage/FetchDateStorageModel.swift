@@ -7,7 +7,7 @@ public struct FetchDateStorageModel {
 
 @Model
 public class FetchDateSwitfDataModel {
-  @Attribute(.unique) private let id = 0
+  @Attribute(.unique) public let id = 0
   public var date: Date
 
   init(date: Date) {
