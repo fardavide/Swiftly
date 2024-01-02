@@ -34,6 +34,13 @@ public struct ConverterView: View {
           }
           .navigationTitle(#string(.appName))
           .toolbar {
+            ToolbarItem(placement: .keyboard) {
+              Button {
+                UIApplication.shared.closeKeyboard()
+              } label: {
+                Image(systemName: image(.keyboardChevronCompactDown))
+              }
+            }
             if !state.values.isEmpty, let currency = state.selectedCurrency {
               ToolbarItem(placement: .keyboard) {
                 Button("Change currency") {
