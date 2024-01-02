@@ -1,3 +1,4 @@
+import AboutPresentation
 import DateUtils
 import Provider
 import ConverterData
@@ -8,6 +9,7 @@ import RealAppStorage
 final class SwiftlyModule: Module {
 
   var dependencies: [Module.Type] = [
+    AboutPresentationModule.self,
     AppStorageModule.self,
     ConverterDataModule.self,
     ConverterPresentionModule.self,

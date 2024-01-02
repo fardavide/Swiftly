@@ -16,6 +16,9 @@ let package = Package(
     .library(
       name: "Core",
       targets: [
+        // MARK: - About declaration
+        "AboutDomain",
+        "AboutPresentation",
         // MARK: - App Storage declaration
         "AppStorage",
         "RealAppStorage",
@@ -48,6 +51,43 @@ let package = Package(
     .package(url: "https://github.com/kishikawakatsumi/swift-power-assert", from: Version(0, 12, 0))
   ],
   targets: [
+    
+    // MARK: - About defintion
+    // MARK: About Domain
+    .target(
+      name: "AboutDomain",
+      dependencies: [
+        "Provider"
+      ],
+      path: "Sources/About/Domain"
+    ),
+    .testTarget(
+      name: "AboutDomainTests",
+      dependencies: [
+        "AboutDomain"
+      ],
+      path: "Tests/About/DomainTests"
+    ),
+    
+    // MARK: About Presentation
+    .target(
+      name: "AboutPresentation",
+      dependencies: [
+        "AboutDomain",
+        "Provider",
+        "SwiftlyUtils"
+      ],
+      path: "Sources/About/Presentation"
+    ),
+    .testTarget(
+      name: "AboutPresentationTests",
+      dependencies: [
+        "AboutPresentation",
+        "SwiftlyTest",
+        .product(name: "PowerAssert", package: "swift-power-assert")
+      ],
+      path: "Tests/About/PresentationTests"
+    ),
 
     // MARK: - App Storage definition
     // MARK: App Storage
