@@ -26,6 +26,7 @@ public final class ConverterViewModel: ViewModel {
   }
 
   // swiftlint:disable function_body_length
+  // swiftlint:disable cyclomatic_complexity
   public func send(_ action: ConverterAction) {
     switch action {
 
@@ -50,10 +51,16 @@ public final class ConverterViewModel: ViewModel {
         }
       }
       
+    case .closeAbout:
+      state.isAboutOpen = false
+      
     case .closeSelectCurrency:
       state.searchQuery = ""
       state.searchCurrencies = currencies
       state.isSelectCurrencyOpen = false
+      
+    case .openAbout:
+      state.isAboutOpen = true
       
     case let .openSelectCurrency(selectedCurrency):
       state.selectedCurrency = selectedCurrency
@@ -96,6 +103,7 @@ public final class ConverterViewModel: ViewModel {
     }
   }
   // swiftlint:enable function_body_length
+  // swiftlint:enable cyclomatic_complexity
 
   private func load(forceRefresh: Bool) async {
     emit {

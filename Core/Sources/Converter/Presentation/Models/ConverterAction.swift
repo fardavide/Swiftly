@@ -5,8 +5,14 @@ public enum ConverterAction {
   /// Replace a Currency in the Converter
   case changeCurrency(prev: Currency, new: Currency)
   
+  /// Close Abouit screen
+  case closeAbout
+  
   /// Close the View to select a new Currency
   case closeSelectCurrency
+  
+  /// Open About screen
+  case openAbout
   
   /// Open the View to select a new Currency
   case openSelectCurrency(selectedCurrency: Currency)

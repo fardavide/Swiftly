@@ -1,3 +1,4 @@
+import AboutPresentation
 import CurrencyDomain
 import Design
 import NukeUI
@@ -32,8 +33,16 @@ public struct ConverterView: View {
           .refreshable {
             viewModel.send(.refresh)
           }
-          .navigationTitle(#string(.appName))
+          .navigationTitle("Swiftly")
           .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+              Button {
+                viewModel.send(.openAbout)
+              } label: {
+                Image(systemName: image(.infoCircle))
+              }
+            }
+            // Keyboard close button
             ToolbarItem(placement: .keyboard) {
               Button {
                 UIApplication.shared.closeKeyboard()
@@ -41,6 +50,7 @@ public struct ConverterView: View {
                 Image(systemName: image(.keyboardChevronCompactDown))
               }
             }
+            // Keyboard change currency button
             if !state.values.isEmpty, let currency = state.selectedCurrency {
               ToolbarItem(placement: .keyboard) {
                 Button("Change currency") {
@@ -48,12 +58,16 @@ public struct ConverterView: View {
                 }
               }
             }
+            // Updated at text
             if let updatedAt = state.updatedAt {
               ToolbarItem(placement: .status) {
                 Text("Updated at: \(updatedAt)")
                   .font(.caption2)
               }
             }
+          }
+          .sheet(isPresented: $viewModel.state.isAboutOpen) {
+            AboutView(close: viewModel.send(.closeAbout))
           }
           .sheet(isPresented: $viewModel.state.isSelectCurrencyOpen) {
             SelectCurrencySheet(

@@ -5,6 +5,7 @@ import SwiftlyUtils
 public enum SfKey {
   case arrowLeftArrowRight
   case coloncurrencysign
+  case infoCircle
   case keyboardChevronCompactDown
   case star
   case starSlash
