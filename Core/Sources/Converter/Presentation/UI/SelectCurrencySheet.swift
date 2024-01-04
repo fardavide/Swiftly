@@ -37,10 +37,10 @@ struct SelectCurrencySheet: View {
       }
       .animation(.smooth, value: uiModel.currencies)
       .scrollDismissesKeyboard(.automatic)
-      .navigationTitle(#string(.changeCurrency))
+      .navigationTitle("Change currency")
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
-          Button(#string(.close)) {
+          Button("Close") {
             send(.closeSelectCurrency)
           }
         }
@@ -50,14 +50,14 @@ struct SelectCurrencySheet: View {
           case .favoritesFirst: .starSlash
           }
           Button(
-            #string(.favoritesFirst),
+            "Favorites first",
             systemImage: image(imageKey),
             action: { send(.setSorting(uiModel.sorting.toggle())) }
           )
         }
       }
     }
-    .searchable(text: searchQueryBinding, prompt: #string(.searchCurrency))
+    .searchable(text: searchQueryBinding, prompt: "Search currency")
   }
 }
 
@@ -77,7 +77,7 @@ private struct CurrencyRow: View {
         .font(.callout)
     }
     .accessibilityElement(children: .ignore)
-    .accessibilityLabel(#string(.currencyWith(name: currency.name)))
+    .accessibilityLabel("Currency: \(currency.name)")
   }
 }
 

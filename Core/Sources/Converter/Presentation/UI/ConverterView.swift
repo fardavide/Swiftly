@@ -92,12 +92,12 @@ private struct ContentView: View {
         Button {
           send(.openSelectCurrency(selectedCurrency: value.currency))
         } label: {
-          Label(#string(.changeCurrency), systemImage: image(.arrowLeftArrowRight))
+          Label("Change currency", systemImage: image(.arrowLeftArrowRight))
             .tint(Color.accentColor)
         }
       }
       .contextMenu {
-        Button(#string(.changeCurrency)) {
+        Button("Change currency") {
           send(.openSelectCurrency(selectedCurrency: value.currency))
         }
       }
@@ -129,12 +129,12 @@ private struct CurrencyValueRow: View {
         Text(currency.code.value)
       }
       .accessibilityElement(children: .ignore)
-      .accessibilityLabel(#string(.currencyWith(name: currency.name)))
+      .accessibilityLabel("Currency: \(currency.name)")
       Spacer()
       VStack(alignment: .trailing) {
         
         TextField(
-          #string(.value),
+          "Value",
           value: textFieldBinding,
           format: isFocused ? .number : .number.precision(.fractionLength(2))
         )

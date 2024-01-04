@@ -29,7 +29,6 @@ let package = Package(
         "Network",
         "Provider",
         "Resources",
-        "ResourcesMacro",
         "SwiftlyStorage",
         "SwiftlyTest",
         "SwiftlyUtils",
@@ -187,18 +186,9 @@ let package = Package(
     .target(
       name: "Resources",
       dependencies: [
-        "ResourcesMacro",
         "SwiftlyUtils"
       ],
-      path: "Sources/Common/Resources/Api"
-    ),
-    .macro(
-      name: "ResourcesMacro",
-      dependencies: [
-        .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-        .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
-      ],
-      path: "Sources/Common/Resources/Macro"
+      path: "Sources/Common/Resources"
     ),
     .testTarget(
       name: "ResourcesTests",
@@ -206,16 +196,7 @@ let package = Package(
         "Resources",
         .product(name: "PowerAssert", package: "swift-power-assert")
       ],
-      path: "Tests/Common/Resources/ApiTests"
-    ),
-    .testTarget(
-      name: "ResourcesMacroTests",
-      dependencies: [
-        "ResourcesMacro",
-        .product(name: "PowerAssert", package: "swift-power-assert"),
-        .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
-      ],
-      path: "Tests/Common/Resources/MacroTests"
+      path: "Tests/Common/ResourcesTests"
     ),
 
     // MARK: Storage
