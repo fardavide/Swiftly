@@ -1,6 +1,6 @@
-import ConverterPresentation
 import CurrencyApi
 import CurrencyData
+import HomePresentation
 import Nuke
 import Provider
 import Resources
@@ -18,7 +18,7 @@ struct SwiftlyApp: App {
 
   var body: some Scene {
     WindowGroup {
-      ConverterView()
+      HomeView()
     }
   }
 }

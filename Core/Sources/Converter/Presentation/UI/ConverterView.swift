@@ -9,9 +9,9 @@ import SwiftlyUtils
 
 public struct ConverterView: View {
   @StateObject var viewModel: ConverterViewModel = getProvider().get()
-
+  
   public init() {}
-
+  
   public var body: some View {
     let state = viewModel.state
     
@@ -20,69 +20,56 @@ public struct ConverterView: View {
       
     } else {
       switch state.error {
-
+        
       case let .some(error):
         Text(error)
-
+        
       case .none:
-        NavigationStack {
-          ContentView(
-            state: state,
+        ContentView(
+          state: state,
+          send: viewModel.send
+        )
+        .refreshable {
+          viewModel.send(.refresh)
+        }
+        .toolbar {
+          // Keyboard close button
+          ToolbarItem(placement: .keyboard) {
+            Button {
+              UIApplication.shared.closeKeyboard()
+            } label: {
+              Image(systemName: image(.keyboardChevronCompactDown))
+            }
+          }
+          // Keyboard change currency button
+          if !state.values.isEmpty, let currency = state.selectedCurrency {
+            ToolbarItem(placement: .keyboard) {
+              Button("Change currency") {
+                viewModel.send(.openSelectCurrency(selectedCurrency: currency))
+              }
+            }
+          }
+          // Updated at text
+          if let updatedAt = state.updatedAt {
+            ToolbarItem(placement: .status) {
+              Text("Updated at: \(updatedAt)")
+                .font(.caption2)
+            }
+          }
+        }
+        .sheet(isPresented: $viewModel.state.isSelectCurrencyOpen) {
+          SelectCurrencySheet(
+            uiModel: SelectCurrenciesUiModel(
+              currencies: state.searchCurrencies,
+              searchQuery: state.searchQuery,
+              selectedCurrency: state.requireSelectedCurrency(),
+              sorting: state.sorting
+            ),
             send: viewModel.send
           )
-          .refreshable {
-            viewModel.send(.refresh)
-          }
-          .navigationTitle("Swiftly")
-          .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-              Button {
-                viewModel.send(.openAbout)
-              } label: {
-                Image(systemName: image(.infoCircle))
-              }
-            }
-            // Keyboard close button
-            ToolbarItem(placement: .keyboard) {
-              Button {
-                UIApplication.shared.closeKeyboard()
-              } label: {
-                Image(systemName: image(.keyboardChevronCompactDown))
-              }
-            }
-            // Keyboard change currency button
-            if !state.values.isEmpty, let currency = state.selectedCurrency {
-              ToolbarItem(placement: .keyboard) {
-                Button("Change currency") {
-                  viewModel.send(.openSelectCurrency(selectedCurrency: currency))
-                }
-              }
-            }
-            // Updated at text
-            if let updatedAt = state.updatedAt {
-              ToolbarItem(placement: .status) {
-                Text("Updated at: \(updatedAt)")
-                  .font(.caption2)
-              }
-            }
-          }
-          .sheet(isPresented: $viewModel.state.isAboutOpen) {
-            AboutView(close: viewModel.send(.closeAbout))
-          }
-          .sheet(isPresented: $viewModel.state.isSelectCurrencyOpen) {
-            SelectCurrencySheet(
-              uiModel: SelectCurrenciesUiModel(
-                currencies: state.searchCurrencies,
-                searchQuery: state.searchQuery,
-                selectedCurrency: state.requireSelectedCurrency(),
-                sorting: state.sorting
-              ),
-              send: viewModel.send
-            )
 #if os(macOS)
-            .frame(idealWidth: 400, idealHeight: 500)
+          .frame(idealWidth: 400, idealHeight: 500)
 #endif
-          }
         }
       }
     }

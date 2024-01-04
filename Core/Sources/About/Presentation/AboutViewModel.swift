@@ -40,7 +40,7 @@ public extension AboutViewModel {
 }
 
 public class AboutViewModelSamples {
-  let success = AboutViewModel(
+  public let success = AboutViewModel(
     getAppVersion: FakeGetAppVersion(appVersion: AppVersion(major: 1, minor: 2))
   )
   let error = AboutViewModel(

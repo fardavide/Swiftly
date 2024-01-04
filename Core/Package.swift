@@ -42,7 +42,9 @@ let package = Package(
         "CurrencyApi",
         "CurrencyData",
         "CurrencyDomain",
-        "CurrencyStorage"
+        "CurrencyStorage",
+        // MARK: - Home declarations
+        "HomePresentation"
       ]
     )
   ],
@@ -413,6 +415,25 @@ let package = Package(
         .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Currency/Data/StorageTests"
+    ),
+    
+    // MARK: - Home definitions
+    // MARK: Home Presentation
+    .target(
+      name: "HomePresentation",
+      dependencies: [
+        "AboutPresentation",
+        "ConverterPresentation",
+        "Provider"
+      ],
+      path: "Sources/Home/Presentation"
+    ),
+    .testTarget(
+      name: "HomePresentationTests",
+      dependencies: [
+        "HomePresentation"
+      ],
+      path: "Tests/Home/PresentationTests"
     )
   ]
 )

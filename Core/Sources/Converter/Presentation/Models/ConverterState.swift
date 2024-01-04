@@ -2,7 +2,6 @@ import CurrencyDomain
 
 public struct ConverterState {
   var error: String?
-  var isAboutOpen: Bool
   var isLoading: Bool
   var isSelectCurrencyOpen: Bool
   var searchCurrencies: [Currency]
@@ -26,7 +25,6 @@ public extension ConverterState {
 public extension ConverterState {
   
   static let initial = ConverterState(
-    isAboutOpen: false,
     isLoading: true,
     isSelectCurrencyOpen: false,
     searchCurrencies: [],
@@ -36,7 +34,6 @@ public extension ConverterState {
   )
   
   static let sample = ConverterState(
-    isAboutOpen: false,
     isLoading: false,
     isSelectCurrencyOpen: false,
     searchCurrencies: Currency.samples.all(),
