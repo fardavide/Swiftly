@@ -21,14 +21,7 @@ class RealGetAppVersion: GetAppVersion {
       return .failure(.cantGetBuild)
     }
     
-    let parts = appVersionString.split(separator: ".")
-    return .success(
-      AppVersion(
-        major: Int(parts[0])!,
-        minor: Int(parts[1])!,
-        build: Int(appBuildString)!
-      )
-    )
+    return .success(AppVersion(version: appVersionString, build: appBuildString))
   }
 }
 

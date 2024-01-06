@@ -28,17 +28,12 @@ public final class AboutViewModel: ViewModel {
   }
   
   private func load() {
-    
-    let appVersionResult = getAppVersion.run()
-      .map { "\($0.major).\($0.minor) (\($0.build))" }
-    guard let appVersion = appVersionResult.orNil() else {
+    guard let appVersion = getAppVersion.run().map(\.string).orNil() else {
       emit { self.state = .error }
       return
     }
  
-    let appNameResult = getAppName.run()
-      .map(\.value)
-    guard let appName = appNameResult.orNil() else {
+    guard let appName = getAppName.run().map(\.value).orNil() else {
       emit { self.state = .error }
       return
     }
