@@ -48,7 +48,6 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-syntax.git", from: Version(509, 0, 0)),
     .package(url: "https://github.com/kean/Nuke", from: Version(12, 2, 0)),
     .package(url: "https://github.com/kishikawakatsumi/swift-power-assert", from: Version(0, 12, 0))
   ],

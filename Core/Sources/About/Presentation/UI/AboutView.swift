@@ -13,15 +13,17 @@ public struct AboutView: View {
     let state = viewModel.state
     NavigationStack {
       VStack {
-        switch state.appVersion {
+        switch state {
         case .loading:
           ProgressView()
         case .error:
           Text("Cannot get app version")
-        case let .content(appVersion):
-          Text("Version \(appVersion)")
+        case let .content(aboutUiModel):
+          ContentView(uiModel: aboutUiModel)
         }
       }
+      .navigationTitle("About")
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button("Close") {
@@ -33,12 +35,35 @@ public struct AboutView: View {
   }
 }
 
-#Preview("Error") {
-  Provider.setupPreview(viewModel: AboutViewModel.samples.error)
-  return AboutView(close: {}())
+private struct ContentView: View {
+  private let uiModel: AboutUiModel
+  
+  init(uiModel: AboutUiModel) {
+    self.uiModel = uiModel
+  }
+  
+  var body: some View {
+    VStack {
+      Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
+        .resizable()
+        .frame(width: 100, height: 100)
+        .clipShape(.buttonBorder)
+        .shadow(radius: 10)
+        .padding(.bottom)
+      Text(uiModel.appName)
+        .font(.largeTitle)
+        .bold()
+      Text("Version \(uiModel.appVersion)")
+    }
+  }
 }
 
 #Preview("Success") {
   Provider.setupPreview(viewModel: AboutViewModel.samples.success)
+  return AboutView(close: {}())
+}
+
+#Preview("Error") {
+  Provider.setupPreview(viewModel: AboutViewModel.samples.versionError)
   return AboutView(close: {}())
 }

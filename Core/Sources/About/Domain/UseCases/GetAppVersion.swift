@@ -7,11 +7,17 @@ public protocol GetAppVersion {
 
 class RealGetAppVersion: GetAppVersion {
   
+  let bundleInfo: BundleInfo
+  
+  init(bundleInfo: BundleInfo) {
+    self.bundleInfo = bundleInfo
+  }
+  
   func run() -> Result<AppVersion, AppVersionError> {
-    guard let appVersionString = getBundleVersion() else {
+    guard let appVersionString = bundleInfo.appVersion.orNil() else {
       return .failure(.cantGetVersion)
     }
-    guard let appBuildString = getBuildNumber() else {
+    guard let appBuildString = bundleInfo.buildNumber.orNil() else {
       return .failure(.cantGetBuild)
     }
     
@@ -23,14 +29,6 @@ class RealGetAppVersion: GetAppVersion {
         build: Int(appBuildString)!
       )
     )
-  }
-  
-  private func getBundleVersion() -> String? {
-    Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-  }
-  
-  private func getBuildNumber() -> String? {
-    Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
   }
 }
 

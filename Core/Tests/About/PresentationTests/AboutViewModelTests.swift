@@ -12,20 +12,40 @@ final class AboutViewModelTests: XCTestCase {
     let scenario = Scenario()
     
     // then
-    #assert(scenario.sut.state.appVersion == .loading)
+    #assert(scenario.sut.state == .loading)
   }
   
   func test_appVersionIsLoadedCorrectly() async {
     // given
-    let scenario = Scenario(appVersion: AppVersion(major: 1, minor: 2, build: 3))
+    let scenario = Scenario(
+      appName: "TestAppName",
+      appVersion: AppVersion(major: 1, minor: 2, build: 3)
+    )
     
     // when
-    await test(scenario.sut.$state.map(\.appVersion)) { turbine in
+    await test(scenario.sut.$state) { turbine in
       await turbine.expectInitial(value: .loading)
 
       // then
       let result = await turbine.value()
-      #assert(result == .content("1.2 (3)"))
+      #assert(result.requireContent().appVersion == "1.2 (3)")
+    }
+  }
+  
+  func test_appNameIsLoadedCorrectly() async {
+    // given
+    let scenario = Scenario(
+      appName: "TestAppName",
+      appVersion: AppVersion(major: 1, minor: 2, build: 3)
+    )
+    
+    // when
+    await test(scenario.sut.$state) { turbine in
+      await turbine.expectInitial(value: .loading)
+
+      // then
+      let result = await turbine.value()
+      #assert(result.requireContent().appName == "TestAppName")
     }
   }
 }
@@ -35,15 +55,21 @@ private class Scenario {
   let sut: AboutViewModel
   
   init(
+    getAppName: GetAppName = FakeGetAppName(),
     getAppVersion: GetAppVersion = FakeGetAppVersion()
   ) {
-    sut = AboutViewModel(getAppVersion: getAppVersion)
+    sut = AboutViewModel(
+      getAppName: getAppName,
+      getAppVersion: getAppVersion
+    )
   }
   
   convenience init(
+    appName: String,
     appVersion: AppVersion
   ) {
     self.init(
+      getAppName: FakeGetAppName(appName: appName),
       getAppVersion: FakeGetAppVersion(appVersion: appVersion)
     )
   }

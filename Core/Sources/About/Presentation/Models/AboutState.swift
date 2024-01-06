@@ -1,14 +1,9 @@
 import Foundation
 import SwiftlyUtils
 
-public struct AboutState {
-  let appVersion: GenericLce<String>
-}
+public typealias AboutState = GenericLce<AboutUiModel>
 
-extension AboutState {
-  static var initial: AboutState {
-    AboutState(
-      appVersion: .loading
-    )
-  }
+public struct AboutUiModel: Equatable {
+  let appName: String
+  let appVersion: String
 }

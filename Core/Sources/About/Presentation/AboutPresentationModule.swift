@@ -10,7 +10,10 @@ public final class AboutPresentationModule: Module {
   
   public func register(on provider: Provider) {
     provider.register {
-      AboutViewModel(getAppVersion: provider.get())
+      AboutViewModel(
+        getAppName: provider.get(),
+        getAppVersion: provider.get()
+      )
     }
   }
 }

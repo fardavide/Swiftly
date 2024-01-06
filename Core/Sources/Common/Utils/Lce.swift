@@ -8,6 +8,21 @@ public enum Lce<C, E: Error>: Equatable where C: Equatable, E: Equatable {
 /// Lce with GenericError
 public typealias GenericLce<C: Equatable> = Lce<C, GenericError>
 
+public extension Lce {
+  func requireContent() -> C {
+    switch self {
+    case let .content(content): content
+    default: fatalError("Required content, but was \(self)")
+    }
+  }
+}
+
+public extension Lce where E == GenericError {
+  static var error: Lce {
+    .error(GenericError())
+  }
+}
+
 public extension Result where Success: Equatable {
   
   /// Map Result to Lce
@@ -22,11 +37,5 @@ public extension Result where Success: Equatable {
   /// Maps Result to GenericLce
   func toLce() -> GenericLce<Success> {
     toLce(error: { _ in GenericError() })
-  }
-}
-
-public extension Lce where E == GenericError {
-  static var error: Lce {
-    .error(GenericError())
   }
 }

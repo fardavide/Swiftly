@@ -6,13 +6,16 @@ public final class AboutViewModel: ViewModel {
   public typealias Action = AboutAction
   public typealias State = AboutState
   
+  private let getAppName: GetAppName
   private let getAppVersion: GetAppVersion
   @Published public var state: AboutState
   
   init(
+    getAppName: GetAppName,
     getAppVersion: GetAppVersion,
-    initialState: AboutState = AboutState.initial
+    initialState: AboutState = .loading
   ) {
+    self.getAppName = getAppName
     self.getAppVersion = getAppVersion
     state = initialState
     Task { load() }
@@ -25,12 +28,28 @@ public final class AboutViewModel: ViewModel {
   }
   
   private func load() {
-    let appVersion: GenericLce<String> = getAppVersion.run()
+    
+    let appVersionResult = getAppVersion.run()
       .map { "\($0.major).\($0.minor) (\($0.build))" }
-      .toLce()
+    guard let appVersion = appVersionResult.orNil() else {
+      emit { self.state = .error }
+      return
+    }
+ 
+    let appNameResult = getAppName.run()
+      .map(\.value)
+    guard let appName = appNameResult.orNil() else {
+      emit { self.state = .error }
+      return
+    }
     
     emit {
-      self.state = AboutState(appVersion: appVersion)
+      self.state = .content(
+        AboutUiModel(
+          appName: appName,
+          appVersion: appVersion
+        )
+      )
     }
   }
 }
@@ -41,9 +60,15 @@ public extension AboutViewModel {
 
 public class AboutViewModelSamples {
   public let success = AboutViewModel(
+    getAppName: FakeGetAppName(appName: "Swiftly"),
     getAppVersion: FakeGetAppVersion(appVersion: AppVersion(major: 1, minor: 2, build: 3))
   )
-  let error = AboutViewModel(
+  let nameError = AboutViewModel(
+    getAppName: FakeGetAppName(appNameResult: .failure(.cantGetAppName)),
+    getAppVersion: FakeGetAppVersion(appVersion: AppVersion(major: 1, minor: 2, build: 3))
+  )
+  let versionError = AboutViewModel(
+    getAppName: FakeGetAppName(appName: "Swiftly"),
     getAppVersion: FakeGetAppVersion(appVersionResult: .failure(.cantGetBuild))
   )
 }

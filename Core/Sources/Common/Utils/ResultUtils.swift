@@ -1,30 +1,26 @@
 import Foundation
 
-public extension Result {
-
-  /// Return value of `Success` or `defaultValue`
-  /// - Parameter defaultValue: value to retuns if `.failure`
-  /// - Returns: value of `Success` or `defaultValue`
-  @inlinable func or(default defaultValue: Success) -> Success {
-    orNil() ?? defaultValue
-  }
-
-  /// Return value of `Success` or result of `handle`
-  /// - Parameter handle: closure that calculates the value to retuns if `.failure`
-  /// - Returns: value of `Success` or result of `handle`
-  @inlinable func getOr(handle: (Failure) -> Success) -> Success {
-    switch self {
-    case let .success(success): success
-    case let .failure(failure): handle(failure)
-    }
-  }
+public extension Result where Failure == GenericError {
   
-  /// Return value of `Success` or throw `Failure`
-  /// - Returns: value of `Success` or throw `Failure`
-  func orThrow() -> Success {
-    getOr { error in fatalError("\(error)") }
+  /// Initializes a `Result` with an optional success value.
+  ///
+  /// This initializer allows for the creation of a `Result` object from an optional value.
+  /// If the provided value is non-nil, the `Result` is a success, containing the value.
+  /// If the value is nil, the `Result` is a failure, containing a `GenericError`.
+  ///
+  /// - Parameter value: An optional value of the generic `Success` type.
+  ///
+  /// Usage:
+  /// ```
+  /// let optionalData: Data? = fetchData()
+  /// ```
+  init(_ value: Success?) {
+    self = value != nil ? .success(value!) : .failure(GenericError())
   }
+}
 
+public extension Result {
+  
   /// Executes `f` in case of `Failure`
   /// - Parameter f: closure to execute
   /// - Returns: self
@@ -35,7 +31,7 @@ public extension Result {
     }
     return self
   }
-
+  
   /// Executes `f` in case of `Success`
   /// - Parameter f: closure to execute
   /// - Returns: self
@@ -46,7 +42,24 @@ public extension Result {
     }
     return self
   }
-
+  
+  /// Return value of `Success` or `defaultValue`
+  /// - Parameter defaultValue: value to retuns if `.failure`
+  /// - Returns: value of `Success` or `defaultValue`
+  @inlinable func or(default defaultValue: Success) -> Success {
+    orNil() ?? defaultValue
+  }
+  
+  /// Return value of `Success` or result of `handle`
+  /// - Parameter handle: closure that calculates the value to retuns if `.failure`
+  /// - Returns: value of `Success` or result of `handle`
+  @inlinable func or(handle: (Failure) -> Success) -> Success {
+    switch self {
+    case let .success(success): success
+    case let .failure(failure): handle(failure)
+    }
+  }
+  
   /// Return value of `Success` or `nil`
   /// - Returns: value of `Success` or `nil`
   @inlinable func orNil() -> Success? {
@@ -55,7 +68,13 @@ public extension Result {
     case .failure: nil
     }
   }
-
+  
+  /// Return value of `Success` or throw `Failure`
+  /// - Returns: value of `Success` or throw `Failure`
+  func orThrow() -> Success {
+    or { error in fatalError("\(error)") }
+  }
+  
   /// Handle `Failure` using `transform`, that will return a `Success` or a new `Failure`
   /// - Parameter transform: closure to handle `Failure`
   /// - Returns: `Result` of `Success` and `NewFailure`
@@ -67,7 +86,7 @@ public extension Result {
     case let .failure(error): await transform(error)
     }
   }
-
+  
   /// Handle `Failure` using `transform`, that will return a `Success` or a new `Failure`
   /// - Parameter transform: closure to handle `Failure`
   /// - Returns: `Result` of `Success` and `NewFailure`
@@ -88,7 +107,7 @@ public extension Result {
     case let .failure(error): error
     }
   }
-
+  
   /// async version of `flatMap`
   @inlinable func then<NewSuccess>(
     _ transform: (Success) async -> Result<NewSuccess, Failure>
