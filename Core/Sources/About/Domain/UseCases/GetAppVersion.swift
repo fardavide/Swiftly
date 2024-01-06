@@ -9,13 +9,18 @@ class RealGetAppVersion: GetAppVersion {
   
   func run() -> Result<AppVersion, AppVersionError> {
     guard let appVersionString = getBundleVersion() else {
-      return .failure(.unknown)
+      return .failure(.cantGetVersion)
     }
+    guard let appBuildString = getBuildNumber() else {
+      return .failure(.cantGetBuild)
+    }
+    
     let parts = appVersionString.split(separator: ".")
     return .success(
       AppVersion(
         major: Int(parts[0])!,
-        minor: Int(parts[1])!
+        minor: Int(parts[1])!,
+        build: Int(appBuildString)!
       )
     )
   }
@@ -23,13 +28,17 @@ class RealGetAppVersion: GetAppVersion {
   private func getBundleVersion() -> String? {
     Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
   }
+  
+  private func getBuildNumber() -> String? {
+    Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+  }
 }
 
 public class FakeGetAppVersion: GetAppVersion {
   
   let appVersionResult: Result<AppVersion, AppVersionError>
   
-  public init(appVersionResult: Result<AppVersion, AppVersionError> = .failure(.unknown)) {
+  public init(appVersionResult: Result<AppVersion, AppVersionError> = .failure(.cantGetVersion)) {
     self.appVersionResult = appVersionResult
   }
   

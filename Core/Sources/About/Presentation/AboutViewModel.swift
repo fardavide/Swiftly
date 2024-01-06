@@ -26,7 +26,7 @@ public final class AboutViewModel: ViewModel {
   
   private func load() {
     let appVersion: GenericLce<String> = getAppVersion.run()
-      .map { "\($0.major).\($0.minor)" }
+      .map { "\($0.major).\($0.minor) (\($0.build))" }
       .toLce()
     
     emit {
@@ -41,9 +41,9 @@ public extension AboutViewModel {
 
 public class AboutViewModelSamples {
   public let success = AboutViewModel(
-    getAppVersion: FakeGetAppVersion(appVersion: AppVersion(major: 1, minor: 2))
+    getAppVersion: FakeGetAppVersion(appVersion: AppVersion(major: 1, minor: 2, build: 3))
   )
   let error = AboutViewModel(
-    getAppVersion: FakeGetAppVersion(appVersionResult: .failure(.unknown))
+    getAppVersion: FakeGetAppVersion(appVersionResult: .failure(.cantGetBuild))
   )
 }

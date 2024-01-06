@@ -17,7 +17,7 @@ final class AboutViewModelTests: XCTestCase {
   
   func test_appVersionIsLoadedCorrectly() async {
     // given
-    let scenario = Scenario(appVersion: AppVersion(major: 1, minor: 2))
+    let scenario = Scenario(appVersion: AppVersion(major: 1, minor: 2, build: 3))
     
     // when
     await test(scenario.sut.$state.map(\.appVersion)) { turbine in
@@ -25,7 +25,7 @@ final class AboutViewModelTests: XCTestCase {
 
       // then
       let result = await turbine.value()
-      #assert(result == .content("1.2"))
+      #assert(result == .content("1.2 (3)"))
     }
   }
 }
