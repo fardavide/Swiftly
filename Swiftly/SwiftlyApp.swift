@@ -6,11 +6,11 @@ import Provider
 import Resources
 import SwiftUI
 
-private let provider = Provider.start()
-
 @main
 struct SwiftlyApp: App {
 
+  private let provider = Provider.start()
+  
   init() {
     SwiftlyModule().start(with: provider)
     ImagePipeline.shared = ImagePipeline(configuration: .withURLCache)

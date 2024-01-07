@@ -22,7 +22,7 @@ public struct ConverterView: View {
       switch state.error {
         
       case let .some(error):
-        Text(error)
+        ErrorView(error) { viewModel.send(.refresh) }
         
       case .none:
         ContentView(

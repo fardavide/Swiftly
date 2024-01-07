@@ -106,7 +106,8 @@ public final class ConverterViewModel: ViewModel {
     guard let currencies = currenciesResult.orNil() else {
       emit {
         self.state.isLoading = false
-        self.state.error = "Cannot load currencies: \(currenciesResult)"
+        self.state.error = currenciesResult.requireFailure()
+          .toErrorModel(message: "Cannot load currencies")
       }
       return
     }
@@ -116,7 +117,8 @@ public final class ConverterViewModel: ViewModel {
     guard let favoriteCurrencies = favoriteCurrenciesResult.orNil() else {
       emit {
         self.state.isLoading = false
-        self.state.error = "Cannot load favorite currencies: \(favoriteCurrenciesResult)"
+        self.state.error = favoriteCurrenciesResult.requireFailure()
+          .toErrorModel(message: "Cannot load favorite currencies")
       }
       return
     }
@@ -125,7 +127,8 @@ public final class ConverterViewModel: ViewModel {
     guard let rates = ratesResult.orNil() else {
       emit {
         self.state.isLoading = false
-        self.state.error = "Cannot load rates: \(ratesResult)"
+        self.state.error = ratesResult.requireFailure()
+          .toErrorModel(message: "Cannot load rates")
       }
       return
     }

@@ -1,7 +1,9 @@
 import CurrencyDomain
+import Design
+import SwiftlyUtils
 
 public struct ConverterState {
-  var error: String?
+  var error: ErrorModel?
   var isLoading: Bool
   var isSelectCurrencyOpen: Bool
   var searchCurrencies: [Currency]

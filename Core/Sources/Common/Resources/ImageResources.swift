@@ -1,12 +1,17 @@
 import SwiftlyUtils
 
 /// Keys for SF symbols
-/// Use with `image` func to resolve a `String`
+/// Use with `image` func to resolve a `String`, or with `SfSymbol` for the UI component
 public enum SfKey {
   case arrowLeftArrowRight
   case coloncurrencysign
+  case exclamationmarkCircle
+  case exclamationmarkTriangle
+  case externaldriveBadgeExclamationmark
+  case externaldriveTrianglebadgeExclamationmark
   case infoCircle
   case keyboardChevronCompactDown
+  case networkSlash
   case star
   case starSlash
   case xmarkCircleFill

@@ -123,9 +123,6 @@
         }
       }
     },
-    "Hello, world!" : {
-
-    },
     "Key" : {
       "extractionState" : "manual",
       "localizations" : {
