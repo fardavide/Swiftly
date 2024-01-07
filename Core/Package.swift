@@ -28,7 +28,6 @@ let package = Package(
         "Design",
         "Network",
         "Provider",
-        "Resources",
         "SwiftlyStorage",
         "SwiftlyTest",
         "SwiftlyUtils",
@@ -48,8 +47,9 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/kean/Nuke", from: Version(12, 2, 0)),
-    .package(url: "https://github.com/kishikawakatsumi/swift-power-assert", from: Version(0, 12, 0))
+    .package(url: "https://github.com/kean/Nuke", .upToNextMajor(from: Version(12, 2, 0))),
+    .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: Version(4, 1, 1))),
+    .package(url: "https://github.com/kishikawakatsumi/swift-power-assert", .upToNextMajor(from: Version(0, 12, 0)))
   ],
   targets: [
     
@@ -146,7 +146,8 @@ let package = Package(
     .target(
       name: "Design",
       dependencies: [
-        "CurrencyDomain"
+        "CurrencyDomain",
+        "SFSafeSymbols"
       ],
       path: "Sources/Common/Design"
     ),
@@ -179,23 +180,6 @@ let package = Package(
         .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Common/ProviderTests"
-    ),
-
-    // MARK: Resources
-    .target(
-      name: "Resources",
-      dependencies: [
-        "SwiftlyUtils"
-      ],
-      path: "Sources/Common/Resources"
-    ),
-    .testTarget(
-      name: "ResourcesTests",
-      dependencies: [
-        "Resources",
-        .product(name: "PowerAssert", package: "swift-power-assert")
-      ],
-      path: "Tests/Common/ResourcesTests"
     ),
 
     // MARK: Storage
@@ -284,9 +268,9 @@ let package = Package(
         "ConverterDomain",
         "Design",
         "Provider",
-        "Resources",
         .product(name: "Nuke", package: "Nuke"),
-        .product(name: "NukeUI", package: "Nuke")
+        .product(name: "NukeUI", package: "Nuke"),
+        .product(name: "SFSafeSymbols", package: "SFSafeSymbols")
       ],
       path: "Sources/Converter/Presentation"
     ),

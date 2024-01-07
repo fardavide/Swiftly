@@ -1,4 +1,4 @@
-import Resources
+import SFSafeSymbols
 import SwiftlyUtils
 import SwiftUI
 
@@ -6,13 +6,13 @@ public struct ErrorView: View {
   
   let title: LocalizedStringKey
   let subtitle: LocalizedStringKey?
-  let image: SfKey
+  let image: SFSymbol
   let retry: (() -> Void)?
   
   public init(
     title: LocalizedStringKey,
     subtitle: LocalizedStringKey? = nil,
-    image: SfKey,
+    image: SFSymbol,
     retry: (() -> Void)? = nil
   ) {
     self.title = title
@@ -35,7 +35,7 @@ public struct ErrorView: View {
   
   public var body: some View {
     VStack {
-      SfSymbol(key: image)
+      Image(systemSymbol: image)
         .font(.system(size: 80))
         .symbolEffect(.pulse)
         .foregroundStyle(.black, .red)
@@ -63,9 +63,13 @@ public struct ErrorView: View {
 public struct ErrorModel {
   let title: LocalizedStringKey
   let subtitle: LocalizedStringKey?
-  let image: SfKey
+  let image: SFSymbol
   
-  public init(title: LocalizedStringKey, subtitle: LocalizedStringKey? = nil, image: SfKey) {
+  public init(
+    title: LocalizedStringKey,
+    subtitle: LocalizedStringKey? = nil,
+    image: SFSymbol
+  ) {
     self.title = title
     self.subtitle = subtitle
     self.image = image
@@ -94,7 +98,7 @@ public extension DataError {
       )
       case .unknown: ErrorModel(
         title: "Unknown network error",
-        image: .networkSlash
+        image: .network
       )
       }
     case let .storage(cause):

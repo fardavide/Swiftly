@@ -1,7 +1,6 @@
 import AboutPresentation
 import ConverterPresentation
 import Provider
-import Resources
 import SwiftUI
 
 public struct HomeView: View {
@@ -18,7 +17,7 @@ public struct HomeView: View {
             Button {
               viewModel.send(.openAbout)
             } label: {
-              Image(systemName: image(.infoCircle))
+              Image(systemSymbol: .infoCircle)
             }
           }
         }

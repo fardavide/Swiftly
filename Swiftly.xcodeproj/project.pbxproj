@@ -313,6 +313,7 @@
 				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */,
 				6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */,
 				6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */,
+				6BA36D862B4AD61C0080BEC2 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
 			productRefGroup = 6BD0FF1C2AF64E7F00CC9579 /* Products */;
 			projectDirPath = "";
@@ -765,6 +766,14 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6BA36D862B4AD61C0080BEC2 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.1;
+			};
+		};
 		6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/swift-power-assert";

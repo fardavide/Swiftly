@@ -3,7 +3,6 @@ import CurrencyDomain
 import Design
 import NukeUI
 import Provider
-import Resources
 import SwiftUI
 import SwiftlyUtils
 
@@ -38,7 +37,7 @@ public struct ConverterView: View {
             Button {
               UIApplication.shared.closeKeyboard()
             } label: {
-              Image(systemName: image(.keyboardChevronCompactDown))
+              Image(systemSymbol: .keyboardChevronCompactDown)
             }
           }
           // Keyboard change currency button
@@ -92,7 +91,7 @@ private struct ContentView: View {
         Button {
           send(.openSelectCurrency(selectedCurrency: value.currency))
         } label: {
-          Label("Change currency", systemImage: image(.arrowLeftArrowRight))
+          Label("Change currency", systemSymbol: .arrowLeftArrowRight)
             .tint(Color.accentColor)
         }
       }

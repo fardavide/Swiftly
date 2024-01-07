@@ -1,7 +1,7 @@
 import CurrencyDomain
 import Design
 import NukeUI
-import Resources
+import SFSafeSymbols
 import SwiftUI
 
 struct SelectCurrencySheet: View {
@@ -45,15 +45,15 @@ struct SelectCurrencySheet: View {
           }
         }
         ToolbarItem(placement: .automatic) {
-          let imageKey: SfKey = switch uiModel.sorting {
+          let symbol: SFSymbol = switch uiModel.sorting {
           case .alphabetical: .star
           case .favoritesFirst: .starSlash
           }
-          Button(
-            "Favorites first",
-            systemImage: image(imageKey),
-            action: { send(.setSorting(uiModel.sorting.toggle())) }
-          )
+          Button {
+            send(.setSorting(uiModel.sorting.toggle()))
+          } label: {
+            Label("Favorites first", systemSymbol: symbol)
+          }
         }
       }
     }

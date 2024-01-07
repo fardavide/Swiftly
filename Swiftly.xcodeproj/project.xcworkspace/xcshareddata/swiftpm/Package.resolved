@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "sfsafesymbols",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols",
+      "state" : {
+        "revision" : "7cca2d60925876b5953a2cf7341cd80fbeac983c",
+        "version" : "4.1.1"
+      }
+    },
+    {
       "identity" : "swift-power-assert",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kishikawakatsumi/swift-power-assert",

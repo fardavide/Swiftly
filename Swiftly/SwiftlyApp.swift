@@ -3,7 +3,6 @@ import CurrencyData
 import HomePresentation
 import Nuke
 import Provider
-import Resources
 import SwiftUI
 
 @main

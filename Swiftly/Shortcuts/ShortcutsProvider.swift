@@ -1,5 +1,4 @@
 import AppIntents
-import Resources
 
 struct ShortcutsProvider: AppShortcutsProvider {
   

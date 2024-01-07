@@ -1,7 +1,6 @@
 import AppIntents
 import CurrencyDomain
 import Provider
-import Resources
 
 struct ConvertIntent: AppIntent {
   static let title: LocalizedStringResource = "Convert Currency"
