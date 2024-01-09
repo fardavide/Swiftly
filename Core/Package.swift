@@ -58,7 +58,8 @@ let package = Package(
     .target(
       name: "AboutDomain",
       dependencies: [
-        "Provider"
+        "Provider",
+        "SwiftlyUtils"
       ],
       path: "Sources/About/Domain"
     ),
