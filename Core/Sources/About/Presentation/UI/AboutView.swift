@@ -1,5 +1,8 @@
 import Provider
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public struct AboutView: View {
   @StateObject var viewModel: AboutViewModel  = getProvider().get()
@@ -23,7 +26,9 @@ public struct AboutView: View {
         }
       }
       .navigationTitle("About")
+#if os(iOS)
       .navigationBarTitleDisplayMode(.inline)
+#endif
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button("Close") {
@@ -44,12 +49,14 @@ private struct ContentView: View {
   
   var body: some View {
     VStack {
+#if canImport(UIKit)
       Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
         .resizable()
         .frame(width: 100, height: 100)
         .clipShape(.buttonBorder)
         .shadow(radius: 10)
         .padding(.bottom)
+#endif
       Text(uiModel.appName)
         .font(.largeTitle)
         .bold()
