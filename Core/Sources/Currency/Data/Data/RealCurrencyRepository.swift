@@ -68,6 +68,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
     await api.currencies()
       .map { $0.toDomainModels() }
       .mapErrorToDataError()
+      .onSuccess(storeCurrencies)
   }
 
   private func fetchCurrenciesFromStorage(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
