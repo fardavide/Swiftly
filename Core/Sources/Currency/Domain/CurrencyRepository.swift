@@ -27,7 +27,7 @@ public extension CurrencyRepository {
   ) async -> Result<[Currency], DataError> {
     await getCurrencies(
       query: query,
-      sorting: .alphabetical
+      sorting: sorting
     )
   }
   

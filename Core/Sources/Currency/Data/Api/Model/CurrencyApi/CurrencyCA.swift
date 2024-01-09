@@ -10,7 +10,7 @@ struct CurrenciesCurrencyApiComModel: Codable, CurrenciesApiModel {
         name: currencyApiModel.name,
         symbol: currencyApiModel.symbol
       )
-    }
+    }.sorted { $0.name < $1.name }
   }
   
   struct CurrencyModel: Codable {

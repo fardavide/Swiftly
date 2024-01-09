@@ -11,7 +11,7 @@ struct CurrenciesCurrencyBeaconComModel: Codable, CurrenciesApiModel {
         name: currency.name,
         symbol: currency.symbol
       )
-    }
+    }.sorted { $0.name < $1.name }
   }
   
   struct CurrencyModel: Codable {
