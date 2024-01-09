@@ -33,6 +33,7 @@ public struct ConverterView: View {
         }
         .toolbar {
           // Keyboard close button
+#if canImport(UIKit)
           ToolbarItem(placement: .keyboard) {
             Button {
               UIApplication.shared.closeKeyboard()
@@ -40,6 +41,7 @@ public struct ConverterView: View {
               Image(systemSymbol: .keyboardChevronCompactDown)
             }
           }
+#endif
           // Keyboard change currency button
           if !state.values.isEmpty, let currency = state.selectedCurrency {
             ToolbarItem(placement: .keyboard) {
