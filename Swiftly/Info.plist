@@ -13,5 +13,7 @@
 		<key>UIImageName</key>
 		<string>LaunchIcon</string>
 	</dict>
+  <key>ITSAppUsesNonExemptEncryption</key>
+  <false/>
 </dict>
 </plist>
