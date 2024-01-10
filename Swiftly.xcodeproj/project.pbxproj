@@ -216,10 +216,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6BD0FF402AF64E8000CC9579 /* Build configuration list for PBXNativeTarget "Swiftly" */;
 			buildPhases = (
+				6B55B4372B4EB451008DE0D4 /* Add API keys */,
 				6BD0FF172AF64E7F00CC9579 /* Sources */,
 				6BD0FF182AF64E7F00CC9579 /* Frameworks */,
 				6BD0FF192AF64E7F00CC9579 /* Resources */,
 				6BE4BFB32AF8CEDB00B6BF57 /* SwiftLint */,
+				6B55B4392B4EE1AC008DE0D4 /* Reset API keys */,
 			);
 			buildRules = (
 			);
@@ -357,6 +359,44 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6B55B4372B4EB451008DE0D4 /* Add API keys */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Add API keys";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nsource ~/.bash_profile\necho \"Adding API keys\"\n\ncd Swiftly\n\nplutil -replace CurrencyApiComKey -string $CurrencyApiComKey Info.plist\nplutil -replace CurrencyBeaconComKey -string $CurrencyBeaconComKey Info.plist\nplutil -replace ExchangeRatesIoKey -string $ExchangeRatesIoKey Info.plist\n\nplutil -p Info.plist\n\nexit 0\n";
+		};
+		6B55B4392B4EE1AC008DE0D4 /* Reset API keys */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Reset API keys";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\necho \"Resetting API keys\"\n\ncd Swiftly\n\nplutil -replace CurrencyApiComKey -string \"empty\" Info.plist\nplutil -replace CurrencyBeaconComKey -string \"empty\" Info.plist\nplutil -replace ExchangeRatesIoKey -string \"empty\" Info.plist\n\nplutil -p Info.plist\n\nexit 0\n";
+		};
 		6BE4BFB32AF8CEDB00B6BF57 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -551,7 +591,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swiftly/Swiftly.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 0;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Swiftly/Preview Content\"";
 				DEVELOPMENT_TEAM = A7Q83J6LR4;
@@ -575,7 +615,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = fardavide.Swiftly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -593,7 +633,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swiftly/Swiftly.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 0;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Swiftly/Preview Content\"";
 				DEVELOPMENT_TEAM = A7Q83J6LR4;
@@ -617,7 +657,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = fardavide.Swiftly;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;

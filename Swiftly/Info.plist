@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CurrencyApiComKey</key>
+	<string>empty</string>
+	<key>CurrencyBeaconComKey</key>
+	<string>empty</string>
+	<key>ExchangeRatesIoKey</key>
+	<string>empty</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>UIBackgroundModes</key>
 	<array/>
 	<key>UILaunchScreen</key>
@@ -11,7 +19,5 @@
 		<key>UIImageName</key>
 		<string>LaunchIcon</string>
 	</dict>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 </dict>
 </plist>

@@ -18,7 +18,7 @@ public final class CurrencyApiModule: Module {
       }
     
     // CurrencyApi.com
-      .register { CurrencyApiComEndpoints(apiKey: ApiKey.currencyApiDotCom) }
+      .register { CurrencyApiComEndpoints(apiKey: ApiKey.currencyApiCom) }
       .register { CurrencyApiComCurrencyService(endpoints: provider.get()) }
       .register { CurrencyApiComCurrencyRateService(endpoints: provider.get()) }
     
@@ -28,7 +28,7 @@ public final class CurrencyApiModule: Module {
       .register { CurrencyBeacomComCurrencyRateService(endpoints: provider.get()) }
     
     // ExchangeRates.io
-      .register { ExchangeRatesIoEndpoints(apiKey: ApiKey.exchangeRatesDotIo) }
+      .register { ExchangeRatesIoEndpoints(apiKey: ApiKey.exchangeRatesIo) }
       .register { ExchangeRatesIoCurrencyRateService(endpoints: provider.get()) }
   }
   

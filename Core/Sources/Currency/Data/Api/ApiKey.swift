@@ -1,11 +1,9 @@
+import Foundation
+
+// swiftlint:disable force_cast
 class ApiKey {
-  static var currencyApiDotCom: String {
-    fatalError("Insert you API key here")
-  }
-  static var currencyBeaconCom: String {
-    fatalError("Insert you API key here")
-  }
-  static var exchangeRatesDotIo: String {
-    fatalError("Insert you API key here")
-  }
+  static let currencyApiCom = Bundle.main.infoDictionary!["CurrencyApiComKey"] as! String
+  static let currencyBeaconCom = Bundle.main.infoDictionary!["CurrencyBeaconComKey"] as! String
+  static let exchangeRatesIo = Bundle.main.infoDictionary!["ExchangeRatesIoKey"] as! String
 }
+// swiftlint:enable force_cast
