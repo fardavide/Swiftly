@@ -1,9 +1,8 @@
 #!/bin/sh
-source ~/.bash_profile
 echo "Adding API keys"
 
 # Navigate to the directory containing ApiKey.swift
-cd Core/Sources/Currency/Data/Api
+cd ../Core/Sources/Currency/Data/Api
 
 # Rewrite ApiKey.swift with the new content
 cat > ApiKey.swift <<EOF

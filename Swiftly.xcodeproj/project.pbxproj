@@ -47,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6B55B43B2B4F03DF008DE0D4 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsProvider.swift; sourceTree = "<group>"; };
 		6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertIntent.swift; sourceTree = "<group>"; };
 		6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -102,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B55B43A2B4F03C2008DE0D4 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				6B55B43B2B4F03DF008DE0D4 /* ci_pre_xcodebuild.sh */,
+			);
+			path = ci_scripts;
+			sourceTree = "<group>";
+		};
 		6B598BB52B151D9900E43BA5 /* Shortcuts */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +134,7 @@
 		6BD0FF122AF64E7F00CC9579 = {
 			isa = PBXGroup;
 			children = (
+				6B55B43A2B4F03C2008DE0D4 /* ci_scripts */,
 				6BD0FF492AF64E9600CC9579 /* Core */,
 				6BD0FF1D2AF64E7F00CC9579 /* Swiftly */,
 				6BD0FF2F2AF64E8000CC9579 /* SwiftlyTests */,
