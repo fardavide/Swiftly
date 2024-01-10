@@ -10,16 +10,16 @@ public protocol CurrencyApi {
 }
 
 final class RealCurrencyApi: CurrencyApi {
-  private let currencyServce: CurrencyService
+  private let currencyService: CurrencyService
   private let currencyRateService: CurrencyRateService
   
   init(currencyServce: CurrencyService, currencyRateService: CurrencyRateService) {
-    self.currencyServce = currencyServce
+    self.currencyService = currencyServce
     self.currencyRateService = currencyRateService
   }
   
   func currencies() async -> Result<CurrenciesApiModel, ApiError> {
-    await currencyServce.currencies()
+    await currencyService.currencies()
   }
   
   func latestRates() async -> Result<CurrencyRatesApiModel, ApiError> {
