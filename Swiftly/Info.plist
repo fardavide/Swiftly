@@ -3,9 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>UIBackgroundModes</key>
-	<array>
-		<string>remote-notification</string>
-	</array>
+	<array/>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>
@@ -13,7 +11,7 @@
 		<key>UIImageName</key>
 		<string>LaunchIcon</string>
 	</dict>
-  <key>ITSAppUsesNonExemptEncryption</key>
-  <false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
