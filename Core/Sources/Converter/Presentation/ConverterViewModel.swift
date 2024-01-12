@@ -141,7 +141,7 @@ public final class ConverterViewModel: ViewModel {
       self.state.isLoading = false
       self.state.error = nil
       self.state.searchCurrencies = currencies
-      self.state.updatedAt = rates.updatedAt.formatted(date: .abbreviated, time: .shortened)
+      self.state.updatedAt = rates.updatedAt.formatted(.relative(presentation: .named))
       self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
           ? baseCurrencyValue

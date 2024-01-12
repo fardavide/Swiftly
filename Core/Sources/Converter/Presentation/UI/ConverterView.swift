@@ -53,7 +53,7 @@ public struct ConverterView: View {
           // Updated at text
           if let updatedAt = state.updatedAt {
             ToolbarItem(placement: .status) {
-              Text("Updated at: \(updatedAt)")
+              Text("Updated \(updatedAt)")
                 .font(.caption2)
             }
           }
@@ -157,7 +157,7 @@ private struct CurrencyValueRow: View {
 
 #Preview("Success") {
   Provider.setupPreview(viewModel: ConverterViewModel.samples.success)
-  return ConverterView()
+  return NavigationStack { ConverterView() }
 }
 
 #Preview("Network error") {
