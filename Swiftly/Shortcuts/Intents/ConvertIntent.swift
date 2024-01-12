@@ -24,7 +24,7 @@ struct ConvertIntent: AppIntent {
     getProvider().get()
   }
   
-  func perform() async throws -> some ProvidesDialog {
+  func perform() async throws -> some ReturnsValue<Double> {
     let fromCurrencyWithRate = fromCurrency.toDomainModel()
     let toCurrencyWithRate = toCurrency.toDomainModel()
     
@@ -33,6 +33,6 @@ struct ConvertIntent: AppIntent {
       to: toCurrencyWithRate.currency
     )
     let resultValue = fromCurrencyWithRate.withValue(amount).convert(to: toCurrencyWithRate)
-    return .result(dialog: "\(resultValue.value)")
+    return .result(value: resultValue.value)
   }
 }

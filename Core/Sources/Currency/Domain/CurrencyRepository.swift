@@ -47,10 +47,13 @@ public extension CurrencyRepository {
     }
     
     return .success(
-      currencies.map { currency in
-        CurrencyWithRate(
+      currencies.compactMap { currency in
+        guard let rate = rates.findRate(for: currency.code)?.rate else {
+          return nil
+        }
+        return CurrencyWithRate(
           currency: currency,
-          rate: rates.requireRate(for: currency.code).rate
+          rate: rate
         )
       }
     )

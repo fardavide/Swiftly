@@ -18,14 +18,6 @@ public extension CurrencyRates {
   func findRate(for code: CurrencyCode) -> CurrencyRate? {
     items.first(where: { $0.currencyCode == code })
   }
-  
-  func requireRate(for code: CurrencyCode) -> CurrencyRate {
-    if let rate = findRate(for: code) {
-      return rate
-    } else {
-      fatalError("No rate found for \(code)")
-    }
-  }
 }
 
 public final class CurrencyRatesSamples {

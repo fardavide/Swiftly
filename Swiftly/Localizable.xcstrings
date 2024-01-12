@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%lf" : {
-
-    },
     "Amount" : {
       "extractionState" : "manual",
       "localizations" : {
