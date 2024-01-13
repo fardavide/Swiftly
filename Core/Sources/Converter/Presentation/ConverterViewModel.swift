@@ -13,6 +13,7 @@ public final class ConverterViewModel: ViewModel {
 
   private var currencies: [Currency] = []
   private var rates: [CurrencyRate] = []
+  private var updatedAt: Date?
 
   public init(
     converterRepository: ConverterRepository,
@@ -23,6 +24,7 @@ public final class ConverterViewModel: ViewModel {
     self.currencyRepository = currencyRepository
     state = initialState
     Task { await load(forceRefresh: false) }
+    syncUpdatedAt()
   }
 
   // swiftlint:disable function_body_length
@@ -133,6 +135,7 @@ public final class ConverterViewModel: ViewModel {
       return
     }
     self.rates = rates.items
+    self.updatedAt = rates.updatedAt
 
     let baseCurrencyValue = getCurrencyWithRate(for: favoriteCurrencies.currencyCodes.first!)
       .withValue(10)
@@ -141,7 +144,6 @@ public final class ConverterViewModel: ViewModel {
       self.state.isLoading = false
       self.state.error = nil
       self.state.searchCurrencies = currencies
-      self.state.updatedAt = rates.updatedAt.formatted(.relative(presentation: .named))
       self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
           ? baseCurrencyValue
@@ -157,6 +159,15 @@ public final class ConverterViewModel: ViewModel {
       currency: currency,
       rate: rate.rate
     )
+  }
+  
+  private func syncUpdatedAt() {
+    let timer = Timer(timeInterval: 1, repeats: true) { _ in
+      if let updatedAt = self.updatedAt {
+        self.emit { self.state.updatedAt = updatedAt.formatted(.relative(presentation: .named)) }
+      }
+    }
+    RunLoop.current.add(timer, forMode: .common)
   }
 }
 

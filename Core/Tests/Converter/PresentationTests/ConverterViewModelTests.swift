@@ -4,6 +4,7 @@ import XCTest
 import Combine
 import ConverterDomain
 import CurrencyDomain
+import DateUtils
 import PowerAssert
 import SwiftlyTest
 @testable import ConverterPresentation
@@ -251,6 +252,22 @@ final class ConverterViewModelTests: XCTestCase {
       // then
       let result = await turbine.value()
       #assert(result == "Eur")
+    }
+  }
+  
+  func test_updateTime_isCorrect() async {
+    // given
+    let scenario = Scenario(
+      currencyRates: .samples.all.updatedAt(date: Date.now - 2.seconds())
+    )
+    
+    // when
+    await test(scenario.sut.$state.map(\.updatedAt)) { turbine in
+      await turbine.expectInitial(value: nil)
+      
+      // then
+      let firstResult = await turbine.value()
+      #assert(firstResult == .some("2 seconds ago"))
     }
   }
 }

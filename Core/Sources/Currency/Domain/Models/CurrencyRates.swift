@@ -18,6 +18,10 @@ public extension CurrencyRates {
   func findRate(for code: CurrencyCode) -> CurrencyRate? {
     items.first(where: { $0.currencyCode == code })
   }
+  
+  func updatedAt(date: Date) -> CurrencyRates {
+    CurrencyRates(items: items, updatedAt: date)
+  }
 }
 
 public final class CurrencyRatesSamples {

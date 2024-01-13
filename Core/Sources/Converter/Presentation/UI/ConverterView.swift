@@ -1,4 +1,3 @@
-import AboutPresentation
 import CurrencyDomain
 import Design
 import NukeUI

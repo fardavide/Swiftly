@@ -26,8 +26,6 @@ public protocol Turbine<Value> {
 
 class RealTurbine<Value: Equatable>: Turbine {
 
-  private let timeout: TimeInterval = 5
-  private let interval: TimeInterval = 0.2
   private let subject = CurrentValueSubject<TurbineValue<Value>, Never>(.notReady)
   private var cancellables: [AnyCancellable] = []
 
