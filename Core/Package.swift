@@ -76,6 +76,7 @@ let package = Package(
       name: "AboutPresentation",
       dependencies: [
         "AboutDomain",
+        "Design",
         "Provider",
         "SwiftlyUtils"
       ],
