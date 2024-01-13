@@ -34,7 +34,12 @@ public struct AboutView: View {
             close()
           }
         }
-        ToolbarItem(placement: .bottomBar) {
+        #if os(iOS)
+        let ghPlacement: ToolbarItemPlacement = .bottomBar
+        #else
+        let ghPlacement: ToolbarItemPlacement = .automatic
+        #endif
+        ToolbarItem(placement: ghPlacement) {
           Link(destination: URL(string: "https://github.com/fardavide/Swiftly")!) {
             HStack {
               Image(asset: .gitHub)
@@ -48,7 +53,7 @@ public struct AboutView: View {
           }
         }
       }
-    }
+    }.padding()
   }
 }
 
