@@ -61,8 +61,10 @@ private struct ContentView: View {
   
   var body: some View {
     VStack {
-      Image.appIcon
+      Image(asset: .launchIcon)
         .resizable()
+        .padding()
+        .background(.blue, in: .buttonBorder)
         .frame(width: 100, height: 100)
         .clipShape(.buttonBorder)
         .shadow(radius: 10)

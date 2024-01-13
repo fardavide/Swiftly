@@ -3,6 +3,7 @@ import SwiftUI
 
 public enum Asset {
   case gitHub
+  case launchIcon
 }
 
 public extension Image {
