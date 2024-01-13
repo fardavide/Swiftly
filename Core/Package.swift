@@ -189,6 +189,9 @@ let package = Package(
     // MARK: Resources
     .target(
       name: "Resources",
+      dependencies: [
+        "SwiftlyUtils"
+      ],
       path: "Sources/Common/Resources"
     ),
 
