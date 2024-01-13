@@ -1,5 +1,6 @@
 import Design
 import Provider
+import Resources
 import SwiftUI
 
 public struct AboutView: View {
@@ -33,6 +34,19 @@ public struct AboutView: View {
             close()
           }
         }
+        ToolbarItem(placement: .bottomBar) {
+          Link(destination: URL(string: "https://github.com/fardavide/Swiftly")!) {
+            HStack {
+              Image(asset: .gitHub)
+                .resizable()
+                .scaledToFit()
+                .frame(height: 25)
+              Image(systemSymbol: .starFill)
+                .symbolRenderingMode(.multicolor)
+                .symbolEffect(.pulse)
+            }
+          }
+        }
       }
     }
   }
@@ -47,7 +61,7 @@ private struct ContentView: View {
   
   var body: some View {
     VStack {
-      AppIcon()
+      Image.appIcon
         .resizable()
         .frame(width: 100, height: 100)
         .clipShape(.buttonBorder)

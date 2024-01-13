@@ -1,10 +1,13 @@
 import SwiftUI
 
-public func AppIcon() -> Image {
-  Bundle.main.iconFileName
-    .flatMap { UIImage(named: $0) }
-    .map { Image(uiImage: $0) }
-  ?? Image(systemSymbol: .exclamationmarkTriangle)
+public extension Image {
+  
+  static var appIcon: Image {
+    Bundle.main.iconFileName
+      .flatMap { UIImage(named: $0) }
+      .map { Image(uiImage: $0) }
+    ?? Image(systemSymbol: .exclamationmarkTriangle)
+  }
 }
 
 extension Bundle {

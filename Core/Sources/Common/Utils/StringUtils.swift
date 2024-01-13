@@ -2,10 +2,11 @@ import Foundation
 
 public extension String {
 
-  /// Capitalize the first character of the `String`
+  /// Capitalize the first character of the `String`, leaving the rest unchanged
   /// Example:
   /// ```swift
   /// "hello world".capitalizedFirst // "Hello world"
+  /// "gitHub".capitalizedFirst // "GitHub"
   /// ```
   var capitalizedFirst: String {
     prefix(1).capitalized + dropFirst()

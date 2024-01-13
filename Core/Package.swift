@@ -28,6 +28,7 @@ let package = Package(
         "Design",
         "Network",
         "Provider",
+        "Resources",
         "SwiftlyStorage",
         "SwiftlyTest",
         "SwiftlyUtils",
@@ -149,6 +150,7 @@ let package = Package(
       name: "Design",
       dependencies: [
         "CurrencyDomain",
+        "Resources",
         "SFSafeSymbols"
       ],
       path: "Sources/Common/Design"
@@ -182,6 +184,12 @@ let package = Package(
         .product(name: "PowerAssert", package: "swift-power-assert")
       ],
       path: "Tests/Common/ProviderTests"
+    ),
+
+    // MARK: Resources
+    .target(
+      name: "Resources",
+      path: "Sources/Common/Resources"
     ),
 
     // MARK: Storage
