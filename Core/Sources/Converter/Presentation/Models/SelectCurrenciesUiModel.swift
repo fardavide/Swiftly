@@ -3,7 +3,7 @@ import CurrencyDomain
 struct SelectCurrenciesUiModel {
   let currencies: [Currency]
   let searchQuery: String
-  let selectedCurrency: Currency
+  let selectedCurrency: Currency?
   let sorting: CurrencySorting
 }
 

@@ -31,6 +31,16 @@ public struct ConverterView: View {
           viewModel.send(.refresh)
         }
         .toolbar {
+          // Add Currency
+          if state.canAddCurrency {
+            ToolbarItem(placement: .primaryAction) {
+              Button {
+                viewModel.send(.openSelectCurrency(selectedCurrency: nil))
+              } label: {
+                Image(systemSymbol: .plus)
+              }
+            }
+          }
           // Keyboard close button
 #if canImport(UIKit)
           ToolbarItem(placement: .keyboard) {
@@ -62,7 +72,7 @@ public struct ConverterView: View {
             uiModel: SelectCurrenciesUiModel(
               currencies: state.searchCurrencies,
               searchQuery: state.searchQuery,
-              selectedCurrency: state.requireSelectedCurrency(),
+              selectedCurrency: state.selectedCurrency,
               sorting: state.sorting
             ),
             send: viewModel.send
@@ -93,12 +103,27 @@ private struct ContentView: View {
           send(.openSelectCurrency(selectedCurrency: value.currency))
         } label: {
           Label("Change currency", systemSymbol: .arrowLeftArrowRight)
-            .tint(Color.accentColor)
+            .tint(.accentColor)
+        }
+      }
+      .swipeActions(edge: .leading) {
+        if state.canRemoveCurrency {
+          Button {
+            send(.removeCurrency(currency: value.currency))
+          } label: {
+            Label("Remove currency", systemSymbol: .trash)
+              .tint(.red)
+          }
         }
       }
       .contextMenu {
         Button("Change currency") {
           send(.openSelectCurrency(selectedCurrency: value.currency))
+        }
+        if state.canRemoveCurrency {
+          Button("Remove currency") {
+            send(.removeCurrency(currency: value.currency))
+          }
         }
       }
     }

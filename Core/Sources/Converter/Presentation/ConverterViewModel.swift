@@ -30,27 +30,26 @@ public final class ConverterViewModel: ViewModel {
   // swiftlint:disable function_body_length
   public func send(_ action: ConverterAction) {
     switch action {
+      
+    case let .addAcurrency(currency):
+      state.isSelectCurrencyOpen = false
+      Task { await converterRepository.setCurrencyAt(position: self.state.values.count, currency: currency) }
+      let newBaseCurrencyValue = getCurrencyWithRate(for: currency.code)
+        .withValue(10)
+      state.values.appendOrMoveToLast(newBaseCurrencyValue, comparingValue: \.currency)
+      resetValues(
+        baseCurrency: currency,
+        prevBaseCurrency: state.values.first(where: { $0.currency == currency })?.currency
+      )
 
     case let .changeCurrency(prev, new):
       state.isSelectCurrencyOpen = false
       let replacedIndex = state.values.firstIndex(where: { $0.currency == prev })!
       Task { await converterRepository.setCurrencyAt(position: replacedIndex, currency: new) }
-      let newBaseCurrencyValue = getCurrencyWithRate(for: new.code)
-        .withValue(10)
-
-      state.values = state.values.mapWithIndices { (index, currencyValue) in
-        if index == replacedIndex {
-          newBaseCurrencyValue
-
-        } else if currencyValue.currency == new {
-          newBaseCurrencyValue
-            .convert(to: getCurrencyWithRate(for: prev.code))
-
-        } else {
-          newBaseCurrencyValue
-            .convert(to: getCurrencyWithRate(for: currencyValue.currency.code))
-        }
-      }
+      resetValues(
+        baseCurrency: new,
+        prevBaseCurrency: prev
+      )
       
     case .closeSelectCurrency:
       state.searchQuery = ""
@@ -63,6 +62,11 @@ public final class ConverterViewModel: ViewModel {
       
     case .refresh:
       Task { await load(forceRefresh: true) }
+      
+    case let .removeCurrency(currency):
+      let removedIndex = state.values.firstIndex(where: { $0.currency == currency })!
+      Task { await converterRepository.removeCurrenyAt(position: removedIndex) }
+      state.values.remove(at: removedIndex)
 
     case let .searchCurrencies(query):
       self.state.searchQuery = query
@@ -115,12 +119,12 @@ public final class ConverterViewModel: ViewModel {
     }
     self.currencies = currencies
 
-    let favoriteCurrenciesResult = await converterRepository.getSelectedCurrencies()
-    guard let favoriteCurrencies = favoriteCurrenciesResult.orNil() else {
+    let selectedCurrenciesResult = await converterRepository.getSelectedCurrencies()
+    guard let selectedCurrencies = selectedCurrenciesResult.orNil() else {
       emit {
         self.state.isLoading = false
-        self.state.error = favoriteCurrenciesResult.requireFailure()
-          .toErrorModel(message: "Cannot load favorite currencies")
+        self.state.error = selectedCurrenciesResult.requireFailure()
+          .toErrorModel(message: "Cannot load selected currencies")
       }
       return
     }
@@ -137,14 +141,14 @@ public final class ConverterViewModel: ViewModel {
     self.rates = rates.items
     self.updatedAt = rates.updatedAt
 
-    let baseCurrencyValue = getCurrencyWithRate(for: favoriteCurrencies.currencyCodes.first!)
+    let baseCurrencyValue = getCurrencyWithRate(for: selectedCurrencies.currencyCodes.first!)
       .withValue(10)
 
     emit {
       self.state.isLoading = false
       self.state.error = nil
       self.state.searchCurrencies = currencies
-      self.state.values = favoriteCurrencies.currencyCodes.map { currencyCode in
+      self.state.values = selectedCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
           ? baseCurrencyValue
           : baseCurrencyValue.convert(to: self.getCurrencyWithRate(for: currencyCode))
@@ -159,6 +163,28 @@ public final class ConverterViewModel: ViewModel {
       currency: currency,
       rate: rate.rate
     )
+  }
+  
+  private func resetValues(baseCurrency: Currency, prevBaseCurrency: Currency?) {
+    let prevBaseCurrency = prevBaseCurrency ?? baseCurrency
+    let baseIndex = state.values.firstIndex(where: { $0.currency == prevBaseCurrency })!
+    
+    let newBaseCurrencyValue = getCurrencyWithRate(for: baseCurrency.code)
+      .withValue(10)
+    
+    state.values = state.values.mapWithIndices { (index, currencyValue) in
+      if index == baseIndex {
+        newBaseCurrencyValue
+        
+      } else if currencyValue.currency == baseCurrency {
+        newBaseCurrencyValue
+          .convert(to: getCurrencyWithRate(for: prevBaseCurrency.code))
+        
+      } else {
+        newBaseCurrencyValue
+          .convert(to: getCurrencyWithRate(for: currencyValue.currency.code))
+      }
+    }
   }
   
   private func syncUpdatedAt() {
@@ -178,7 +204,7 @@ public extension ConverterViewModel {
 public class ConverterViewModelSamples {
   public let success = ConverterViewModel(
     converterRepository: FakeConverterRepository(
-      selectedCurrencies: .initial
+      selectedCurrencies: .samples.alphabetical
     ),
     currencyRepository: FakeCurrencyRepository(
       currencies: Currency.samples.all(),

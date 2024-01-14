@@ -2,6 +2,9 @@ import CurrencyDomain
 
 public enum ConverterAction {
 
+  /// Add a Currency in the Converter
+  case addAcurrency(currency: Currency)
+  
   /// Replace a Currency in the Converter
   case changeCurrency(prev: Currency, new: Currency)
   
@@ -9,10 +12,13 @@ public enum ConverterAction {
   case closeSelectCurrency
   
   /// Open the View to select a new Currency
-  case openSelectCurrency(selectedCurrency: Currency)
+  case openSelectCurrency(selectedCurrency: Currency?)
   
   /// Refresh the data
   case refresh
+  
+  /// Remove a Currency from the Converter
+  case removeCurrency(currency: Currency)
 
   /// Search for Currencies
   case searchCurrencies(query: String)

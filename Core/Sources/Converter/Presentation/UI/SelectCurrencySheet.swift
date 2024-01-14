@@ -32,7 +32,11 @@ struct SelectCurrencySheet: View {
       List(uiModel.currencies, id: \.code) { currency in
         CurrencyRow(currency: currency)
           .onTapGesture {
-            send(.changeCurrency(prev: uiModel.selectedCurrency, new: currency))
+            if let selectedCurrency = uiModel.selectedCurrency {
+              send(.changeCurrency(prev: selectedCurrency, new: currency))
+            } else {
+              send(.addAcurrency(currency: currency))
+            }
           }
       }
       .animation(.smooth, value: uiModel.currencies)

@@ -1,3 +1,4 @@
+import ConverterDomain
 import CurrencyDomain
 import Design
 import SwiftlyUtils
@@ -12,15 +13,13 @@ public struct ConverterState {
   var sorting: CurrencySorting
   var updatedAt: String?
   var values: [CurrencyValue]
-}
-
-public extension ConverterState {
-  func requireSelectedCurrency() -> Currency {
-    if let currency = selectedCurrency {
-      currency
-    } else {
-      fatalError("Required selected Currency, but was nil")
-    }
+  
+  var canAddCurrency: Bool {
+    values.count < SelectedCurrencies.maxItems
+  }
+  
+  var canRemoveCurrency: Bool {
+    values.count > 2
   }
 }
 
@@ -38,7 +37,7 @@ public extension ConverterState {
   static let sample = ConverterState(
     isLoading: false,
     isSelectCurrencyOpen: false,
-    searchCurrencies: Currency.samples.all(),
+    searchCurrencies: Array(Currency.samples.all().take(5)),
     searchQuery: "",
     sorting: .favoritesFirst,
     updatedAt: "2023-12-25 12:44:00 +0000",

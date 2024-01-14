@@ -11,6 +11,8 @@ public protocol ConverterStorage {
 
   func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async
 
+  func removeCurrencyAt(position: Int) async
+  
   func replaceCurrencyAt(position: Int, currency: Currency) async
 }
 
@@ -35,6 +37,8 @@ public final class FakeConverterStorage: ConverterStorage {
   }
   
   public func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async {}
+  
+  public func removeCurrencyAt(position: Int) async {}
   
   public func replaceCurrencyAt(position: Int, currency: CurrencyDomain.Currency) async {}
 }
@@ -62,6 +66,15 @@ class RealConverterStorage: AppStorage, ConverterStorage {
   func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async {
     await withContext {
       $0.insert(model.toSwiftDataModel())
+    }
+  }
+  
+  func removeCurrencyAt(position: Int) async {
+    await withContext { context in
+      let result = context.fetchOne(FetchDescriptor<SelectedCurrenciesSwiftDataModel>())
+      await result.onSuccess { model in
+        model.currencyCodes.removeValue(forKey: SelectedCurrencyPosition(value: position))
+      }
     }
   }
 

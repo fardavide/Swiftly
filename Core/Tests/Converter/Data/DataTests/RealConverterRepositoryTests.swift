@@ -109,7 +109,7 @@ final class RealConverterRepositoryTests: XCTestCase {
       SelectedCurrencyPosition(value: 3): CurrencyCode.samples.eur,
       SelectedCurrencyPosition(value: 4): CurrencyCode.samples.gbp,
       SelectedCurrencyPosition(value: 5): CurrencyCode.samples.jpy,
-      SelectedCurrencyPosition(value: 6): CurrencyCode.samples.usd,
+      SelectedCurrencyPosition(value: 6): CurrencyCode.samples.usd
     ]
     #assert(selectedCodes.count > SelectedCurrencies.maxItems)
     let scenario = Scenario(

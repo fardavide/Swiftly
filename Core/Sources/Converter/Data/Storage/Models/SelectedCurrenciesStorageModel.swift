@@ -5,7 +5,7 @@ import SwiftlyUtils
 
 public struct SelectedCurrenciesStorageModel {
   
-  public init(currencyCodes: [SelectedCurrencyPosition : CurrencyCode]) {
+  public init(currencyCodes: [SelectedCurrencyPosition: CurrencyCode]) {
     self.currencyCodes = currencyCodes
   }
   
@@ -52,8 +52,8 @@ extension SelectedCurrenciesStorageModel {
       .filter { selectedCode in
         !currencyCodes.contains(where: { (_, code) in selectedCode == code })
       }
-    let codes = (0...maxPosition).map { i in
-      currencyCodes[SelectedCurrencyPosition(value: i)] ?? nonSelectedInitials.removeFirst()
+    let codes = (0...maxPosition).compactMap { i in
+      currencyCodes[SelectedCurrencyPosition(value: i)] ?? nonSelectedInitials.removeFirstOrNil()
     }
 
     return SelectedCurrencies.of(

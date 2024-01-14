@@ -24,6 +24,10 @@ final class RealConverterRepository: ConverterRepository {
       .map { storageModel in storageModel.toDomainModel() }
       .recover(.success(.initial))
   }
+  
+  func removeCurrenyAt(position: Int) async {
+    await converterStorage.removeCurrencyAt(position: position)
+  }
 
   func setCurrencyAt(position: Int, currency: Currency) async {
     await currencyStorage.insertCurrencySelected(code: currency.code)
