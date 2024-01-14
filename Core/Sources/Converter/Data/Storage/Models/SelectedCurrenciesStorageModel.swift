@@ -4,6 +4,11 @@ import SwiftData
 import SwiftlyUtils
 
 public struct SelectedCurrenciesStorageModel {
+  
+  public init(currencyCodes: [SelectedCurrencyPosition : CurrencyCode]) {
+    self.currencyCodes = currencyCodes
+  }
+  
   let currencyCodes: [SelectedCurrencyPosition: CurrencyCode]
 }
 
@@ -37,23 +42,22 @@ public class SelectedCurrenciesSwiftDataModel {
 extension SelectedCurrenciesStorageModel {
 
   public func toDomainModel() -> SelectedCurrencies {
-    let maxFavoritePosition = currencyCodes.max(by: { c1, c2 in c1.key > c2.key })?.key.value ?? 0
-    let maxPosition = max(maxFavoritePosition, SelectedCurrencies.initial.currencyCodes.endIndex)
+    let maxFavoritePosition = currencyCodes.map(\.key.value).max() ?? 0
+    let maxPosition = min(
+      max(maxFavoritePosition, SelectedCurrencies.initial.currencyCodes.lastIndex),
+      SelectedCurrencies.maxItems - 1
+    )
 
     var nonSelectedInitials = SelectedCurrencies.initial.currencyCodes
       .filter { selectedCode in
         !currencyCodes.contains(where: { (_, code) in selectedCode == code })
       }
-    var dict = [Int: CurrencyCode]()
-    for i in 0...maxPosition {
-      let code = currencyCodes[SelectedCurrencyPosition(value: i)] ?? nonSelectedInitials.removeFirstOrNil()
-      if let c = code {
-        dict[i] = c
-      }
+    let codes = (0...maxPosition).map { i in
+      currencyCodes[SelectedCurrencyPosition(value: i)] ?? nonSelectedInitials.removeFirst()
     }
 
     return SelectedCurrencies.of(
-      currencyCodes: dict.sorted { e1, e2 in e1.key < e2.key }.map(\.value)
+      currencyCodes: codes
     )
   }
 

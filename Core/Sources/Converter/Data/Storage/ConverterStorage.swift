@@ -16,12 +16,22 @@ public protocol ConverterStorage {
 
 public final class FakeConverterStorage: ConverterStorage {
   
-  public init() {
-    
+  private let selectedCurrenciesResult: Result<SelectedCurrenciesStorageModel, StorageError>
+  
+  public init(
+    selectedCurrenciesResult: Result<SelectedCurrenciesStorageModel, StorageError> = .failure(.unknown)
+  ) {
+    self.selectedCurrenciesResult = selectedCurrenciesResult
+  }
+  
+  public convenience init(
+    selectedCurrencies: SelectedCurrenciesStorageModel
+  ) {
+    self.init(selectedCurrenciesResult: .success(selectedCurrencies))
   }
   
   public func fetchSelectedCurrencies() async -> Result<SelectedCurrenciesStorageModel, StorageError> {
-    fatalError("not implemented")
+    selectedCurrenciesResult
   }
   
   public func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async {}

@@ -31,6 +31,7 @@ extension CurrencyCode {
 }
 
 public class CurrencyCodeSamples {
+  public let aud = CurrencyCode(value: "AUD")
   public let chf = CurrencyCode(value: "CHF")
   public let cny = CurrencyCode(value: "CNY")
   public let eur = CurrencyCode(value: "EUR")
