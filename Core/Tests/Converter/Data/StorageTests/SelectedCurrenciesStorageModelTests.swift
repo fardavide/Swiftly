@@ -23,19 +23,17 @@ final class SelectedCurrenciesStorageModelTests: XCTestCase {
     let domainModel = storageModel.toDomainModel()
     
     // then
-    #assert(
-      domainModel ==
-      SelectedCurrencies.of(
-        currencyCodes: [
-          .samples.eur,
-          .samples.usd,
-          .samples.jpy,
-          .samples.cny,
-          .samples.chf,
-          .samples.gbp
-        ]
-      )
+    let expected = SelectedCurrencies.of(
+      currencyCodes: [
+        .samples.eur,
+        .samples.usd,
+        .samples.jpy,
+        .samples.cny,
+        .samples.chf,
+        .samples.gbp
+      ]
     )
+    #assert(domainModel == expected)
   }
 
   func test_whenConvertToDomainModel_andNotEnoughValues_gapsAreFilledWithDefaults() {
@@ -52,18 +50,36 @@ final class SelectedCurrenciesStorageModelTests: XCTestCase {
     let domainModel = storageModel.toDomainModel()
 
     // then
-    #assert(
-      domainModel ==
-      SelectedCurrencies.of(
-        currencyCodes: [
-          .samples.eur,
-          .samples.usd,
-          .samples.jpy,
-          .samples.gbp,
-          .samples.chf,
-          .samples.cny
-        ]
-      )
+    let expected = SelectedCurrencies.of(
+      currencyCodes: [
+        .samples.eur,
+        .samples.usd,
+        .samples.jpy,
+        .samples.chf
+      ]
     )
+    #assert(domainModel == expected)
+  }
+
+  func test_whenConvertToDomainModel_positionOutOfRange_gapsAreFilledWithDefaults() {
+    // given
+    let storageModel = SelectedCurrenciesStorageModel(
+      currencyCodes: [
+        SelectedCurrencyPosition(value: 4): .samples.chf
+      ]
+    )
+
+    // when
+    let domainModel = storageModel.toDomainModel()
+
+    // then
+    let expected = SelectedCurrencies.of(
+      currencyCodes: [
+        .samples.eur,
+        .samples.usd,
+        .samples.chf
+      ]
+    )
+    #assert(domainModel == expected)
   }
 }
