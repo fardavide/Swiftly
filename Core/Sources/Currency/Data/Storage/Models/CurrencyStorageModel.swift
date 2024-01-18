@@ -13,7 +13,7 @@ public class CurrencySwiftDataModel {
   @Attribute(.unique) var code: String
   var name: String
   var symbol: String
-  var selectCount: Int = 0
+  var usageCount: Int = 0
 
   init(
     code: String,

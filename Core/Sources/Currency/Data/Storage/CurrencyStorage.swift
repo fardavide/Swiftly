@@ -9,7 +9,7 @@ public protocol CurrencyStorage {
 
   func insertAllCurrencies(_ models: [CurrencyStorageModel]) async
   func insertAllRates(_ models: [CurrencyRateStorageModel]) async
-  func insertCurrencySelected(code: CurrencyCode) async
+  func markCurrencyUsed(code: CurrencyCode) async
   func insertUpdateDate(_ model: CurrencyDateStorageModel) async
   func fetchAllCurrencies(sorting: CurrencySorting) async -> Result<[CurrencyStorageModel], StorageError>
   func fetchAllRates() async -> Result<[CurrencyRateStorageModel], StorageError>
@@ -40,13 +40,13 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
     }
   }
   
-  func insertCurrencySelected(code: CurrencyCode) async {
+  func markCurrencyUsed(code: CurrencyCode) async {
     await withContext { context in
       await context.fetchOne(
         FetchDescriptor<CurrencySwiftDataModel>(
           predicate: #Predicate { $0.code == code.value }
         )
-      ).onSuccess { currency in currency.selectCount += 1 }
+      ).onSuccess { currency in currency.usageCount += 1 }
     }
   }
 
@@ -59,7 +59,7 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
   func fetchAllCurrencies(sorting: CurrencySorting) async -> Result<[CurrencyStorageModel], StorageError> {
     let sortDescriptors: [SortDescriptor<CurrencySwiftDataModel>] = switch sorting {
     case .alphabetical: [SortDescriptor(\.code)]
-    case .favoritesFirst: [SortDescriptor(\.selectCount, order: .reverse), SortDescriptor(\.code)]
+    case .favoritesFirst: [SortDescriptor(\.usageCount, order: .reverse), SortDescriptor(\.code)]
     }
     return await withContext {
       $0.fetchAll(FetchDescriptor<CurrencySwiftDataModel>(sortBy: sortDescriptors))

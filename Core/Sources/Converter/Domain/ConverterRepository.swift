@@ -4,8 +4,7 @@ import SwiftlyUtils
 public protocol ConverterRepository {
 
   func getSelectedCurrencies() async -> Result<SelectedCurrencies, DataError>
-  func removeCurrenyAt(position: Int) async
-  func setCurrencyAt(position: Int, currency: Currency) async
+  func setSelectedCurrencies(_ selectedCurrencies: [CurrencyCode]) async
 }
 
 public final class FakeConverterRepository: ConverterRepository {
@@ -29,8 +28,5 @@ public final class FakeConverterRepository: ConverterRepository {
   public func getSelectedCurrencies() async -> Result<SelectedCurrencies, DataError> {
     selectedCurrenciesResult
   }
-  
-  public func removeCurrenyAt(position: Int) async {}
-  
-  public func setCurrencyAt(position: Int, currency: Currency) async {}
+  public func setSelectedCurrencies(_ selectedCurrencies: [CurrencyCode]) async {}
 }

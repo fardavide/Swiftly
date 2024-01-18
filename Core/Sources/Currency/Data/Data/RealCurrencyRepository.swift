@@ -43,12 +43,8 @@ public final class RealCurrencyRepository: CurrencyRepository {
     }
   }
   
-  public func markCurrenciesUsed(
-    from firstCurrency: Currency,
-    to secondCurrency: Currency
-  ) async {
-    await storage.insertCurrencySelected(code: firstCurrency.code)
-    await storage.insertCurrencySelected(code: secondCurrency.code)
+  public func markCurrencyUsed(_ currency: Currency) async {
+    await storage.markCurrencyUsed(code: currency.code)
   }
   
   private func getAllCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {

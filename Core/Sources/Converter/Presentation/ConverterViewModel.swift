@@ -33,7 +33,7 @@ public final class ConverterViewModel: ViewModel {
       
     case let .addAcurrency(currency):
       state.isSelectCurrencyOpen = false
-      Task { await converterRepository.setCurrencyAt(position: self.state.values.count, currency: currency) }
+      Task { await currencyRepository.markCurrencyUsed(currency) }
       let newBaseCurrencyValue = getCurrencyWithRate(for: currency.code)
         .withValue(10)
       state.values.appendOrMoveToLast(newBaseCurrencyValue, comparingValue: \.currency)
@@ -41,15 +41,17 @@ public final class ConverterViewModel: ViewModel {
         baseCurrency: currency,
         prevBaseCurrency: state.values.first(where: { $0.currency == currency })?.currency
       )
+      Task { await storeSelectedCurrencies() }
 
     case let .changeCurrency(prev, new):
       state.isSelectCurrencyOpen = false
       let replacedIndex = state.values.firstIndex(where: { $0.currency == prev })!
-      Task { await converterRepository.setCurrencyAt(position: replacedIndex, currency: new) }
+      Task { await currencyRepository.markCurrencyUsed(new) }
       resetValues(
         baseCurrency: new,
         prevBaseCurrency: prev
       )
+      Task { await storeSelectedCurrencies() }
       
     case .closeSelectCurrency:
       state.searchQuery = ""
@@ -65,8 +67,8 @@ public final class ConverterViewModel: ViewModel {
       
     case let .removeCurrency(currency):
       let removedIndex = state.values.firstIndex(where: { $0.currency == currency })!
-      Task { await converterRepository.removeCurrenyAt(position: removedIndex) }
       state.values.remove(at: removedIndex)
+      Task { await storeSelectedCurrencies() }
 
     case let .searchCurrencies(query):
       self.state.searchQuery = query
@@ -185,6 +187,10 @@ public final class ConverterViewModel: ViewModel {
           .convert(to: getCurrencyWithRate(for: currencyValue.currency.code))
       }
     }
+  }
+  
+  private func storeSelectedCurrencies() async {
+    await converterRepository.setSelectedCurrencies(state.values.map(\.currency.code))
   }
   
   private func syncUpdatedAt() {

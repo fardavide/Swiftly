@@ -5,11 +5,11 @@ import SwiftlyUtils
 
 public struct SelectedCurrenciesStorageModel {
   
+  public let currencyCodes: [SelectedCurrencyPosition: CurrencyCode]
+  
   public init(currencyCodes: [SelectedCurrencyPosition: CurrencyCode]) {
     self.currencyCodes = currencyCodes
   }
-  
-  let currencyCodes: [SelectedCurrencyPosition: CurrencyCode]
 }
 
 public struct SelectedCurrencyPosition: Comparable, Decodable, Encodable, Hashable {
@@ -42,22 +42,10 @@ public class SelectedCurrenciesSwiftDataModel {
 extension SelectedCurrenciesStorageModel {
 
   public func toDomainModel() -> SelectedCurrencies {
-    let maxFavoritePosition = currencyCodes.map(\.key.value).max() ?? 0
-    let maxPosition = min(
-      max(maxFavoritePosition, SelectedCurrencies.initial.currencyCodes.lastIndex),
-      SelectedCurrencies.maxItems - 1
-    )
-
-    var nonSelectedInitials = SelectedCurrencies.initial.currencyCodes
-      .filter { selectedCode in
-        !currencyCodes.contains(where: { (_, code) in selectedCode == code })
-      }
-    let codes = (0...maxPosition).compactMap { i in
-      currencyCodes[SelectedCurrencyPosition(value: i)] ?? nonSelectedInitials.removeFirstOrNil()
-    }
-
-    return SelectedCurrencies.of(
-      currencyCodes: codes
+    SelectedCurrencies.of(
+      currencyCodes: currencyCodes
+        .sorted(by: { a, b in a.key.value < b.key.value })
+        .map(\.value)
     )
   }
 

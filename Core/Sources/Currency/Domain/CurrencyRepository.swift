@@ -13,10 +13,7 @@ public protocol CurrencyRepository {
   func getLatestRates(forceRefresh: Bool) async -> Result<CurrencyRates, DataError>
   
   /// Mark `currency` as used, to increase its popularity (i.e. suggested first)
-  func markCurrenciesUsed(
-    from firstCurrency: Currency,
-    to secondCurrency: Currency
-  ) async
+  func markCurrencyUsed(_ currency: Currency) async
 }
 
 public extension CurrencyRepository {
@@ -58,6 +55,14 @@ public extension CurrencyRepository {
       }
     )
   }
+  
+  func markCurrenciesUsed(
+    from firstCurrency: Currency,
+    to secondCurrency: Currency
+  ) async {
+    await markCurrencyUsed(firstCurrency)
+    await markCurrencyUsed(secondCurrency)
+  }
 }
 
 public class FakeCurrencyRepository: CurrencyRepository {
@@ -96,8 +101,5 @@ public class FakeCurrencyRepository: CurrencyRepository {
     currencyRatesResult
   }
   
-  public func markCurrenciesUsed(
-    from firstCurrency: Currency,
-    to secondCurrency: Currency
-  ) async {}
+  public func markCurrencyUsed(_ currency: Currency) async {}
 }

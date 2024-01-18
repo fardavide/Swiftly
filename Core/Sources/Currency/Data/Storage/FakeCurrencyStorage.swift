@@ -4,7 +4,7 @@ import SwiftlyStorage
 
 public class FakeCurrencyStorage: CurrencyStorage {
 
-  public var selectedCurrencies = [CurrencyCode: Int]()
+  public var usedCurrencies = [CurrencyCode: Int]()
   
   private let fetchAllCurrenciesResult: Result<[CurrencyStorageModel], StorageError>
   private let fetchAllRatesResult: Result<[CurrencyRateStorageModel], StorageError>
@@ -50,7 +50,7 @@ public class FakeCurrencyStorage: CurrencyStorage {
     updateDate
   }
   
-  public func insertCurrencySelected(code: CurrencyDomain.CurrencyCode) async {
-    selectedCurrencies[code] = (selectedCurrencies[code] ?? 0) + 1
+  public func markCurrencyUsed(code: CurrencyDomain.CurrencyCode) async {
+    usedCurrencies[code] = (usedCurrencies[code] ?? 0) + 1
   }
 }

@@ -10,13 +10,11 @@ public protocol ConverterStorage {
   func fetchSelectedCurrencies() async -> Result<SelectedCurrenciesStorageModel, StorageError>
 
   func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async
-
-  func removeCurrencyAt(position: Int) async
-  
-  func replaceCurrencyAt(position: Int, currency: Currency) async
 }
 
 public final class FakeConverterStorage: ConverterStorage {
+  
+  public var selectedCurrencies = [SelectedCurrencyPosition: CurrencyCode]()
   
   private let selectedCurrenciesResult: Result<SelectedCurrenciesStorageModel, StorageError>
   
@@ -36,11 +34,9 @@ public final class FakeConverterStorage: ConverterStorage {
     selectedCurrenciesResult
   }
   
-  public func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async {}
-  
-  public func removeCurrencyAt(position: Int) async {}
-  
-  public func replaceCurrencyAt(position: Int, currency: CurrencyDomain.Currency) async {}
+  public func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async {
+    selectedCurrencies = model.currencyCodes
+  }
 }
 
 class RealConverterStorage: AppStorage, ConverterStorage {
@@ -66,32 +62,6 @@ class RealConverterStorage: AppStorage, ConverterStorage {
   func insertSelectedCurrencies(_ model: SelectedCurrenciesStorageModel) async {
     await withContext {
       $0.insert(model.toSwiftDataModel())
-    }
-  }
-  
-  func removeCurrencyAt(position: Int) async {
-    await withContext { context in
-      let result = context.fetchOne(FetchDescriptor<SelectedCurrenciesSwiftDataModel>())
-      await result.onSuccess { model in
-        model.currencyCodes.removeValue(forKey: SelectedCurrencyPosition(value: position))
-      }
-    }
-  }
-
-  func replaceCurrencyAt(position: Int, currency: Currency) async {
-    await withContext { context in
-      await context.fetchAll(FetchDescriptor<SelectedCurrenciesSwiftDataModel>())
-        .flatMap { value in !value.isEmpty ? .success(value.first!) : .failure(.noCache) }
-        .onSuccess { model in
-          model.replaceAt(position: position, newValue: currency.code)
-        }
-        .onFailure { _ in
-          context.insert(
-            SelectedCurrenciesSwiftDataModel(
-              currencyCodes: [SelectedCurrencyPosition(value: position): currency.code]
-            )
-          )
-        }
     }
   }
 }

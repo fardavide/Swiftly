@@ -25,12 +25,12 @@ final class RealConverterRepository: ConverterRepository {
       .recover(.success(.initial))
   }
   
-  func removeCurrenyAt(position: Int) async {
-    await converterStorage.removeCurrencyAt(position: position)
-  }
-
-  func setCurrencyAt(position: Int, currency: Currency) async {
-    await currencyStorage.insertCurrencySelected(code: currency.code)
-    await converterStorage.replaceCurrencyAt(position: position, currency: currency)
+  func setSelectedCurrencies(_ selectedCurrencies: [CurrencyCode]) async {
+    var codes: [SelectedCurrencyPosition: CurrencyCode] = [:]
+    for (index, code) in selectedCurrencies.withIndices() {
+      codes[SelectedCurrencyPosition(value: index)] = code
+    }
+    let model = SelectedCurrenciesStorageModel(currencyCodes: codes)
+    await converterStorage.insertSelectedCurrencies(model)
   }
 }

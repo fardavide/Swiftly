@@ -10,15 +10,26 @@ import SwiftlyStorage
 
 final class RealConverterRepositoryTests: XCTestCase {
   
-  func test_setCurrency_insertsCurrencySelected() async {
+  func test_setSelectedCurrencies_insertsCurrencies() async {
     // given
     let scenario = Scenario()
     
     // when
-    await scenario.sut.setCurrencyAt(position: 0, currency: .samples.eur)
+    await scenario.sut.setSelectedCurrencies(
+      [
+        .samples.eur,
+        .samples.jpy,
+        .samples.cny
+      ]
+    )
     
     // then
-    #assert(scenario.currencyStorage.selectedCurrencies[CurrencyCode.samples.eur] == 1)
+    let expected = [
+      SelectedCurrencyPosition(value: 0): CurrencyCode.samples.eur,
+      SelectedCurrencyPosition(value: 1): CurrencyCode.samples.jpy,
+      SelectedCurrencyPosition(value: 2): CurrencyCode.samples.cny
+    ]
+    #assert(scenario.converterStorage.selectedCurrencies == expected)
   }
   
   func test_whenNoSelectedCurrencies_defaultAreReturned() async {
@@ -100,7 +111,7 @@ final class RealConverterRepositoryTests: XCTestCase {
     #assert(result.orThrow().currencyCodes == expected)
   }
   
-  func test_moreCurrenciesThanMaxAreSelected_maxIsRetuned() async {
+  func test_whenMoreCurrenciesThanMaxAreSelected_maxIsRetuned() async {
     // given
     let selectedCodes = [
       SelectedCurrencyPosition(value: 0): CurrencyCode.samples.aud,
@@ -136,13 +147,15 @@ final class RealConverterRepositoryTests: XCTestCase {
 
 private final class Scenario {
   
+  let converterStorage: FakeConverterStorage
   let currencyStorage: FakeCurrencyStorage
   let sut: RealConverterRepository
   
   init(
-    converterStorage: ConverterStorage = FakeConverterStorage(),
+    converterStorage: FakeConverterStorage = FakeConverterStorage(),
     currencyStorage: FakeCurrencyStorage = FakeCurrencyStorage()
   ) {
+    self.converterStorage = converterStorage
     self.currencyStorage = currencyStorage
     self.sut = RealConverterRepository(
       converterStorage: converterStorage,
