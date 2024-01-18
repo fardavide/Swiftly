@@ -45,7 +45,6 @@ public final class ConverterViewModel: ViewModel {
 
     case let .changeCurrency(prev, new):
       state.isSelectCurrencyOpen = false
-      let replacedIndex = state.values.firstIndex(where: { $0.currency == prev })!
       Task { await currencyRepository.markCurrencyUsed(new) }
       resetValues(
         baseCurrency: new,
