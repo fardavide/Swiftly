@@ -2,7 +2,7 @@
  Multiplatform Currency Converter in Swift (currently supports iOS, iPadOS and MacOS)
  
  # Download from App Store
- **Coming soon!**
+ **[Download for iPhone, iPad or Mac](https://apps.apple.com/it/app/swiftly-x/id6475713259)!**
  
  # Tech Stack
  * Clean Architecture
