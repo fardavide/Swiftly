@@ -13,9 +13,10 @@ public final class RealAppStorage: AppStorage {
       CurrencyDateSwiftDataModel.self,
       CurrencyRateSwiftDataModel.self,
       CurrencySwiftDataModel.self,
+      CurrencyUsageSwiftDataModel.self,
       SelectedCurrenciesSwiftDataModel.self
     ],
-    version: .init(0, 0, 1)
+    version: .init(0, 0, 2)
   )
 
   public let container: ModelContainer

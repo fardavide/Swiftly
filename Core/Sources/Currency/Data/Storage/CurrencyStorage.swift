@@ -46,7 +46,14 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
         FetchDescriptor<CurrencySwiftDataModel>(
           predicate: #Predicate { $0.code == code.value }
         )
-      ).onSuccess { currency in currency.usageCount += 1 }
+      )
+      .onSuccess { currency in
+        if let usage = currency.usage {
+          usage.count += 1
+        } else {
+          currency.usage = CurrencyUsageSwiftDataModel(currencyCode: code.value, usageCount: 1)
+        }
+      }
     }
   }
 
@@ -59,7 +66,7 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
   func fetchAllCurrencies(sorting: CurrencySorting) async -> Result<[CurrencyStorageModel], StorageError> {
     let sortDescriptors: [SortDescriptor<CurrencySwiftDataModel>] = switch sorting {
     case .alphabetical: [SortDescriptor(\.code)]
-    case .favoritesFirst: [SortDescriptor(\.usageCount, order: .reverse), SortDescriptor(\.code)]
+    case .favoritesFirst: [SortDescriptor(\.usage, order: .reverse), SortDescriptor(\.code)]
     }
     return await withContext {
       $0.fetchAll(FetchDescriptor<CurrencySwiftDataModel>(sortBy: sortDescriptors))

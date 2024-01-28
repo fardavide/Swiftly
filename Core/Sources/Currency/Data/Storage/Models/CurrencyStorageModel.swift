@@ -13,7 +13,7 @@ public class CurrencySwiftDataModel {
   @Attribute(.unique) var code: String
   var name: String
   var symbol: String
-  var usageCount: Int = 0
+  @Relationship var usage: CurrencyUsageSwiftDataModel?
 
   init(
     code: String,
@@ -23,6 +23,12 @@ public class CurrencySwiftDataModel {
     self.code = code
     self.name = name
     self.symbol = symbol
+  }
+}
+
+public extension CurrencySwiftDataModel {
+  var usageCount: Int {
+    usage?.count ?? 0
   }
 }
 
