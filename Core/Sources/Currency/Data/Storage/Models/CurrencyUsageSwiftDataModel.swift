@@ -10,3 +10,9 @@ public class CurrencyUsageSwiftDataModel {
     self.count = usageCount
   }
 }
+
+extension CurrencyUsageSwiftDataModel: Comparable {
+  public static func < (lhs: CurrencyUsageSwiftDataModel, rhs: CurrencyUsageSwiftDataModel) -> Bool {
+    lhs.count < rhs.count
+  }
+}

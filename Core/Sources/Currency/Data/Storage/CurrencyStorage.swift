@@ -64,12 +64,14 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
   }
 
   func fetchAllCurrencies(sorting: CurrencySorting) async -> Result<[CurrencyStorageModel], StorageError> {
-    let sortDescriptors: [SortDescriptor<CurrencySwiftDataModel>] = switch sorting {
-    case .alphabetical: [SortDescriptor(\.code)]
-    case .favoritesFirst: [SortDescriptor(\.usage?.count, order: .reverse), SortDescriptor(\.code)]
-    }
+    // Probably a bug in SwiftData makes it crash, mane related discussions on SO
+    // let sortDescriptors: [SortDescriptor<CurrencySwiftDataModel>] = switch sorting {
+    // case .alphabetical: [SortDescriptor(\.code)]
+    // case .favoritesFirst: [SortDescriptor(\.usage?.count, order: .reverse), SortDescriptor(\.code)]
+    // }
     return await withContext {
-      $0.fetchAll(FetchDescriptor<CurrencySwiftDataModel>(sortBy: sortDescriptors))
+      $0.fetchAll(FetchDescriptor<CurrencySwiftDataModel>())
+        .sorted(using: sorting)
         .print { result in
           let mapped = result.map { list in
             list
@@ -106,6 +108,20 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
       $0.fetchOne(FetchDescriptor<CurrencyDateSwiftDataModel>())
         .or(default: .distantPast)
         .toStorageModel()
+    }
+  }
+}
+
+private extension Result where Success == [CurrencySwiftDataModel] {
+  
+  func sorted(using sorting: CurrencySorting) -> Result<[CurrencySwiftDataModel], Failure> {
+    map { array in
+      switch sorting {
+      case .alphabetical: 
+        array.sorted(using: [.keyPath(\.code)])
+      case .favoritesFirst: 
+        array.sorted(using: [.keyPath(\.usageCount, order: .reverse), .keyPath(\CurrencySwiftDataModel.code)])
+      }
     }
   }
 }
