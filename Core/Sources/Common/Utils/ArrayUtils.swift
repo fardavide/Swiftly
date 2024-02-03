@@ -16,6 +16,8 @@ public extension Array {
     append(element)
   }
   
+  /// Maps an array to a new array including the index of each element.
+  /// - Returns: An array of the transformed values.
   @inlinable func mapWithIndices<R>(_ transform: (IndexedValue<Element>) -> R) -> [R] {
     withIndices().map(transform)
   }
@@ -26,6 +28,9 @@ public extension Array {
     isEmpty ? nil : removeFirst()
   }
   
+  /// Sorts an array according to the provided sort descriptors.
+  /// - Parameter descriptors: An array of `SortDescriptor` to sort the array.
+  /// - Returns: A sorted array based on the given descriptors.
   func sorted(using descriptors: [SortDescriptor<Element>]) -> [Element] {
     sorted { valueA, valueB in
       for descriptor in descriptors {
@@ -56,6 +61,8 @@ public extension Array {
     self[0...Swift.min(count, lastIndex)]
   }
 
+  /// Wraps each element in an `IndexedValue` containing its index.
+  /// - Returns: An array of `IndexedValue` elements.
   func withIndices() -> [IndexedValue<Element>] {
     indices.map { IndexedValue(index: $0, value: self[$0]) }
   }
