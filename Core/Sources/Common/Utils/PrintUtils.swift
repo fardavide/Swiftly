@@ -5,7 +5,7 @@ public extension Printable {
   @discardableResult
   func print(
     enabled: Bool = true,
-    message: (Self) -> String = { "\($0)" }
+    message: (Self) -> Any = { "\($0)" }
   ) -> Self {
     if verbose || enabled {
       Swift.print(message(self))

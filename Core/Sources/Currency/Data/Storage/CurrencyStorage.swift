@@ -66,10 +66,18 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
   func fetchAllCurrencies(sorting: CurrencySorting) async -> Result<[CurrencyStorageModel], StorageError> {
     let sortDescriptors: [SortDescriptor<CurrencySwiftDataModel>] = switch sorting {
     case .alphabetical: [SortDescriptor(\.code)]
-    case .favoritesFirst: [SortDescriptor(\.usage, order: .reverse), SortDescriptor(\.code)]
+    case .favoritesFirst: [SortDescriptor(\.usage?.count, order: .reverse), SortDescriptor(\.code)]
     }
     return await withContext {
       $0.fetchAll(FetchDescriptor<CurrencySwiftDataModel>(sortBy: sortDescriptors))
+        .print { result in
+          let mapped = result.map { list in
+            list
+              .filter { $0.usageCount > 0 }
+              .map { "\($0.code): \($0.usageCount)" }
+          }
+          return "Currencies usage - \(sorting): \(mapped)"
+        }
         .map { result in
           result.map { swiftDataModel in
             swiftDataModel.toStorageModel()
