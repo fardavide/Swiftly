@@ -25,9 +25,10 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
   }
 
   func insertAllCurrencies(_ models: [CurrencyStorageModel]) async {
-    await withContext {
+    await withContext { context in
       for model in models {
-        $0.insert(model.toSwiftDataModel())
+        await context.fetchOne(CurrencySwiftDataModel.fetchDescriptor(by: model.code))
+          .onFailure { _ in context.insert(model.toSwiftDataModel()) }
       }
     }
   }
@@ -42,18 +43,14 @@ class RealCurrencyStorage: AppStorage, CurrencyStorage {
   
   func markCurrencyUsed(code: CurrencyCode) async {
     await withContext { context in
-      await context.fetchOne(
-        FetchDescriptor<CurrencySwiftDataModel>(
-          predicate: #Predicate { $0.code == code.value }
-        )
-      )
-      .onSuccess { currency in
-        if let usage = currency.usage {
-          usage.count += 1
-        } else {
-          currency.usage = CurrencyUsageSwiftDataModel(currencyCode: code.value, usageCount: 1)
+      await context.fetchOne(CurrencySwiftDataModel.fetchDescriptor(by: code))
+        .onSuccess { currency in
+          if let usage = currency.usage {
+            usage.count += 1
+          } else {
+            currency.usage = CurrencyUsageSwiftDataModel(currencyCode: code.value, usageCount: 1)
+          }
         }
-      }
     }
   }
 

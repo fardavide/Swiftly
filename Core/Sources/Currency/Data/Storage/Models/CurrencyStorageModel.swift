@@ -71,6 +71,16 @@ public extension [Currency] {
 }
 
 extension CurrencySwiftDataModel {
+  
+  
+  static func fetchDescriptor(by code: CurrencyCode) -> FetchDescriptor<CurrencySwiftDataModel> {
+    FetchDescriptor(
+      predicate: #Predicate {
+        $0.code == code.value
+      }
+    )
+  }
+  
   func toStorageModel() -> CurrencyStorageModel {
     CurrencyStorageModel(
       code: CurrencyCode(value: code),

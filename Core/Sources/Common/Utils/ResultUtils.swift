@@ -24,7 +24,7 @@ public extension Result {
   /// Executes `f` in case of `Failure`
   /// - Parameter f: closure to execute
   /// - Returns: self
-  @inlinable func onFailure(_ f: (Failure) async -> Void) async -> Result<Success, Failure> {
+  @discardableResult @inlinable func onFailure(_ f: (Failure) async -> Void) async -> Result<Success, Failure> {
     switch self {
     case .success: break
     case let .failure(error): await f(error)
