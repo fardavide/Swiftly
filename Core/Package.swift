@@ -29,6 +29,7 @@ let package = Package(
         "Network",
         "Provider",
         "Resources",
+        "Store",
         "SwiftlyStorage",
         "SwiftlyTest",
         "SwiftlyUtils",
@@ -210,6 +211,24 @@ let package = Package(
       ],
       path: "Tests/Common/StorageTests"
     ),
+    
+    // MARK: Store
+    .target(
+      name: "Store",
+      dependencies: [
+        "Network",
+        "Provider"
+      ],
+      path: "Sources/Common/Store"
+    ),
+    .testTarget(
+      name: "StoreTests",
+      dependencies: [
+        "Store",
+        .product(name: "PowerAssert", package: "swift-power-assert")
+      ],
+      path: "Tests/Common/StoreTests"
+    ),
 
     // MARK: Test
     .target(
@@ -343,7 +362,8 @@ let package = Package(
       dependencies: [
         "CurrencyApi",
         "CurrencyDomain",
-        "CurrencyStorage"
+        "CurrencyStorage",
+        "Store"
       ],
       path: "Sources/Currency/Data/Data"
     ),

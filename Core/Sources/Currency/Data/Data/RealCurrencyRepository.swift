@@ -4,6 +4,8 @@ import CurrencyStorage
 import DateUtils
 import Foundation
 import Network
+import Store
+import SwiftlyStorage
 import SwiftlyUtils
 
 public final class RealCurrencyRepository: CurrencyRepository {
@@ -31,16 +33,16 @@ public final class RealCurrencyRepository: CurrencyRepository {
 
   public func getLatestRates(forceRefresh: Bool) async -> Result<CurrencyRates, DataError> {
     let updatedAt = await storage.getUpdateDate().updatedAt
-    let updateAtDelta = getCurrentDate.run() % updatedAt
-    let shouldRefresh = (forceRefresh && updateAtDelta > 1.minutes()) || updateAtDelta > 1.days()
+    let updateDelta = getCurrentDate.run() % updatedAt
+    let shouldRefresh = (forceRefresh && updateDelta > 1.minutes()) || updateDelta > 1.days()
     print("Rates updated at: \(updatedAt), refreshing: \(shouldRefresh)")
-    return if shouldRefresh {
-      await fetchRatesFromApi().print { _ in "Get latest rates from API" }
-    } else {
-      await fetchRatesFromStorage().map { $0.updatedAt(updatedAt) }
-        .print { _ in "Get latest rates from Storage" }
-        .recover(await fetchRatesFromApi().print { _ in "Fallback to get latest rates from API" })
-    }
+    
+    return await get(
+      shouldFetch: shouldRefresh,
+      fetch: await self.fetchRatesFromApi(),
+      readCache: await self.fetchRatesFromStorage(updatedAt: updatedAt),
+      saveCache: storeRates
+    )
   }
   
   public func markCurrencyUsed(_ currency: Currency) async {
@@ -48,26 +50,26 @@ public final class RealCurrencyRepository: CurrencyRepository {
   }
   
   private func getAllCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
-    let updateDate = await storage.getUpdateDate()
-    let isValid = updateDate.updatedAt > getCurrentDate.run() - 1.days()
+    let updatedAt = await storage.getUpdateDate().updatedAt
+    let updateDelta = getCurrentDate.run() % updatedAt
+    let shouldRefresh = updateDelta > 1.days()
+    print("Currencies udpate at: \(updatedAt), refreshing: \(shouldRefresh)")
     
-    let fromStorage = isValid
-    ? await fetchCurrenciesFromStorage(sorting: sorting)
-    : .failure(DataError.storage(cause: .noCache))
-    
-    return await fromStorage
-      .print { "Get currencies from Storage: \($0.or(default: []).count)" }
-      .recover(await fetchCurrenciesFromApi().print { "Get currencies from API: \($0.or(default: []).count)" })
+    return await get(
+      shouldFetch: shouldRefresh,
+      fetch: await self.fetchCurrenciesFromApi(),
+      readCache: await self.fetchCurrenciesFromStorage(sorting: sorting),
+      saveCache: storeCurrencies
+    )
   }
 
-  private func fetchCurrenciesFromApi() async -> Result<[Currency], DataError> {
+  private func fetchCurrenciesFromApi() async -> Result<[Currency], ApiError> {
     await api.currencies()
       .map { $0.toDomainModels() }
-      .mapErrorToDataError()
       .onSuccess(storeCurrencies)
   }
 
-  private func fetchCurrenciesFromStorage(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
+  private func fetchCurrenciesFromStorage(sorting: CurrencySorting) async -> Result<[Currency], StorageError> {
     await storage.fetchAllCurrencies(sorting: sorting)
       .flatMap { storageModels in
         switch storageModels.isEmpty {
@@ -75,17 +77,14 @@ public final class RealCurrencyRepository: CurrencyRepository {
         case true: .failure(.noCache)
         }
       }
-      .mapErrorToDataError()
   }
 
-  private func fetchRatesFromApi() async -> Result<CurrencyRates, DataError> {
+  private func fetchRatesFromApi() async -> Result<CurrencyRates, ApiError> {
     await api.latestRates()
       .map { $0.toDomainModel(fallbackUpdateAt: getCurrentDate.run()) }
-      .mapErrorToDataError()
-      .onSuccess(storeRates)
   }
 
-  private func fetchRatesFromStorage() async -> Result<[CurrencyRate], DataError> {
+  private func fetchRatesFromStorage(updatedAt: Date) async -> Result<CurrencyRates, StorageError> {
     await storage.fetchAllRates()
       .flatMap { storageModels in
         switch storageModels.isEmpty {
@@ -93,7 +92,7 @@ public final class RealCurrencyRepository: CurrencyRepository {
         case true: .failure(.noCache)
         }
       }
-      .mapErrorToDataError()
+      .map { CurrencyRates(items: $0, updatedAt: updatedAt) }
   }
 
   private func storeCurrencies(currencies: [Currency]) async {

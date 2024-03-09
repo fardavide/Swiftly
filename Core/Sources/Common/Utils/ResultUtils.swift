@@ -60,6 +60,13 @@ public extension Result {
     }
   }
   
+  /// Return `Result` of `Success` and `NewFailure` replacing `Failure` with the given `NewFailure`
+  /// - Parameter error: the error to be used instead of the original one
+  /// - Returns: `Result` of `Success` and `NewFailure`
+  @inlinable func or<NewFailure>(_ error: NewFailure) -> Result<Success, NewFailure> {
+    mapError { _ in error }
+  }
+  
   /// Return value of `Success` or `nil`
   /// - Returns: value of `Success` or `nil`
   @inlinable func orNil() -> Success? {
