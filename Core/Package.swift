@@ -217,7 +217,8 @@ let package = Package(
       name: "Store",
       dependencies: [
         "Network",
-        "Provider"
+        "Provider",
+        "SwiftlyStorage"
       ],
       path: "Sources/Common/Store"
     ),

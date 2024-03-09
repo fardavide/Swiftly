@@ -72,7 +72,6 @@ public extension [Currency] {
 
 extension CurrencySwiftDataModel {
   
-  
   static func fetchDescriptor(by code: CurrencyCode) -> FetchDescriptor<CurrencySwiftDataModel> {
     FetchDescriptor(
       predicate: #Predicate {
