@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 73;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -315,7 +315,6 @@
 				};
 			};
 			buildConfigurationList = 6BD0FF162AF64E7F00CC9579 /* Build configuration list for PBXProject "Swiftly" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -329,6 +328,7 @@
 				6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */,
 				6BA36D862B4AD61C0080BEC2 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
+			preferredProjectObjectVersion = 73;
 			productRefGroup = 6BD0FF1C2AF64E7F00CC9579 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -611,7 +611,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -653,7 +653,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

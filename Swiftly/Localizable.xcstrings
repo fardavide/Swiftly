@@ -45,6 +45,9 @@
         }
       }
     },
+    "Convert ${amount} ${fromCurrency} to ${toCurrency}" : {
+
+    },
     "Convert currency" : {
 
     },
