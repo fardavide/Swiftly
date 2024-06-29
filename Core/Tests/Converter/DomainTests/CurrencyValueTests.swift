@@ -1,11 +1,10 @@
-import XCTest
+import Testing
 
-import PowerAssert
 @testable import CurrencyDomain
 
-final class CurrencyValueTests: XCTestCase {
+struct CurrencyValueTests {
 
-  func test_convert() {
+  @Test func convert() {
     // given
     let input = CurrencyValue(
       value: 10,
@@ -16,6 +15,6 @@ final class CurrencyValueTests: XCTestCase {
     let result = input.convert(to: .samples.eur)
 
     // then
-    #assert(result.value == 9)
+    #expect(result.value == 9)
   }
 }

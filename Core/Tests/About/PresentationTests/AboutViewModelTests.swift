@@ -1,21 +1,23 @@
-import XCTest
+import Testing
 
 import AboutDomain
-import PowerAssert
 import SwiftlyTest
 @testable import AboutPresentation
 
-final class AboutViewModelTests: XCTestCase {
+@Suite("AboutViewModelTests")
+struct AboutViewModelTests {
   
-  func test_initialAppVersionIsLoading() {
+  @Test
+  func initialAppVersionIsLoading() {
     // given
     let scenario = Scenario()
     
     // then
-    #assert(scenario.sut.state == .loading)
+    #expect(scenario.sut.state == .loading)
   }
   
-  func test_appVersionIsLoadedCorrectly() async {
+  @Test
+  func appVersionIsLoadedCorrectly() async throws {
     // given
     let scenario = Scenario(
       appName: "TestAppName",
@@ -28,11 +30,12 @@ final class AboutViewModelTests: XCTestCase {
 
       // then
       let result = await turbine.value()
-      #assert(result.requireContent().appVersion == "1.2 (3)")
+      #expect(result.requireContent().appVersion == "1.2 (3)")
     }
   }
   
-  func test_appNameIsLoadedCorrectly() async {
+  @Test
+  func appNameIsLoadedCorrectly() async throws {
     // given
     let scenario = Scenario(
       appName: "TestAppName",
@@ -45,7 +48,7 @@ final class AboutViewModelTests: XCTestCase {
 
       // then
       let result = await turbine.value()
-      #assert(result.requireContent().appName == "TestAppName")
+      #expect(result.requireContent().appName == "TestAppName")
     }
   }
 }

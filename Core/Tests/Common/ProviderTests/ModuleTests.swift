@@ -1,10 +1,9 @@
-import XCTest
-
-import PowerAssert
+import Testing
 @testable import Provider
 
-final class ModuleTests: XCTestCase {
-  func test_onStart_modulesAreNotRegisteredMultipleTimes() throws {
+struct ModuleTests {
+  @Test
+  func onStart_modulesAreNotRegisteredMultipleTimes() throws {
     // given
     let module = ThirdTestModule()
     let provider = Provider.test()
@@ -13,9 +12,9 @@ final class ModuleTests: XCTestCase {
     module.start(with: provider)
 
     // then
-    #assert(getCount(type: ThirdTestModule.self) == 1)
-    #assert(getCount(type: SecondTestModule.self) == 1)
-    #assert(getCount(type: FirstTestModule.self) == 1)
+    #expect(getCount(type: ThirdTestModule.self) == 1)
+    #expect(getCount(type: SecondTestModule.self) == 1)
+    #expect(getCount(type: FirstTestModule.self) == 1)
   }
 }
 
@@ -45,7 +44,6 @@ private final class FirstTestModule: Module {
 }
 
 private final class SecondTestModule: Module {
-
   var dependencies: [Module.Type] = [
     FirstTestModule.self
   ]
@@ -56,7 +54,6 @@ private final class SecondTestModule: Module {
 }
 
 private final class ThirdTestModule: Module {
-
   var dependencies: [Module.Type] = [
     FirstTestModule.self,
     SecondTestModule.self

@@ -1,16 +1,16 @@
-import XCTest
+import Testing
 
 import ConverterDomain
 import ConverterStorage
 import CurrencyDomain
 import CurrencyStorage
-import PowerAssert
 import SwiftlyStorage
 @testable import ConverterData
 
-final class RealConverterRepositoryTests: XCTestCase {
+struct RealConverterRepositoryTests {
   
-  func test_setSelectedCurrencies_insertsCurrencies() async {
+  @Test
+  func setSelectedCurrencies_insertsCurrencies() async {
     // given
     let scenario = Scenario()
     
@@ -29,10 +29,11 @@ final class RealConverterRepositoryTests: XCTestCase {
       SelectedCurrencyPosition(value: 1): CurrencyCode.samples.jpy,
       SelectedCurrencyPosition(value: 2): CurrencyCode.samples.cny
     ]
-    #assert(scenario.converterStorage.selectedCurrencies == expected)
+    #expect(scenario.converterStorage.selectedCurrencies == expected)
   }
   
-  func test_whenNoSelectedCurrencies_defaultAreReturned() async {
+  @Test
+  func whenNoSelectedCurrencies_defaultAreReturned() async {
     // given
     let scenario = Scenario(
       selectedCurrencies: SelectedCurrenciesStorageModel(currencyCodes: [:])
@@ -42,10 +43,11 @@ final class RealConverterRepositoryTests: XCTestCase {
     let result = await scenario.sut.getSelectedCurrencies()
     
     // then
-    #assert(result == .success(.initial))
+    #expect(result == .success(.initial))
   }
   
-  func test_whenOneSelectedCurrency_defaultIsReplaced() async {
+  @Test
+  func whenOneSelectedCurrency_defaultIsReplaced() async {
     // given
     let scenario = Scenario(
       selectedCurrencies: SelectedCurrenciesStorageModel(
@@ -63,10 +65,11 @@ final class RealConverterRepositoryTests: XCTestCase {
       SelectedCurrencies.initial.currencyCodes[0],
       .samples.cny
     ]
-    #assert(result.orThrow().currencyCodes == expected)
+    #expect(result.orThrow().currencyCodes == expected)
   }
   
-  func test_whenOneInitialCurrencyIsSelectedInAnotherPosition_itIsNotDuplicated() async {
+  @Test
+  func whenOneInitialCurrencyIsSelectedInAnotherPosition_itIsNotDuplicated() async {
     // given
     let scenario = Scenario(
       selectedCurrencies: SelectedCurrenciesStorageModel(
@@ -84,10 +87,11 @@ final class RealConverterRepositoryTests: XCTestCase {
       CurrencyCode.samples.usd,
       CurrencyCode.samples.eur
     ]
-    #assert(result.orThrow().currencyCodes == expected)
+    #expect(result.orThrow().currencyCodes == expected)
   }
   
-  func test_whenThreeCurrenciesAreSelected_ThreeCurrenciesAreRetruned() async {
+  @Test
+  func whenThreeCurrenciesAreSelected_ThreeCurrenciesAreRetruned() async {
     // given
     let scenario = Scenario(
       selectedCurrencies: SelectedCurrenciesStorageModel(
@@ -108,10 +112,11 @@ final class RealConverterRepositoryTests: XCTestCase {
       CurrencyCode.samples.cny,
       CurrencyCode.samples.jpy
     ]
-    #assert(result.orThrow().currencyCodes == expected)
+    #expect(result.orThrow().currencyCodes == expected)
   }
   
-  func test_whenMoreCurrenciesThanMaxAreSelected_maxIsRetuned() async {
+  @Test
+  func whenMoreCurrenciesThanMaxAreSelected_maxIsRetuned() async {
     // given
     let selectedCodes = [
       SelectedCurrencyPosition(value: 0): CurrencyCode.samples.aud,
@@ -122,7 +127,7 @@ final class RealConverterRepositoryTests: XCTestCase {
       SelectedCurrencyPosition(value: 5): CurrencyCode.samples.jpy,
       SelectedCurrencyPosition(value: 6): CurrencyCode.samples.usd
     ]
-    #assert(selectedCodes.count > SelectedCurrencies.maxItems)
+    #expect(selectedCodes.count > SelectedCurrencies.maxItems)
     let scenario = Scenario(
       selectedCurrencies: SelectedCurrenciesStorageModel(
         currencyCodes: selectedCodes
@@ -141,7 +146,7 @@ final class RealConverterRepositoryTests: XCTestCase {
       CurrencyCode.samples.gbp,
       CurrencyCode.samples.jpy
     ]
-    #assert(result.orThrow().currencyCodes == expected)
+    #expect(result.orThrow().currencyCodes == expected)
   }
 }
 

@@ -1,12 +1,12 @@
-import XCTest
+import Testing
 
 import ConverterDomain
-import PowerAssert
 @testable import ConverterStorage
 
-final class SelectedCurrenciesStorageModelTests: XCTestCase {
+struct SelectedCurrenciesStorageModelTests {
 
-  func test_whenConvertToDomainModel_selectedAreSortedCorrectly() {
+  @Test
+  func whenConvertToDomainModel_selectedAreSortedCorrectly() {
     // given
     let storageModel = SelectedCurrenciesStorageModel(
       currencyCodes: [
@@ -33,10 +33,11 @@ final class SelectedCurrenciesStorageModelTests: XCTestCase {
         .samples.gbp
       ]
     )
-    #assert(domainModel == expected)
+    #expect(domainModel == expected)
   }
 
-  func test_whenConvertToDomainModel_gapsAreIgnored() {
+  @Test
+  func whenConvertToDomainModel_gapsAreIgnored() {
     // given
     let storageModel = SelectedCurrenciesStorageModel(
       currencyCodes: [
@@ -57,10 +58,11 @@ final class SelectedCurrenciesStorageModelTests: XCTestCase {
         .samples.chf
       ]
     )
-    #assert(domainModel == expected)
+    #expect(domainModel == expected)
   }
 
-  func test_whenConvertToDomainModel_positionOutOfRange_gapsAreIgnored() {
+  @Test
+  func whenConvertToDomainModel_positionOutOfRange_gapsAreIgnored() {
     // given
     let storageModel = SelectedCurrenciesStorageModel(
       currencyCodes: [
@@ -77,6 +79,6 @@ final class SelectedCurrenciesStorageModelTests: XCTestCase {
         .samples.chf
       ]
     )
-    #assert(domainModel == expected)
+    #expect(domainModel == expected)
   }
 }

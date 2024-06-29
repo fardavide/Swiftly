@@ -1,20 +1,21 @@
-import XCTest
+import Testing
 
-import PowerAssert
 @testable import Provider
 
-final class ProviderTests: XCTestCase {
+struct ProviderTests {
   private let provider = Provider.test()
 
-  func test_whenNotRegistered_errorWithType() {
+  @Test
+  func whenNotRegistered_errorWithType() {
     // when
     let result = provider.safeGet(Int.self)
 
     // then
-    #assert(result == Result.failure(ProviderError(key: "Int")))
+    #expect(result == Result.failure(ProviderError(key: "Int")))
   }
 
-  func test_whenRegistered_rightInstanceIsReturned() {
+  @Test
+  func whenRegistered_rightInstanceIsReturned() {
     // given
     provider.register {
       Child(value: "Hello test")
@@ -24,10 +25,11 @@ final class ProviderTests: XCTestCase {
     let result = provider.get(Child.self)
 
     // then
-    #assert(result.value == "Hello test")
+    #expect(result.value == "Hello test")
   }
 
-  func test_whenRegisteredForParent_rightInstanceIsReturned() {
+  @Test
+  func whenRegisteredForParent_rightInstanceIsReturned() {
     // given
     provider.register {
       Child(value: "Hello parent") as Parent
@@ -37,7 +39,7 @@ final class ProviderTests: XCTestCase {
     let result = provider.get(Parent.self)
 
     // then
-    #assert(result.value == "Hello parent")
+    #expect(result.value == "Hello parent")
   }
 }
 

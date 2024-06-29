@@ -1,11 +1,11 @@
-import XCTest
+import Testing
 
-import PowerAssert
+import Foundation
 @testable import DateUtils
 
-final class DateMathTests: XCTestCase {
-
-  func test_plusDuration() throws {
+struct DateMathTests {
+  @Test
+  func plusDuration() throws {
     // given
     let date = Date.of(year: 2023, month: .oct, day: 29)
 
@@ -13,10 +13,11 @@ final class DateMathTests: XCTestCase {
     let result = date + 3.days()
 
     // then
-    #assert(result == Date.of(year: 2023, month: .nov, day: 1))
+    #expect(result == Date.of(year: 2023, month: .nov, day: 1))
   }
 
-  func test_minusDuration() throws {
+  @Test
+  func minusDuration() throws {
     // given
     let date = Date.of(year: 2023, month: .oct, day: 29)
 
@@ -24,10 +25,11 @@ final class DateMathTests: XCTestCase {
     let result = date - 3.days()
 
     // then
-    #assert(result == Date.of(year: 2023, month: .oct, day: 26))
+    #expect(result == Date.of(year: 2023, month: .oct, day: 26))
   }
 
-  func test_positiveDistance() throws {
+  @Test
+  func positiveDistance() throws {
     // given
     let date = Date.of(year: 2023, month: .oct, day: 29)
     let pastDate = Date.of(year: 2023, month: .oct, day: 26)
@@ -36,10 +38,11 @@ final class DateMathTests: XCTestCase {
     let result = date % pastDate
 
     // then
-    #assert(result == 3.days())
+    #expect(result == 3.days())
   }
 
-  func test_negativeDistance() throws {
+  @Test
+  func negativeDistance() throws {
     // given
     let date = Date.of(year: 2023, month: .oct, day: 26)
     let futureDate = Date.of(year: 2023, month: .oct, day: 29)
@@ -48,6 +51,6 @@ final class DateMathTests: XCTestCase {
     let result = date % futureDate
 
     // then
-    #assert(result == -3.days())
+    #expect(result == -3.days())
   }
 }

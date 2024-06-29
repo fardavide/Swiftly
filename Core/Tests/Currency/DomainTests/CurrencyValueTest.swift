@@ -1,23 +1,26 @@
-import XCTest
+import Testing
 @testable import CurrencyDomain
 
-final class CurrencyValueTest: XCTestCase {
+struct CurrencyValueTest {
 
-  func test_equals() throws {
+  @Test
+  func equals() throws {
     let first = CurrencyValue(value: 10, currencyWithRate: CurrencyWithRate.samples.eur)
     let second = CurrencyValue(value: 10, currencyWithRate: CurrencyWithRate.samples.eur)
-    #assert(first == second)
+    #expect(first == second)
   }
 
-  func test_notEqualsCurrency() throws {
+  @Test
+  func notEqualsCurrency() throws {
     let first = CurrencyValue(value: 10, currencyWithRate: CurrencyWithRate.samples.eur)
     let second = CurrencyValue(value: 10, currencyWithRate: CurrencyWithRate.samples.usd)
-    #assert(first != second)
+    #expect(first != second)
   }
 
-  func test_notEqualsValue() throws {
+  @Test
+  func notEqualsValue() throws {
     let first = CurrencyValue(value: 10, currencyWithRate: CurrencyWithRate.samples.eur)
     let second = CurrencyValue(value: 20, currencyWithRate: CurrencyWithRate.samples.eur)
-    #assert(first != second)
+    #expect(first != second)
   }
 }

@@ -10,8 +10,6 @@
 		6B473DA22B4D4F9F00128299 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6B473DA12B4D4F9F00128299 /* Core */; };
 		6B598BB32B151CFC00E43BA5 /* ShortcutsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */; };
 		6B598BB42B151CFC00E43BA5 /* ConvertIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */; };
-		6B5AA2A62B25A8BE00827B19 /* PowerAssert in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5AA2A52B25A8BE00827B19 /* PowerAssert */; };
-		6B5AA2A82B25A8FD00827B19 /* PowerAssert in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5AA2A72B25A8FD00827B19 /* PowerAssert */; };
 		6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5F9C982AF8078100CBFD19 /* NukeExtensions */; };
 		6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */; };
 		6BC467602B1A5FCE0076CEE9 /* CurrencyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */; };
@@ -50,6 +48,7 @@
 		6B55B43B2B4F03DF008DE0D4 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsProvider.swift; sourceTree = "<group>"; };
 		6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertIntent.swift; sourceTree = "<group>"; };
+		6B72DCC22C30530300F92FCA /* CoreTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CoreTestPlan.xctestplan; sourceTree = "<group>"; };
 		6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEntity.swift; sourceTree = "<group>"; };
 		6BC467612B1A60100076CEE9 /* CurrencyQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyQuery.swift; sourceTree = "<group>"; };
@@ -87,7 +86,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B5AA2A62B25A8BE00827B19 /* PowerAssert in Frameworks */,
 				6BD0FF4E2AF668BC00CC9579 /* Core in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,7 +94,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B5AA2A82B25A8FD00827B19 /* PowerAssert in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +131,7 @@
 		6BD0FF122AF64E7F00CC9579 = {
 			isa = PBXGroup;
 			children = (
+				6B72DCC22C30530300F92FCA /* CoreTestPlan.xctestplan */,
 				6B55B43A2B4F03C2008DE0D4 /* ci_scripts */,
 				6BD0FF492AF64E9600CC9579 /* Core */,
 				6BD0FF1D2AF64E7F00CC9579 /* Swiftly */,
@@ -264,7 +262,6 @@
 			name = SwiftlyTests;
 			packageProductDependencies = (
 				6BD0FF4D2AF668BC00CC9579 /* Core */,
-				6B5AA2A52B25A8BE00827B19 /* PowerAssert */,
 			);
 			productName = SwiftlyTests;
 			productReference = 6BD0FF2C2AF64E8000CC9579 /* SwiftlyTests.xctest */;
@@ -285,7 +282,6 @@
 			);
 			name = SwiftlyUITests;
 			packageProductDependencies = (
-				6B5AA2A72B25A8FD00827B19 /* PowerAssert */,
 			);
 			productName = SwiftlyUITests;
 			productReference = 6BD0FF362AF64E8000CC9579 /* SwiftlyUITests.xctest */;
@@ -299,7 +295,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					6BD0FF1A2AF64E7F00CC9579 = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -325,7 +321,6 @@
 			packageReferences = (
 				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */,
 				6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */,
-				6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */,
 				6BA36D862B4AD61C0080BEC2 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
 			preferredProjectObjectVersion = 73;
@@ -661,7 +656,6 @@
 		6BD0FF442AF64E8000CC9579 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -685,7 +679,6 @@
 		6BD0FF452AF64E8000CC9579 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -709,7 +702,6 @@
 		6BD0FF472AF64E8000CC9579 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
@@ -732,7 +724,6 @@
 		6BD0FF482AF64E8000CC9579 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
@@ -809,14 +800,6 @@
 				minimumVersion = 4.1.1;
 			};
 		};
-		6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kishikawakatsumi/swift-power-assert";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.12.0;
-			};
-		};
 		6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke";
@@ -831,16 +814,6 @@
 		6B473DA12B4D4F9F00128299 /* Core */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Core;
-		};
-		6B5AA2A52B25A8BE00827B19 /* PowerAssert */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */;
-			productName = PowerAssert;
-		};
-		6B5AA2A72B25A8FD00827B19 /* PowerAssert */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6BC467652B1BAB940076CEE9 /* XCRemoteSwiftPackageReference "swift-power-assert" */;
-			productName = PowerAssert;
 		};
 		6B5F9C982AF8078100CBFD19 /* NukeExtensions */ = {
 			isa = XCSwiftPackageProductDependency;

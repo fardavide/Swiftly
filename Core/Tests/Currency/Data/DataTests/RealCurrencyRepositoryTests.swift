@@ -1,17 +1,17 @@
 // swiftlint:disable file_length
-import XCTest
+import Testing
 
 import CurrencyApi
 import CurrencyDomain
 import CurrencyStorage
 import DateUtils
+import Foundation
 import Network
-import PowerAssert
 import SwiftlyStorage
 import SwiftlyUtils
 @testable import CurrencyData
 
-final class RealCurrencyRepositoryTests: XCTestCase {
+struct RealCurrencyRepositoryTests {
 
   // MARK: - latest rates
   func testLatestRates_whenEmptyCache_fetchFromApi() async throws {
@@ -25,7 +25,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     _ = await scenario.sut.getLatestRates(forceRefresh: false)
 
     // then
-    #assert(scenario.api.didFetchLatestRates)
+    #expect(scenario.api.didFetchLatestRates)
   }
 
   func testLatestRates_whenEmptyCache_returnsResultFromApi() async throws {
@@ -39,7 +39,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates(forceRefresh: false)
 
     // then
-    #assert(result == .success([CurrencyRate.samples.eur].updatedAt(currentDate)))
+    #expect(result == .success([CurrencyRate.samples.eur].updatedAt(currentDate)))
   }
 
   func testLatestRates_whenErrorFromCache_fetchFromApi() async throws {
@@ -54,7 +54,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     _ = await scenario.sut.getLatestRates(forceRefresh: false)
 
     // then
-    #assert(scenario.api.didFetchLatestRates)
+    #expect(scenario.api.didFetchLatestRates)
   }
 
   func testLatestRates_whenErrorFromCache_returnsResultFromApi() async throws {
@@ -69,7 +69,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates(forceRefresh: false)
 
     // then
-    #assert(result == .success([CurrencyRate.samples.eur].updatedAt(currentDate)))
+    #expect(result == .success([CurrencyRate.samples.eur].updatedAt(currentDate)))
   }
 
   func testLatestRates_whenCacheNotExpired_dontFetchFromApi() async throws {
@@ -84,7 +84,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     _ = await scenario.sut.getLatestRates(forceRefresh: false)
 
     // then
-    #assert(scenario.api.didFetchLatestRates.not())
+    #expect(scenario.api.didFetchLatestRates.not())
   }
 
   func testLatestRates_whenCacheNotExpired_returnsResultFromStorage() async throws {
@@ -100,7 +100,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates(forceRefresh: false)
 
     // then
-    #assert(result == .success([CurrencyRate.samples.eur].updatedAt(updateDate)))
+    #expect(result == .success([CurrencyRate.samples.eur].updatedAt(updateDate)))
   }
 
   func testLatestRates_whenCacheExpired_fetchFromApi() async throws {
@@ -115,7 +115,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     _ = await scenario.sut.getLatestRates(forceRefresh: false)
 
     // then
-    #assert(scenario.api.didFetchLatestRates)
+    #expect(scenario.api.didFetchLatestRates)
   }
 
   func testLatestRates_whenCacheExpired_returnsResultFromApi() async throws {
@@ -130,7 +130,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates(forceRefresh: false)
 
     // then
-    #assert(result == .success(CurrencyRates.samples.eurOnly))
+    #expect(result == .success(CurrencyRates.samples.eurOnly))
   }
   
   func testLastRates_whenCacheExpired_ifApiError_returnsResultFromStorage() async {
@@ -145,7 +145,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getLatestRates(forceRefresh: false)
     
     // then
-    #assert(result == .success(CurrencyRates.samples.usdOnly.updatedAt(date: currentDate - 3.days())))
+    #expect(result == .success(CurrencyRates.samples.usdOnly.updatedAt(date: currentDate - 3.days())))
   }
 
   // MARK: - all currencies
@@ -160,7 +160,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     _ = await scenario.sut.getCurrencies()
 
     // then
-    #assert(scenario.api.didFetchCurrencies)
+    #expect(scenario.api.didFetchCurrencies)
   }
 
   func testCurrencies_whenEmptyCache_returnsResultFromApi() async throws {
@@ -174,7 +174,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies()
 
     // then
-    #assert(result == .success([Currency.samples.eur]))
+    #expect(result == .success([Currency.samples.eur]))
   }
 
   func testCurrencies_whenErrorFromCache_fetchFromApi() async throws {
@@ -188,7 +188,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     _ = await scenario.sut.getCurrencies()
 
     // then
-    #assert(scenario.api.didFetchCurrencies)
+    #expect(scenario.api.didFetchCurrencies)
   }
 
   func testCurrencies_whenErrorFromCache_returnsResultFromApi() async {
@@ -202,7 +202,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies()
 
     // then
-    #assert(result == .success([Currency.samples.eur]))
+    #expect(result == .success([Currency.samples.eur]))
   }
   
   func testCurrencies_whenNotExpiredCache_fetchFromStorage() async {
@@ -216,7 +216,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     _ = await scenario.sut.getCurrencies()
     
     // then
-    #assert(scenario.api.didFetchCurrencies.not())
+    #expect(scenario.api.didFetchCurrencies.not())
   }
   
   func testCurrencies_whenNotExpiredCache_returnsResultFromStorage() async {
@@ -230,7 +230,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies()
     
     // then
-    #assert(result == .success(Currency.samples.all()))
+    #expect(result == .success(Currency.samples.all()))
   }
   
   func testCurrencies_whenExpiredCache_fetchFromApi() async {
@@ -244,7 +244,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     _ = await scenario.sut.getCurrencies()
     
     // then
-    #assert(scenario.api.didFetchCurrencies)
+    #expect(scenario.api.didFetchCurrencies)
   }
   
   func testCurrencies_whenExpiredCache_returnsResultFromApi() async {
@@ -259,7 +259,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies()
     
     // then
-    #assert(result == .success([Currency.samples.usd]))
+    #expect(result == .success([Currency.samples.usd]))
   }
   
   func testCurrencies_whenExpiredCache_ifApiError_returnsFromStorage() async {
@@ -274,7 +274,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies()
     
     // then
-    #assert(result == .success([Currency.samples.eur]))
+    #expect(result == .success([Currency.samples.eur]))
   }
 
   // MARK: - search currencies
@@ -288,7 +288,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "", sorting: .alphabetical)
 
     // then
-    #assert(result == .success(Currency.samples.all()))
+    #expect(result == .success(Currency.samples.all()))
   }
   
   func testSearchCurrencies_whenMatchFullNameSameCase_returnsFilteredResults() async {
@@ -301,7 +301,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "Euro", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.eur]))
+    #expect(result == .success([Currency.samples.eur]))
   }
 
   func testSearchCurrencies_whenMatchFullNameDifferentCase_returnsFilteredResults() async {
@@ -314,7 +314,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "eUrO", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.eur]))
+    #expect(result == .success([Currency.samples.eur]))
   }
 
   func testSearchCurrencies_whenMatchPartialName_returnsFilteredResults() async {
@@ -327,7 +327,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "ur", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.eur]))
+    #expect(result == .success([Currency.samples.eur]))
   }
 
   func testSearchCurrencies_whenMatchFullCodeSameCase_returnsFilteredResults() async {
@@ -340,7 +340,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "CNY", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.cny]))
+    #expect(result == .success([Currency.samples.cny]))
   }
 
   func testSearchCurrencies_whenMatchFullCodeDifferentCase_returnsFilteredResults() async {
@@ -353,7 +353,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "CnY", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.cny]))
+    #expect(result == .success([Currency.samples.cny]))
   }
 
   func testSearchCurrencies_whenMatchPartialCode_returnsFilteredResults() async {
@@ -366,7 +366,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "Y", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.cny, Currency.samples.jpy]))
+    #expect(result == .success([Currency.samples.cny, Currency.samples.jpy]))
   }
 
   func testSearchCurrencies_whenMatchFullSymbolSameCase_returnsFilteredResults() async {
@@ -379,7 +379,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "CN¥", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.cny]))
+    #expect(result == .success([Currency.samples.cny]))
   }
 
   func testSearchCurrencies_whenMatchFullSymbolDifferentCase_returnsFilteredResults() async {
@@ -392,7 +392,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "Cn¥", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.cny]))
+    #expect(result == .success([Currency.samples.cny]))
   }
 
   func testSearchCurrencies_whenMatchPartialSymbol_returnsFilteredResults() async {
@@ -405,7 +405,7 @@ final class RealCurrencyRepositoryTests: XCTestCase {
     let result = await scenario.sut.getCurrencies(query: "¥", sorting: .alphabetical)
 
     // then
-    #assert(result == .success([Currency.samples.cny, Currency.samples.jpy]))
+    #expect(result == .success([Currency.samples.cny, Currency.samples.jpy]))
   }
 }
 

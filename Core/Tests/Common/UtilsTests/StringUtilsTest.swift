@@ -1,15 +1,14 @@
-import XCTest
+import Testing
 
-import PowerAssert
 @testable import SwiftlyUtils
 
-final class StringUtilsTest: XCTestCase {
+struct StringUtilsTest {
 
-  func test_capitalizeFirst() {
-    #assert("hello world. Bye".capitalizedFirst == "Hello world. Bye")
+  @Test func capitalizeFirst() {
+    #expect("hello world. Bye".capitalizedFirst == "Hello world. Bye")
   }
   
-  func test_dotCase_fromCamelCase() {
-    #assert("helloWorld".dotCase == "hello.world")
+  @Test func dotCase_fromCamelCase() {
+    #expect("helloWorld".dotCase == "hello.world")
   }
 }

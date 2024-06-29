@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 // swiftlint:disable file_length
 
@@ -49,9 +49,9 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(url: "https://github.com/apple/swift-testing.git", from: "0.10.0"),
     .package(url: "https://github.com/kean/Nuke", .upToNextMajor(from: Version(12, 2, 0))),
-    .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: Version(4, 1, 1))),
-    .package(url: "https://github.com/kishikawakatsumi/swift-power-assert", .upToNextMajor(from: Version(0, 12, 0)))
+    .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: Version(4, 1, 1)))
   ],
   targets: [
     
@@ -89,7 +89,7 @@ let package = Package(
       dependencies: [
         "AboutPresentation",
         "SwiftlyTest",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/About/PresentationTests"
     ),
@@ -141,7 +141,7 @@ let package = Package(
       name: "DateUtilsTest",
       dependencies: [
         "DateUtils",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Common/DateUtilsTests"
     ),
@@ -182,7 +182,7 @@ let package = Package(
       name: "ProviderTests",
       dependencies: [
         "Provider",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Common/ProviderTests"
     ),
@@ -226,7 +226,7 @@ let package = Package(
       name: "StoreTests",
       dependencies: [
         "Store",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Common/StoreTests"
     ),
@@ -253,7 +253,7 @@ let package = Package(
       name: "SwiftlyUtilsTests",
       dependencies: [
         "SwiftlyUtils",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Common/UtilsTests"
     ),
@@ -273,7 +273,7 @@ let package = Package(
       name: "ConverterDataTests",
       dependencies: [
         "ConverterData",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Converter/Data/DataTests"
     ),
@@ -313,7 +313,7 @@ let package = Package(
         "ConverterDomain",
         "ConverterPresentation",
         "SwiftlyTest",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Converter/PresentationTests"
     ),
@@ -332,7 +332,7 @@ let package = Package(
       name: "ConverterStorageTests",
       dependencies: [
         "ConverterStorage",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Converter/Data/StorageTests"
     ),
@@ -352,7 +352,7 @@ let package = Package(
       name: "CurrencyApiTests",
       dependencies: [
         "CurrencyApi",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Currency/Data/ApiTests"
     ),
@@ -372,7 +372,7 @@ let package = Package(
       name: "CurrencyDataTests",
       dependencies: [
         "CurrencyData",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Currency/Data/DataTests"
     ),
@@ -390,7 +390,7 @@ let package = Package(
       name: "CurrencyDomainTests",
       dependencies: [
         "CurrencyDomain",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Currency/DomainTests"
     ),
@@ -410,7 +410,7 @@ let package = Package(
       name: "CurrencyStorageTests",
       dependencies: [
         "CurrencyStorage",
-        .product(name: "PowerAssert", package: "swift-power-assert")
+        .product(name: "Testing", package: "swift-testing")
       ],
       path: "Tests/Currency/Data/StorageTests"
     ),
