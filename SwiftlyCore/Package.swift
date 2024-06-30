@@ -6,7 +6,7 @@ import CompilerPluginSupport
 import PackageDescription
 
 let package = Package(
-  name: "Core",
+  name: "SwiftlyCore",
   platforms: [
     .iOS(.v17),
     .macOS(.v14),
@@ -15,7 +15,7 @@ let package = Package(
   ],
   products: [
     .library(
-      name: "Core",
+      name: "SwiftlyCore",
       targets: [
         // MARK: - About declaration
         "AboutDomain",

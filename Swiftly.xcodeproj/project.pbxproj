@@ -7,10 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6B473DA22B4D4F9F00128299 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6B473DA12B4D4F9F00128299 /* Core */; };
+		6B0EC9D32C31499700371364 /* SwiftlyCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9D22C31499700371364 /* SwiftlyCore */; };
 		6B598BB32B151CFC00E43BA5 /* ShortcutsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */; };
 		6B598BB42B151CFC00E43BA5 /* ConvertIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */; };
-		6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B5F9C982AF8078100CBFD19 /* NukeExtensions */; };
 		6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */; };
 		6BC467602B1A5FCE0076CEE9 /* CurrencyEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */; };
 		6BC467622B1A60100076CEE9 /* CurrencyQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC467612B1A60100076CEE9 /* CurrencyQuery.swift */; };
@@ -21,10 +20,6 @@
 		6BD0FF3B2AF64E8000CC9579 /* SwiftlyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF3A2AF64E8000CC9579 /* SwiftlyUITests.swift */; };
 		6BD0FF3D2AF64E8000CC9579 /* SwiftlyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF3C2AF64E8000CC9579 /* SwiftlyUITestsLaunchTests.swift */; };
 		6BD0FF4C2AF6574900CC9579 /* SwiftlyModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD0FF4B2AF6574900CC9579 /* SwiftlyModule.swift */; };
-		6BD0FF4E2AF668BC00CC9579 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF4D2AF668BC00CC9579 /* Core */; };
-		6BD0FF512AF6696700CC9579 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF502AF6696700CC9579 /* Core */; };
-		6BD0FF562AF6C77C00CC9579 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF552AF6C77C00CC9579 /* Nuke */; };
-		6BD0FF5A2AF6C77C00CC9579 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6BD0FF592AF6C77C00CC9579 /* NukeUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +43,6 @@
 		6B55B43B2B4F03DF008DE0D4 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsProvider.swift; sourceTree = "<group>"; };
 		6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertIntent.swift; sourceTree = "<group>"; };
-		6B72DCC22C30530300F92FCA /* CoreTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CoreTestPlan.xctestplan; sourceTree = "<group>"; };
 		6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		6BC4675F2B1A5FCE0076CEE9 /* CurrencyEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyEntity.swift; sourceTree = "<group>"; };
 		6BC467612B1A60100076CEE9 /* CurrencyQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyQuery.swift; sourceTree = "<group>"; };
@@ -74,11 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BD0FF512AF6696700CC9579 /* Core in Frameworks */,
-				6B5F9C992AF8078100CBFD19 /* NukeExtensions in Frameworks */,
-				6BD0FF562AF6C77C00CC9579 /* Nuke in Frameworks */,
-				6B473DA22B4D4F9F00128299 /* Core in Frameworks */,
-				6BD0FF5A2AF6C77C00CC9579 /* NukeUI in Frameworks */,
+				6B0EC9D32C31499700371364 /* SwiftlyCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +76,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BD0FF4E2AF668BC00CC9579 /* Core in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,7 +120,6 @@
 		6BD0FF122AF64E7F00CC9579 = {
 			isa = PBXGroup;
 			children = (
-				6B72DCC22C30530300F92FCA /* CoreTestPlan.xctestplan */,
 				6B55B43A2B4F03C2008DE0D4 /* ci_scripts */,
 				6BD0FF492AF64E9600CC9579 /* Core */,
 				6BD0FF1D2AF64E7F00CC9579 /* Swiftly */,
@@ -236,11 +224,7 @@
 			);
 			name = Swiftly;
 			packageProductDependencies = (
-				6BD0FF502AF6696700CC9579 /* Core */,
-				6BD0FF552AF6C77C00CC9579 /* Nuke */,
-				6BD0FF592AF6C77C00CC9579 /* NukeUI */,
-				6B5F9C982AF8078100CBFD19 /* NukeExtensions */,
-				6B473DA12B4D4F9F00128299 /* Core */,
+				6B0EC9D22C31499700371364 /* SwiftlyCore */,
 			);
 			productName = Swiftly;
 			productReference = 6BD0FF1B2AF64E7F00CC9579 /* Swiftly.app */;
@@ -261,7 +245,6 @@
 			);
 			name = SwiftlyTests;
 			packageProductDependencies = (
-				6BD0FF4D2AF668BC00CC9579 /* Core */,
 			);
 			productName = SwiftlyTests;
 			productReference = 6BD0FF2C2AF64E8000CC9579 /* SwiftlyTests.xctest */;
@@ -319,9 +302,9 @@
 			);
 			mainGroup = 6BD0FF122AF64E7F00CC9579;
 			packageReferences = (
-				6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */,
 				6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */,
 				6BA36D862B4AD61C0080BEC2 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
+				6B72DCC52C3148E400F92FCA /* XCLocalSwiftPackageReference "SwiftlyCore" */,
 			);
 			preferredProjectObjectVersion = 73;
 			productRefGroup = 6BD0FF1C2AF64E7F00CC9579 /* Products */;
@@ -785,9 +768,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		6BD0FF4F2AF6696700CC9579 /* XCLocalSwiftPackageReference "Core" */ = {
+		6B72DCC52C3148E400F92FCA /* XCLocalSwiftPackageReference "SwiftlyCore" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Core;
+			relativePath = SwiftlyCore;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -811,32 +794,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6B473DA12B4D4F9F00128299 /* Core */ = {
+		6B0EC9D22C31499700371364 /* SwiftlyCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Core;
-		};
-		6B5F9C982AF8078100CBFD19 /* NukeExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = NukeExtensions;
-		};
-		6BD0FF4D2AF668BC00CC9579 /* Core */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Core;
-		};
-		6BD0FF502AF6696700CC9579 /* Core */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Core;
-		};
-		6BD0FF552AF6C77C00CC9579 /* Nuke */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = Nuke;
-		};
-		6BD0FF592AF6C77C00CC9579 /* NukeUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
-			productName = NukeUI;
+			package = 6B72DCC52C3148E400F92FCA /* XCLocalSwiftPackageReference "SwiftlyCore" */;
+			productName = SwiftlyCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
