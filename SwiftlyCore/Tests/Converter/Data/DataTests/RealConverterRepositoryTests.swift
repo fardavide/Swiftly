@@ -62,8 +62,8 @@ struct RealConverterRepositoryTests {
     
     // then
     let expected = [
-      SelectedCurrencies.initial.currencyCodes[0],
-      .samples.cny
+      .samples.cny,
+      SelectedCurrencies.initial.currencyCodes[0]
     ]
     #expect(result.orThrow().currencyCodes == expected)
   }
@@ -84,8 +84,8 @@ struct RealConverterRepositoryTests {
     
     // then
     let expected = [
-      CurrencyCode.samples.usd,
-      CurrencyCode.samples.eur
+      CurrencyCode.samples.eur,
+      CurrencyCode.samples.usd
     ]
     #expect(result.orThrow().currencyCodes == expected)
   }

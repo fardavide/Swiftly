@@ -27,6 +27,17 @@ public extension SelectedCurrencies {
   static func of(currencyCodes: [CurrencyCode]) -> SelectedCurrencies {
     SelectedCurrencies(currencyCodes: Array(currencyCodes.take(maxItems)))
   }
+  
+  func fill() -> SelectedCurrencies {
+    switch currencyCodes.count {
+    case 0: .initial
+    case 1: SelectedCurrencies(
+      currencyCodes: currencyCodes + Self.initial.currencyCodes
+        .filter { !currencyCodes.contains($0) }.take(1)
+    )
+    default: self
+    }
+  }
 }
 
 public class FavoriteCurrenciesSamples {

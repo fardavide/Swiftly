@@ -152,7 +152,8 @@ let package = Package(
       dependencies: [
         "CurrencyDomain",
         "Resources",
-        "SFSafeSymbols"
+        "SFSafeSymbols",
+        .product(name: "NukeUI", package: "Nuke")
       ],
       path: "Sources/Common/Design"
     ),

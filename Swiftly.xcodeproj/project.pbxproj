@@ -7,7 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6B0EC9D32C31499700371364 /* SwiftlyCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9D22C31499700371364 /* SwiftlyCore */; };
+		6B0EC9D62C314E7B00371364 /* SwiftlyCore in Resources */ = {isa = PBXBuildFile; fileRef = 6B0EC9D52C314E7B00371364 /* SwiftlyCore */; };
+		6B0EC9D72C314E7B00371364 /* SwiftlyCore in Resources */ = {isa = PBXBuildFile; fileRef = 6B0EC9D52C314E7B00371364 /* SwiftlyCore */; };
+		6B0EC9D82C314E7B00371364 /* SwiftlyCore in Resources */ = {isa = PBXBuildFile; fileRef = 6B0EC9D52C314E7B00371364 /* SwiftlyCore */; };
+		6B0EC9DA2C314ED900371364 /* CoreTestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 6B0EC9D92C314ED900371364 /* CoreTestPlan.xctestplan */; };
+		6B0EC9DB2C314ED900371364 /* CoreTestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 6B0EC9D92C314ED900371364 /* CoreTestPlan.xctestplan */; };
+		6B0EC9DC2C314ED900371364 /* CoreTestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 6B0EC9D92C314ED900371364 /* CoreTestPlan.xctestplan */; };
+		6B0EC9DE2C314F9500371364 /* SwiftlyCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9DD2C314F9500371364 /* SwiftlyCore */; };
+		6B0EC9EC2C39744900371364 /* SwiftlyCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9EB2C39744900371364 /* SwiftlyCore */; };
+		6B0EC9EE2C39747E00371364 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9ED2C39747E00371364 /* Nuke */; };
+		6B0EC9F02C39747E00371364 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9EF2C39747E00371364 /* NukeExtensions */; };
+		6B0EC9F22C39747E00371364 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9F12C39747E00371364 /* NukeUI */; };
+		6B0EC9F42C39749F00371364 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9F32C39749F00371364 /* Nuke */; };
+		6B0EC9F62C39749F00371364 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9F52C39749F00371364 /* NukeExtensions */; };
+		6B0EC9F82C39749F00371364 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6B0EC9F72C39749F00371364 /* NukeUI */; };
 		6B598BB32B151CFC00E43BA5 /* ShortcutsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */; };
 		6B598BB42B151CFC00E43BA5 /* ConvertIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */; };
 		6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6BAB1BFB2AFAAD810055D913 /* Localizable.xcstrings */; };
@@ -40,6 +53,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6B0EC9D52C314E7B00371364 /* SwiftlyCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SwiftlyCore; sourceTree = "<group>"; };
+		6B0EC9D92C314ED900371364 /* CoreTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CoreTestPlan.xctestplan; sourceTree = "<group>"; };
 		6B55B43B2B4F03DF008DE0D4 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6B598BB12B151CFC00E43BA5 /* ShortcutsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsProvider.swift; sourceTree = "<group>"; };
 		6B598BB22B151CFC00E43BA5 /* ConvertIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertIntent.swift; sourceTree = "<group>"; };
@@ -57,7 +72,6 @@
 		6BD0FF362AF64E8000CC9579 /* SwiftlyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftlyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD0FF3A2AF64E8000CC9579 /* SwiftlyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftlyUITests.swift; sourceTree = "<group>"; };
 		6BD0FF3C2AF64E8000CC9579 /* SwiftlyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftlyUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		6BD0FF492AF64E9600CC9579 /* Core */ = {isa = PBXFileReference; lastKnownFileType = text; path = Core; sourceTree = SOURCE_ROOT; };
 		6BD0FF4B2AF6574900CC9579 /* SwiftlyModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftlyModule.swift; sourceTree = "<group>"; };
 		6BD0FF522AF6B7B000CC9579 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6BD0FF5B2AF7C9B000CC9579 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -68,7 +82,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B0EC9D32C31499700371364 /* SwiftlyCore in Frameworks */,
+				6B0EC9EC2C39744900371364 /* SwiftlyCore in Frameworks */,
+				6B0EC9F42C39749F00371364 /* Nuke in Frameworks */,
+				6B0EC9F62C39749F00371364 /* NukeExtensions in Frameworks */,
+				6B0EC9F82C39749F00371364 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +93,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B0EC9DE2C314F9500371364 /* SwiftlyCore in Frameworks */,
+				6B0EC9EE2C39747E00371364 /* Nuke in Frameworks */,
+				6B0EC9F02C39747E00371364 /* NukeExtensions in Frameworks */,
+				6B0EC9F22C39747E00371364 /* NukeUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,8 +141,9 @@
 		6BD0FF122AF64E7F00CC9579 = {
 			isa = PBXGroup;
 			children = (
+				6B0EC9D92C314ED900371364 /* CoreTestPlan.xctestplan */,
+				6B0EC9D52C314E7B00371364 /* SwiftlyCore */,
 				6B55B43A2B4F03C2008DE0D4 /* ci_scripts */,
-				6BD0FF492AF64E9600CC9579 /* Core */,
 				6BD0FF1D2AF64E7F00CC9579 /* Swiftly */,
 				6BD0FF2F2AF64E8000CC9579 /* SwiftlyTests */,
 				6BD0FF392AF64E8000CC9579 /* SwiftlyUITests */,
@@ -224,7 +246,10 @@
 			);
 			name = Swiftly;
 			packageProductDependencies = (
-				6B0EC9D22C31499700371364 /* SwiftlyCore */,
+				6B0EC9EB2C39744900371364 /* SwiftlyCore */,
+				6B0EC9F32C39749F00371364 /* Nuke */,
+				6B0EC9F52C39749F00371364 /* NukeExtensions */,
+				6B0EC9F72C39749F00371364 /* NukeUI */,
 			);
 			productName = Swiftly;
 			productReference = 6BD0FF1B2AF64E7F00CC9579 /* Swiftly.app */;
@@ -245,6 +270,10 @@
 			);
 			name = SwiftlyTests;
 			packageProductDependencies = (
+				6B0EC9DD2C314F9500371364 /* SwiftlyCore */,
+				6B0EC9ED2C39747E00371364 /* Nuke */,
+				6B0EC9EF2C39747E00371364 /* NukeExtensions */,
+				6B0EC9F12C39747E00371364 /* NukeUI */,
 			);
 			productName = SwiftlyTests;
 			productReference = 6BD0FF2C2AF64E8000CC9579 /* SwiftlyTests.xctest */;
@@ -324,7 +353,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BD0FF272AF64E8000CC9579 /* Preview Assets.xcassets in Resources */,
+				6B0EC9DC2C314ED900371364 /* CoreTestPlan.xctestplan in Resources */,
 				6BD0FF232AF64E8000CC9579 /* Assets.xcassets in Resources */,
+				6B0EC9D82C314E7B00371364 /* SwiftlyCore in Resources */,
 				6BAB1BFC2AFAAD810055D913 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -333,6 +364,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B0EC9D72C314E7B00371364 /* SwiftlyCore in Resources */,
+				6B0EC9DB2C314ED900371364 /* CoreTestPlan.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +373,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B0EC9D62C314E7B00371364 /* SwiftlyCore in Resources */,
+				6B0EC9DA2C314ED900371364 /* CoreTestPlan.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -794,10 +829,43 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6B0EC9D22C31499700371364 /* SwiftlyCore */ = {
+		6B0EC9DD2C314F9500371364 /* SwiftlyCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6B72DCC52C3148E400F92FCA /* XCLocalSwiftPackageReference "SwiftlyCore" */;
 			productName = SwiftlyCore;
+		};
+		6B0EC9EB2C39744900371364 /* SwiftlyCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftlyCore;
+		};
+		6B0EC9ED2C39747E00371364 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		6B0EC9EF2C39747E00371364 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
+		6B0EC9F12C39747E00371364 /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
+		};
+		6B0EC9F32C39749F00371364 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		6B0EC9F52C39749F00371364 /* NukeExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeExtensions;
+		};
+		6B0EC9F72C39749F00371364 /* NukeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6BD0FF542AF6C77C00CC9579 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = NukeUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

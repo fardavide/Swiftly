@@ -21,7 +21,7 @@ final class RealConverterRepository: ConverterRepository {
     let result = await converterStorage.fetchSelectedCurrencies()
       .print { "Get selected currencies from Storage: \($0)" }
     return await result
-      .map { storageModel in storageModel.toDomainModel() }
+      .map { storageModel in storageModel.toDomainModel().fill() }
       .recover(.success(.initial))
   }
   

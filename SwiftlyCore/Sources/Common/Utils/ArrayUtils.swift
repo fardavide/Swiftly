@@ -58,7 +58,7 @@ public extension Array {
   
   /// - Returns: new Subsequence containing at most `count` elements
   func take(_ count: Int) -> [Element].SubSequence {
-    self[0...Swift.min(count, lastIndex)]
+    if isEmpty { dropLast() } else { self[0...Swift.min(count - 1, lastIndex)] }
   }
 
   /// Wraps each element in an `IndexedValue` containing its index.

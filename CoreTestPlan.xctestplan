@@ -1,0 +1,171 @@
+{
+  "configurations" : [
+    {
+      "id" : "CBA3016B-7157-4EC0-A9E5-EC84ACC0FFE1",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "RealppStorageTests",
+        "name" : "RealppStorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Swiftly.xcodeproj",
+        "identifier" : "6BD0FF352AF64E8000CC9579",
+        "name" : "SwiftlyUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CurrencyApiTests",
+        "name" : "CurrencyApiTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ConverterDataTests",
+        "name" : "ConverterDataTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "StoreTests",
+        "name" : "StoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ProviderTests",
+        "name" : "ProviderTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CurrencyStorageTests",
+        "name" : "CurrencyStorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SwiftlyUtilsTests",
+        "name" : "SwiftlyUtilsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DateUtilsTest",
+        "name" : "DateUtilsTest"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "TestTests",
+        "name" : "TestTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AboutDomainTests",
+        "name" : "AboutDomainTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "StorageTests",
+        "name" : "StorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ConverterStorageTests",
+        "name" : "ConverterStorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Swiftly.xcodeproj",
+        "identifier" : "6BD0FF2B2AF64E8000CC9579",
+        "name" : "SwiftlyTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AppStorageTests",
+        "name" : "AppStorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CurrencyDataTests",
+        "name" : "CurrencyDataTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CurrencyDomainTests",
+        "name" : "CurrencyDomainTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ConverterPresentationTests",
+        "name" : "ConverterPresentationTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "NetworkTests",
+        "name" : "NetworkTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ConverterDomainTests",
+        "name" : "ConverterDomainTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AboutPresentationTests",
+        "name" : "AboutPresentationTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "HomePresentationTests",
+        "name" : "HomePresentationTests"
+      }
+    }
+  ],
+  "version" : 1
+}
