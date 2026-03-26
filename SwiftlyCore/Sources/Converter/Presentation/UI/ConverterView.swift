@@ -61,7 +61,12 @@ public struct ConverterView: View {
           }
           // Updated at text
           if let updatedAt = state.updatedAt {
-            ToolbarItem(placement: .bottomBar) {
+            #if os(iOS)
+            let updatedAtPlacement: ToolbarItemPlacement = .bottomBar
+            #else
+            let updatedAtPlacement: ToolbarItemPlacement = .automatic
+            #endif
+            ToolbarItem(placement: updatedAtPlacement) {
               Text("Updated \(updatedAt)")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
