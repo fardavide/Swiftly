@@ -30,7 +30,7 @@ public final class ConverterViewModel: ViewModel {
   // swiftlint:disable function_body_length
   public func send(_ action: ConverterAction) {
     switch action {
-      
+
     case let .addAcurrency(currency):
       state.isSelectCurrencyOpen = false
       Task { await currencyRepository.markCurrencyUsed(currency) }
@@ -51,19 +51,19 @@ public final class ConverterViewModel: ViewModel {
         prevBaseCurrency: prev
       )
       Task { await storeSelectedCurrencies() }
-      
+
     case .closeSelectCurrency:
       state.searchQuery = ""
       state.searchCurrencies = currencies
       state.isSelectCurrencyOpen = false
-      
+
     case let .openSelectCurrency(selectedCurrency):
       state.selectedCurrency = selectedCurrency
       state.isSelectCurrencyOpen = true
-      
+
     case .refresh:
       Task { await load(forceRefresh: true) }
-      
+
     case let .removeCurrency(currency):
       let removedIndex = state.values.firstIndex(where: { $0.currency == currency })!
       state.values.remove(at: removedIndex)
@@ -80,7 +80,7 @@ public final class ConverterViewModel: ViewModel {
           self.state.searchCurrencies = searchResult.or(default: [])
         }
       }
-      
+
     case let .setSorting(sorting):
       Task {
         let searchResult = await currencyRepository.getCurrencies(
@@ -103,6 +103,10 @@ public final class ConverterViewModel: ViewModel {
     }
   }
   // swiftlint:enable function_body_length
+
+  public func refresh() async {
+    await load(forceRefresh: true)
+  }
 
   private func load(forceRefresh: Bool) async {
     emit {
@@ -165,37 +169,38 @@ public final class ConverterViewModel: ViewModel {
       rate: rate.rate
     )
   }
-  
+
   private func resetValues(baseCurrency: Currency, prevBaseCurrency: Currency?) {
     let prevBaseCurrency = prevBaseCurrency ?? baseCurrency
     let baseIndex = state.values.firstIndex(where: { $0.currency == prevBaseCurrency })!
-    
+
     let newBaseCurrencyValue = getCurrencyWithRate(for: baseCurrency.code)
       .withValue(10)
-    
+
     state.values = state.values.mapWithIndices { (index, currencyValue) in
       if index == baseIndex {
         newBaseCurrencyValue
-        
+
       } else if currencyValue.currency == baseCurrency {
         newBaseCurrencyValue
           .convert(to: getCurrencyWithRate(for: prevBaseCurrency.code))
-        
+
       } else {
         newBaseCurrencyValue
           .convert(to: getCurrencyWithRate(for: currencyValue.currency.code))
       }
     }
   }
-  
+
   private func storeSelectedCurrencies() async {
     await converterRepository.setSelectedCurrencies(state.values.map(\.currency.code))
   }
-  
+
   private func syncUpdatedAt() {
-    let timer = Timer(timeInterval: 1, repeats: true) { _ in
-      if let updatedAt = self.updatedAt {
-        self.emit { self.state.updatedAt = updatedAt.formatted(.relative(presentation: .named)) }
+    let timer = Timer(timeInterval: 1, repeats: true) { [weak self] _ in
+      Task { @MainActor [weak self] in
+        guard let self, let updatedAt = self.updatedAt else { return }
+        self.state.updatedAt = updatedAt.formatted(.relative(presentation: .named))
       }
     }
     RunLoop.current.add(timer, forMode: .common)
