@@ -28,7 +28,7 @@ public struct ConverterView: View {
           send: viewModel.send
         )
         .refreshable {
-          await viewModel.refresh()
+          await viewModel.send(.refresh)
         }
         .toolbar {
           // Add Currency

@@ -28,7 +28,7 @@ public final class ConverterViewModel: ViewModel {
   }
 
   // swiftlint:disable function_body_length
-  public func send(_ action: ConverterAction) {
+  public func send(_ action: ConverterAction) async {
     switch action {
 
     case let .addAcurrency(currency):
@@ -62,7 +62,7 @@ public final class ConverterViewModel: ViewModel {
       state.isSelectCurrencyOpen = true
 
     case .refresh:
-      Task { await load(forceRefresh: true) }
+      await load(forceRefresh: true)
 
     case let .removeCurrency(currency):
       let removedIndex = state.values.firstIndex(where: { $0.currency == currency })!
@@ -103,10 +103,6 @@ public final class ConverterViewModel: ViewModel {
     }
   }
   // swiftlint:enable function_body_length
-
-  public func refresh() async {
-    await load(forceRefresh: true)
-  }
 
   private func load(forceRefresh: Bool) async {
     emit {
