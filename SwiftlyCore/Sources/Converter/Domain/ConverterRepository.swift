@@ -1,13 +1,13 @@
 import CurrencyDomain
 import SwiftlyUtils
 
-public protocol ConverterRepository {
+public protocol ConverterRepository: Sendable {
 
   func getSelectedCurrencies() async -> Result<SelectedCurrencies, DataError>
   func setSelectedCurrencies(_ selectedCurrencies: [CurrencyCode]) async
 }
 
-public final class FakeConverterRepository: ConverterRepository {
+public final class FakeConverterRepository: ConverterRepository, @unchecked Sendable {
   
   private let selectedCurrenciesResult: Result<SelectedCurrencies, DataError>
 

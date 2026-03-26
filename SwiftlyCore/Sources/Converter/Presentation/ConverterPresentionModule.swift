@@ -6,10 +6,12 @@ final public class ConverterPresentionModule: Module {
   public func register(on provider: Provider) {
     provider
       .register {
-        ConverterViewModel(
-          converterRepository: provider.get(),
-          currencyRepository: provider.get()
-        )
+        MainActor.assumeIsolated {
+          ConverterViewModel(
+            converterRepository: provider.get(),
+            currencyRepository: provider.get()
+          )
+        }
       }
   }
 }

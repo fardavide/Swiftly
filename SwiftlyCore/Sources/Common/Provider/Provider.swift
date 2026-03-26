@@ -1,4 +1,4 @@
-final public class Provider {
+final public class Provider: @unchecked Sendable {
 
   private var registry: [String: () -> Any]
 
@@ -46,7 +46,7 @@ public func getProvider() -> Provider {
 }
 
 public extension Provider {
-  private static var instance: Provider?
+  nonisolated(unsafe) private static var instance: Provider?
 
   static func get() -> Provider {
     instance ?? start()

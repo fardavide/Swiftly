@@ -4,7 +4,7 @@ import CurrencyDomain
 import CurrencyStorage
 import SwiftlyUtils
 
-final class RealConverterRepository: ConverterRepository {
+final class RealConverterRepository: ConverterRepository, @unchecked Sendable {
 
   private let converterStorage: ConverterStorage
   private let currencyStorage: CurrencyStorage

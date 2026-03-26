@@ -46,7 +46,7 @@ public extension Module {
   }
 }
 
-private class ModuleRegistry {
+private class ModuleRegistry: @unchecked Sendable {
   static let instance = ModuleRegistry()
 
   private var modules = [ObjectIdentifier: Module]()

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Currency: Hashable {
+public struct Currency: Hashable, Sendable {
   public let code: CurrencyCode
   public let name: String
   public let symbol: String
@@ -14,7 +14,7 @@ public struct Currency: Hashable {
 
 public extension Currency {
 
-  static let samples = CurrencySamples()
+  nonisolated(unsafe) static let samples = CurrencySamples()
 
   var flagUrl: URL? {
     getFlagUrl(for: code, size: .w150)

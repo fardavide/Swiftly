@@ -6,7 +6,7 @@ import CurrencyDomain
 import CurrencyStorage
 import DateUtils
 import Foundation
-import Network
+import SwiftlyNetwork
 import SwiftlyStorage
 import SwiftlyUtils
 @testable import CurrencyData

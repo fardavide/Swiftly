@@ -8,7 +8,7 @@ struct SelectCurrenciesUiModel {
 }
 
 extension SelectCurrenciesUiModel {
-  static let samples = SelectCurrenciesUiModelSamples()
+  nonisolated(unsafe) static let samples = SelectCurrenciesUiModelSamples()
 }
 
 class SelectCurrenciesUiModelSamples {

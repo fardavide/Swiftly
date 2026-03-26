@@ -1,4 +1,4 @@
-public struct CurrencyCode: Comparable, Decodable, Encodable, Hashable, Identifiable {
+public struct CurrencyCode: Comparable, Decodable, Encodable, Hashable, Identifiable, Sendable {
   public let value: String
 
   public var id: String {
@@ -22,7 +22,7 @@ public struct CurrencyCode: Comparable, Decodable, Encodable, Hashable, Identifi
 
 public extension CurrencyCode {
 
-  static let samples = CurrencyCodeSamples()
+  nonisolated(unsafe) static let samples = CurrencyCodeSamples()
 }
 
 extension CurrencyCode {

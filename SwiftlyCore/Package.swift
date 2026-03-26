@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 // swiftlint:disable file_length
 
@@ -8,10 +8,10 @@ import PackageDescription
 let package = Package(
   name: "SwiftlyCore",
   platforms: [
-    .iOS(.v17),
-    .macOS(.v14),
-    .tvOS(.v17),
-    .watchOS(.v10)
+    .iOS(.v26),
+    .macOS(.v26),
+    .tvOS(.v26),
+    .watchOS(.v26)
   ],
   products: [
     .library(
@@ -26,7 +26,7 @@ let package = Package(
         // MARK: - Common declaration
         "DateUtils",
         "Design",
-        "Network",
+        "SwiftlyNetwork",
         "Provider",
         "Resources",
         "Store",
@@ -49,7 +49,6 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-testing.git", from: "6.2.4"),
     .package(url: "https://github.com/kean/Nuke", .upToNextMajor(from: Version(12, 2, 0))),
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: Version(4, 1, 1)))
   ],
@@ -88,8 +87,7 @@ let package = Package(
       name: "AboutPresentationTests",
       dependencies: [
         "AboutPresentation",
-        "SwiftlyTest",
-        .product(name: "Testing", package: "swift-testing")
+        "SwiftlyTest"
       ],
       path: "Tests/About/PresentationTests"
     ),
@@ -140,8 +138,7 @@ let package = Package(
     .testTarget(
       name: "DateUtilsTest",
       dependencies: [
-        "DateUtils",
-        .product(name: "Testing", package: "swift-testing")
+        "DateUtils"
       ],
       path: "Tests/Common/DateUtilsTests"
     ),
@@ -160,7 +157,7 @@ let package = Package(
 
     // MARK: Network
     .target(
-      name: "Network",
+      name: "SwiftlyNetwork",
       dependencies: [
         "SwiftlyUtils"
       ],
@@ -169,7 +166,7 @@ let package = Package(
     .testTarget(
       name: "NetworkTests",
       dependencies: [
-        "Network"
+        "SwiftlyNetwork"
       ],
       path: "Tests/Common/NetworkTests"
     ),
@@ -182,8 +179,7 @@ let package = Package(
     .testTarget(
       name: "ProviderTests",
       dependencies: [
-        "Provider",
-        .product(name: "Testing", package: "swift-testing")
+        "Provider"
       ],
       path: "Tests/Common/ProviderTests"
     ),
@@ -217,7 +213,7 @@ let package = Package(
     .target(
       name: "Store",
       dependencies: [
-        "Network",
+        "SwiftlyNetwork",
         "Provider",
         "SwiftlyStorage"
       ],
@@ -226,8 +222,7 @@ let package = Package(
     .testTarget(
       name: "StoreTests",
       dependencies: [
-        "Store",
-        .product(name: "Testing", package: "swift-testing")
+        "Store"
       ],
       path: "Tests/Common/StoreTests"
     ),
@@ -253,8 +248,7 @@ let package = Package(
     .testTarget(
       name: "SwiftlyUtilsTests",
       dependencies: [
-        "SwiftlyUtils",
-        .product(name: "Testing", package: "swift-testing")
+        "SwiftlyUtils"
       ],
       path: "Tests/Common/UtilsTests"
     ),
@@ -273,8 +267,7 @@ let package = Package(
     .testTarget(
       name: "ConverterDataTests",
       dependencies: [
-        "ConverterData",
-        .product(name: "Testing", package: "swift-testing")
+        "ConverterData"
       ],
       path: "Tests/Converter/Data/DataTests"
     ),
@@ -313,8 +306,7 @@ let package = Package(
       dependencies: [
         "ConverterDomain",
         "ConverterPresentation",
-        "SwiftlyTest",
-        .product(name: "Testing", package: "swift-testing")
+        "SwiftlyTest"
       ],
       path: "Tests/Converter/PresentationTests"
     ),
@@ -332,8 +324,7 @@ let package = Package(
     .testTarget(
       name: "ConverterStorageTests",
       dependencies: [
-        "ConverterStorage",
-        .product(name: "Testing", package: "swift-testing")
+        "ConverterStorage"
       ],
       path: "Tests/Converter/Data/StorageTests"
     ),
@@ -345,15 +336,14 @@ let package = Package(
       dependencies: [
         "CurrencyDomain",
         "DateUtils",
-        "Network"
+        "SwiftlyNetwork"
       ],
       path: "Sources/Currency/Data/Api"
     ),
     .testTarget(
       name: "CurrencyApiTests",
       dependencies: [
-        "CurrencyApi",
-        .product(name: "Testing", package: "swift-testing")
+        "CurrencyApi"
       ],
       path: "Tests/Currency/Data/ApiTests"
     ),
@@ -372,8 +362,7 @@ let package = Package(
     .testTarget(
       name: "CurrencyDataTests",
       dependencies: [
-        "CurrencyData",
-        .product(name: "Testing", package: "swift-testing")
+        "CurrencyData"
       ],
       path: "Tests/Currency/Data/DataTests"
     ),
@@ -390,8 +379,7 @@ let package = Package(
     .testTarget(
       name: "CurrencyDomainTests",
       dependencies: [
-        "CurrencyDomain",
-        .product(name: "Testing", package: "swift-testing")
+        "CurrencyDomain"
       ],
       path: "Tests/Currency/DomainTests"
     ),
@@ -410,8 +398,7 @@ let package = Package(
     .testTarget(
       name: "CurrencyStorageTests",
       dependencies: [
-        "CurrencyStorage",
-        .product(name: "Testing", package: "swift-testing")
+        "CurrencyStorage"
       ],
       path: "Tests/Currency/Data/StorageTests"
     ),

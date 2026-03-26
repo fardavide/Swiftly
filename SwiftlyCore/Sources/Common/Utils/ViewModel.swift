@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 public protocol ViewModel<Action, State>: ObservableObject {
   associatedtype Action
   associatedtype State

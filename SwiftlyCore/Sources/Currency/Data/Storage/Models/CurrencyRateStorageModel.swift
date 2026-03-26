@@ -22,7 +22,7 @@ public class CurrencyRateSwiftDataModel {
 }
 
 public extension CurrencyRateStorageModel {
-  static let samples = CurrencyRateStorageModelSamples()
+  nonisolated(unsafe) static let samples = CurrencyRateStorageModelSamples()
 
   func toDomainModel() -> CurrencyRate? {
     CurrencyRate(

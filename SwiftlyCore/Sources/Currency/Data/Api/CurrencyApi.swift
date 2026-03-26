@@ -1,6 +1,6 @@
 import CurrencyDomain
 import Foundation
-import Network
+import SwiftlyNetwork
 
 public protocol CurrencyApi {
 

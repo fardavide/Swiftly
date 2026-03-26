@@ -28,7 +28,7 @@ public struct AnyCurrencyRatesApiModel: CurrencyRatesApiModel {
 }
 
 public extension AnyCurrencyRatesApiModel {
-  static let samples = CurrencyRatesApiModelSamples()
+  nonisolated(unsafe) static let samples = CurrencyRatesApiModelSamples()
 }
 
 public class CurrencyRatesApiModelSamples {

@@ -15,7 +15,7 @@ public struct CurrencyRate: Hashable, Identifiable {
 }
 
 public extension CurrencyRate {
-  static let samples = CurrencyRateSamples()
+  nonisolated(unsafe) static let samples = CurrencyRateSamples()
 }
 
 public struct CurrencyRateSamples {

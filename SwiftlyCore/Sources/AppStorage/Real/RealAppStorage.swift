@@ -6,7 +6,7 @@ import SwiftData
 
 public final class RealAppStorage: AppStorage {
 
-  static let instance = RealAppStorage()
+  nonisolated(unsafe) static let instance = RealAppStorage()
 
   private let schema = Schema(
     [

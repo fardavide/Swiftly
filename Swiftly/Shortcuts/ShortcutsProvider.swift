@@ -7,7 +7,8 @@ struct ShortcutsProvider: AppShortcutsProvider {
       intent: ConvertIntent(),
       phrases: [
         "Convert with \(.applicationName)",
-        "Convert \(\.$amount) \(\.$fromCurrency) to \(\.$toCurrency)"
+        "Convert \(\.$fromCurrency) with \(.applicationName)",
+        "Convert to \(\.$toCurrency) with \(.applicationName)"
       ],
       shortTitle: "Convert currency",
       systemImageName: "coloncurrencysign"

@@ -13,7 +13,7 @@ public struct CurrencyRates: Equatable {
 
 public extension CurrencyRates {
   
-  static let samples = CurrencyRatesSamples()
+  nonisolated(unsafe) static let samples = CurrencyRatesSamples()
   
   func findRate(for code: CurrencyCode) -> CurrencyRate? {
     items.first(where: { $0.currencyCode == code })

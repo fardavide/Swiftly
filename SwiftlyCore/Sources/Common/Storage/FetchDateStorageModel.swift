@@ -7,7 +7,7 @@ public struct FetchDateStorageModel {
 
 @Model
 public class FetchDateSwitfDataModel {
-  @Attribute(.unique) public let id = 0
+  @Attribute(.unique) public var id = 0
   public var date: Date
 
   init(date: Date) {
@@ -16,7 +16,7 @@ public class FetchDateSwitfDataModel {
 }
 
 public extension FetchDateStorageModel {
-  static let distantPast = FetchDateStorageModel(date: Date.distantPast)
+  nonisolated(unsafe) static let distantPast = FetchDateStorageModel(date: Date.distantPast)
 
   func toSwiftDataModel() -> FetchDateSwitfDataModel {
     FetchDateSwitfDataModel(date: date)
@@ -24,7 +24,7 @@ public extension FetchDateStorageModel {
 }
 
 public extension FetchDateSwitfDataModel {
-  static let distantPast = FetchDateSwitfDataModel(date: Date.distantPast)
+  nonisolated(unsafe) static let distantPast = FetchDateSwitfDataModel(date: Date.distantPast)
 
   func toStorageModel() -> FetchDateStorageModel {
     FetchDateStorageModel(date: date)

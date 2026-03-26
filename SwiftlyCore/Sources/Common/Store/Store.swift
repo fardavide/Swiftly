@@ -1,4 +1,4 @@
-import Network
+import SwiftlyNetwork
 import SwiftlyStorage
 import SwiftlyUtils
 

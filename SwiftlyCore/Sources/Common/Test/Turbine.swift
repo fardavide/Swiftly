@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-public func test<Value: Equatable>(
+public func test<Value: Equatable & Sendable>(
   _ publisher: any Publisher<Value, Never>,
   block: @escaping (any Turbine<Value>) async -> Void
 ) async {
@@ -24,7 +24,7 @@ public protocol Turbine<Value> {
   func expectInitial(value: Value) async
 }
 
-class RealTurbine<Value: Equatable>: Turbine {
+class RealTurbine<Value: Equatable & Sendable>: Turbine {
 
   private let subject = CurrentValueSubject<TurbineValue<Value>, Never>(.notReady)
   private var cancellables: [AnyCancellable] = []

@@ -26,7 +26,7 @@ public extension CurrencyWithRate {
       .convert(to: self)
   }
 
-  static let samples = CurrencyWithRateSamples()
+  nonisolated(unsafe) static let samples = CurrencyWithRateSamples()
 }
 
 public struct CurrencyWithRateSamples {

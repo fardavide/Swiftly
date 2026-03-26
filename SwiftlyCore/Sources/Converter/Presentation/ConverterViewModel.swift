@@ -206,6 +206,7 @@ public extension ConverterViewModel {
   static let samples = ConverterViewModelSamples()
 }
 
+@MainActor
 public class ConverterViewModelSamples {
   public let success = ConverterViewModel(
     converterRepository: FakeConverterRepository(

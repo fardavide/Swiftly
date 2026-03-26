@@ -33,7 +33,7 @@ public extension CurrencySwiftDataModel {
 }
 
 public extension CurrencyStorageModel {
-  static let samples = CurrencyStorageModelSamples()
+  nonisolated(unsafe) static let samples = CurrencyStorageModelSamples()
 
   func toDomainModel() -> Currency? {
     Currency(

@@ -13,7 +13,7 @@ public struct CurrencyValue: Identifiable, Equatable {
 }
 
 public extension CurrencyValue {
-  static let samples = CurrencyValueSamples()
+  nonisolated(unsafe) static let samples = CurrencyValueSamples()
 
   var currency: Currency {
     currencyWithRate.currency

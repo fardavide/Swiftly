@@ -1,4 +1,4 @@
-public enum CurrencySorting {
+public enum CurrencySorting: Sendable {
   case alphabetical
   case favoritesFirst
 }

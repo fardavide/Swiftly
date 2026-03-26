@@ -53,6 +53,7 @@ public extension AboutViewModel {
   static let samples = AboutViewModelSamples()
 }
 
+@MainActor
 public class AboutViewModelSamples {
   public let success = AboutViewModel(
     getAppName: FakeGetAppName(appName: "Swiftly"),

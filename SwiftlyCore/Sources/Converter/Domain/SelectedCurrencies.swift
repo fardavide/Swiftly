@@ -15,14 +15,14 @@ public extension SelectedCurrencies {
 
   static let maxItems = 6
 
-  static let initial = SelectedCurrencies(
+  nonisolated(unsafe) static let initial = SelectedCurrencies(
     currencyCodes: [
       .samples.eur,
       .samples.usd
     ]
   )
 
-  static let samples = FavoriteCurrenciesSamples()
+  nonisolated(unsafe) static let samples = FavoriteCurrenciesSamples()
 
   static func of(currencyCodes: [CurrencyCode]) -> SelectedCurrencies {
     SelectedCurrencies(currencyCodes: Array(currencyCodes.take(maxItems)))

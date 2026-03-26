@@ -7,7 +7,7 @@ public struct CurrencyDateStorageModel {
 
 @Model
 public class CurrencyDateSwiftDataModel {
-  @Attribute(.unique) public let id = 0
+  @Attribute(.unique) public var id = 0
   var updatedAt: Date
 
   init(updatedAt: Date) {
@@ -22,7 +22,7 @@ public extension Date {
 }
 
 extension CurrencyDateStorageModel {
-  public static let distantPast = CurrencyDateStorageModel(updatedAt: Date.distantPast)
+  nonisolated(unsafe) public static let distantPast = CurrencyDateStorageModel(updatedAt: Date.distantPast)
 
   func toSwiftDataModel() -> CurrencyDateSwiftDataModel {
     CurrencyDateSwiftDataModel(updatedAt: updatedAt)
@@ -30,7 +30,7 @@ extension CurrencyDateStorageModel {
 }
 
 extension CurrencyDateSwiftDataModel {
-  static let distantPast = CurrencyDateSwiftDataModel(updatedAt: Date.distantPast)
+  nonisolated(unsafe) static let distantPast = CurrencyDateSwiftDataModel(updatedAt: Date.distantPast)
 
   func toStorageModel() -> CurrencyDateStorageModel {
     CurrencyDateStorageModel(updatedAt: updatedAt)

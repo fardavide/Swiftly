@@ -1,7 +1,7 @@
 import Foundation
 import SwiftlyUtils
 
-public protocol CurrencyRepository {
+public protocol CurrencyRepository: Sendable {
 
   /// Get `[Currency]` for given `query` and `sorting`, from cache or remote source
   func getCurrencies(
@@ -65,7 +65,7 @@ public extension CurrencyRepository {
   }
 }
 
-public class FakeCurrencyRepository: CurrencyRepository {
+public class FakeCurrencyRepository: CurrencyRepository, @unchecked Sendable {
 
   let currenciesResult: Result<[Currency], DataError>
   let currencyRatesResult: Result<CurrencyRates, DataError>

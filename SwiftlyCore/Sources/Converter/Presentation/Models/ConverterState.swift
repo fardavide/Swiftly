@@ -25,7 +25,7 @@ public struct ConverterState {
 
 public extension ConverterState {
   
-  static let initial = ConverterState(
+  nonisolated(unsafe) static let initial = ConverterState(
     isLoading: true,
     isSelectCurrencyOpen: false,
     searchCurrencies: [],
@@ -34,7 +34,7 @@ public extension ConverterState {
     values: []
   )
   
-  static let sample = ConverterState(
+  nonisolated(unsafe) static let sample = ConverterState(
     isLoading: false,
     isSelectCurrencyOpen: false,
     searchCurrencies: Array(Currency.samples.all().take(5)),

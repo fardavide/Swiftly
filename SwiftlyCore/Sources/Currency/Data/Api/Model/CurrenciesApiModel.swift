@@ -21,7 +21,7 @@ public struct AnyCurrenciesApiModel: CurrenciesApiModel {
 }
 
 public extension AnyCurrenciesApiModel {
-  static let samples = CurrenciesApiModelSamples()
+  nonisolated(unsafe) static let samples = CurrenciesApiModelSamples()
 }
 
 public class CurrenciesApiModelSamples {

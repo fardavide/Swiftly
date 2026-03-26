@@ -27,7 +27,7 @@ public struct SelectedCurrencyPosition: Comparable, Decodable, Encodable, Hashab
 
 @Model
 public class SelectedCurrenciesSwiftDataModel {
-  @Attribute(.unique) public let id = 0
+  @Attribute(.unique) public var id = 0
   var currencyCodes: [SelectedCurrencyPosition: CurrencyCode]
 
   init(currencyCodes: [SelectedCurrencyPosition: CurrencyCode]) {

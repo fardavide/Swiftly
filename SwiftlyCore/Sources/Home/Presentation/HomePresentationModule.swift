@@ -11,6 +11,6 @@ public final class HomePresentationModule: Module {
   ]
   
   public func register(on provider: Provider) {
-    provider.register { HomeViewModel() }
+    provider.register { MainActor.assumeIsolated { HomeViewModel() } }
   }
 }

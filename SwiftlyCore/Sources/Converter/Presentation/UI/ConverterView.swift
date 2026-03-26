@@ -61,9 +61,11 @@ public struct ConverterView: View {
           }
           // Updated at text
           if let updatedAt = state.updatedAt {
-            ToolbarItem(placement: .status) {
+            ToolbarItem(placement: .bottomBar) {
               Text("Updated \(updatedAt)")
                 .font(.caption2)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity)
             }
           }
         }

@@ -3,12 +3,12 @@ import CurrencyDomain
 import CurrencyStorage
 import DateUtils
 import Foundation
-import Network
+import SwiftlyNetwork
 import Store
 import SwiftlyStorage
 import SwiftlyUtils
 
-public final class RealCurrencyRepository: CurrencyRepository {
+public final class RealCurrencyRepository: CurrencyRepository, @unchecked Sendable {
 
   private let api: CurrencyApi
   private let getCurrentDate: GetCurrentDate
