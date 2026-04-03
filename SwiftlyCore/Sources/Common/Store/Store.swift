@@ -2,28 +2,40 @@ import SwiftlyNetwork
 import SwiftlyStorage
 import SwiftlyUtils
 
-@inlinable public func get<Data>(
+@inlinable public func get<Data: Equatable>(
   shouldFetch: @escaping @autoclosure () -> Bool = true,
   fetch: @escaping @autoclosure () async -> Result<Data, ApiError>,
   readCache: @escaping @autoclosure () async -> Result<Data, StorageError>,
   saveCache: @escaping (Data) async -> Void
-) async -> Result<Data, DataError> {
+) async -> DataResult<Data> {
   switch shouldFetch() {
   case true:
-    await fetch()
-      .mapErrorToDataError()
-      .onSuccess(saveCache)
-      .recover { apiError in
-        await readCache()
-          .or(apiError)
+    let fetchResult = await fetch().mapErrorToDataError()
+    switch fetchResult {
+    case let .success(data):
+      await saveCache(data)
+      return .success(data)
+    case let .failure(fetchError):
+      switch await readCache() {
+      case let .success(data):
+        return .successWithError(data: data, error: fetchError)
+      case .failure:
+        return .error(fetchError)
       }
+    }
   case false:
-    await readCache()
-      .mapErrorToDataError()
-      .recover(
-        await fetch()
-          .mapErrorToDataError()
-          .onSuccess(saveCache)
-      )
+    switch await readCache() {
+    case let .success(data):
+      return .success(data)
+    case .failure:
+      let fetchResult = await fetch().mapErrorToDataError()
+      switch fetchResult {
+      case let .success(data):
+        await saveCache(data)
+        return .success(data)
+      case let .failure(error):
+        return .error(error)
+      }
+    }
   }
 }

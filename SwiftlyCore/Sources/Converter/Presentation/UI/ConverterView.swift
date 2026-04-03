@@ -27,6 +27,11 @@ public struct ConverterView: View {
           state: state,
           send: viewModel.send
         )
+        .overlay(alignment: .bottom) {
+          if let refreshError = state.refreshError {
+            RefreshErrorBanner(error: refreshError)
+          }
+        }
         .refreshable {
           await viewModel.send(.refresh)
         }
@@ -183,6 +188,21 @@ private struct CurrencyValueRow: View {
       .accessibilityElement(children: .ignore)
       .accessibilityLabel("\(currencyValue.value) \(currency.symbol)")
     }
+  }
+}
+
+private struct RefreshErrorBanner: View {
+  let error: ErrorModel
+
+  var body: some View {
+    Text("Refresh failed, showing cached data")
+      .font(.footnote)
+      .padding(.horizontal, 16)
+      .padding(.vertical, 10)
+      .frame(maxWidth: .infinity)
+      .background(.red.opacity(0.9))
+      .foregroundStyle(.white)
+      .transition(.move(edge: .bottom).combined(with: .opacity))
   }
 }
 

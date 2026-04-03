@@ -7,11 +7,11 @@ public protocol CurrencyRepository: Sendable {
   func getCurrencies(
     query: String,
     sorting: CurrencySorting
-  ) async -> Result<[Currency], DataError>
-  
+  ) async -> DataResult<[Currency]>
+
   /// Get latest `[CurrencyRate]`, from cache or remote source
-  func getLatestRates(forceRefresh: Bool) async -> Result<CurrencyRates, DataError>
-  
+  func getLatestRates(forceRefresh: Bool) async -> DataResult<CurrencyRates>
+
   /// Mark `currency` as used, to increase its popularity (i.e. suggested first)
   func markCurrencyUsed(_ currency: Currency) async
 }
@@ -21,39 +21,44 @@ public extension CurrencyRepository {
   func getCurrencies(
     query: String = "",
     sorting: CurrencySorting = .alphabetical
-  ) async -> Result<[Currency], DataError> {
+  ) async -> DataResult<[Currency]> {
     await getCurrencies(
       query: query,
       sorting: sorting
     )
   }
-  
+
   func getLatestCurrenciesWithRates(
     query: String = "",
     sorting: CurrencySorting = .alphabetical,
     forceRefresh: Bool = false
-  ) async -> Result<[CurrencyWithRate], DataError> {
+  ) async -> DataResult<[CurrencyWithRate]> {
     let currenciesResult = await getCurrencies(query: query, sorting: sorting)
-    guard let currencies = currenciesResult.orNil() else {
-      return .failure(currenciesResult.requireFailure())
+    guard let currencies = currenciesResult.data else {
+      return .error(currenciesResult.error!)
     }
-    
+
     let ratesResult = await getLatestRates(forceRefresh: forceRefresh)
-    guard let rates = ratesResult.orNil() else {
-      return .failure(ratesResult.requireFailure())
+    guard let rates = ratesResult.data else {
+      return .error(ratesResult.error!)
     }
-    
-    return .success(
-      currencies.compactMap { currency in
-        guard let rate = rates.findRate(for: currency.code)?.rate else {
-          return nil
-        }
-        return CurrencyWithRate(
-          currency: currency,
-          rate: rate
-        )
+
+    let currenciesWithRates = currencies.compactMap { currency in
+      guard let rate = rates.findRate(for: currency.code)?.rate else {
+        return nil as CurrencyWithRate?
       }
-    )
+      return CurrencyWithRate(
+        currency: currency,
+        rate: rate
+      )
+    }
+
+    // Propagate any non-fatal error from either result
+    let error = currenciesResult.error ?? ratesResult.error
+    if let error {
+      return .successWithError(data: currenciesWithRates, error: error)
+    }
+    return .success(currenciesWithRates)
   }
   
   func markCurrenciesUsed(
@@ -67,12 +72,12 @@ public extension CurrencyRepository {
 
 public class FakeCurrencyRepository: CurrencyRepository, @unchecked Sendable {
 
-  let currenciesResult: Result<[Currency], DataError>
-  let currencyRatesResult: Result<CurrencyRates, DataError>
+  let currenciesResult: DataResult<[Currency]>
+  let currencyRatesResult: DataResult<CurrencyRates>
 
   public init(
-    currenciesResult: Result<[Currency], DataError> = .failure(.unknown),
-    currencyRatesResult: Result<CurrencyRates, DataError> = .failure(.unknown)
+    currenciesResult: DataResult<[Currency]> = .error(.unknown),
+    currencyRatesResult: DataResult<CurrencyRates> = .error(.unknown)
   ) {
     self.currenciesResult = currenciesResult
     self.currencyRatesResult = currencyRatesResult
@@ -83,23 +88,23 @@ public class FakeCurrencyRepository: CurrencyRepository, @unchecked Sendable {
     currencyRates: CurrencyRates? = nil
   ) {
     self.init(
-      currenciesResult: currencies != nil ? .success(currencies!) : .failure(.unknown),
-      currencyRatesResult: currencyRates != nil ? .success(currencyRates!) : .failure(.unknown)
+      currenciesResult: currencies != nil ? .success(currencies!) : .error(.unknown),
+      currencyRatesResult: currencyRates != nil ? .success(currencyRates!) : .error(.unknown)
     )
   }
 
   public func getCurrencies(
     query: String,
     sorting: CurrencySorting
-  ) async -> Result<[Currency], DataError> {
+  ) async -> DataResult<[Currency]> {
     currenciesResult.map { currencies in
       currencies.search(by: query)
     }
   }
-  
-  public func getLatestRates(forceRefresh: Bool) async -> Result<CurrencyRates, DataError> {
+
+  public func getLatestRates(forceRefresh: Bool) async -> DataResult<CurrencyRates> {
     currencyRatesResult
   }
-  
+
   public func markCurrencyUsed(_ currency: Currency) async {}
 }

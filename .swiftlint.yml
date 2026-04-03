@@ -1,5 +1,8 @@
 strict: true
 
+excluded:
+  - SwiftlyCore/.build
+
 disabled_rules:
   - identifier_name
   - trailing_whitespace

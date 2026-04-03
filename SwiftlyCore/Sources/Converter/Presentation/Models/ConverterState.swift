@@ -7,6 +7,7 @@ public struct ConverterState {
   var error: ErrorModel?
   var isLoading: Bool
   var isSelectCurrencyOpen: Bool
+  var refreshError: ErrorModel?
   var searchCurrencies: [Currency]
   var searchQuery: String
   var selectedCurrency: Currency?

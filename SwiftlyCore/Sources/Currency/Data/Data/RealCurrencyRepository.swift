@@ -27,11 +27,11 @@ public final class RealCurrencyRepository: CurrencyRepository, @unchecked Sendab
   public func getCurrencies(
     query: String,
     sorting: CurrencySorting
-  ) async -> Result<[Currency], DataError> {
+  ) async -> DataResult<[Currency]> {
     await getAllCurrencies(sorting: sorting).map { $0.search(by: query) }
   }
 
-  public func getLatestRates(forceRefresh: Bool) async -> Result<CurrencyRates, DataError> {
+  public func getLatestRates(forceRefresh: Bool) async -> DataResult<CurrencyRates> {
     let updatedAt = await storage.getUpdateDate().updatedAt
     let updateDelta = getCurrentDate.run() % updatedAt
     let shouldRefresh = (forceRefresh && updateDelta > 1.minutes()) || updateDelta > 1.days()
@@ -49,7 +49,7 @@ public final class RealCurrencyRepository: CurrencyRepository, @unchecked Sendab
     await storage.markCurrencyUsed(code: currency.code)
   }
   
-  private func getAllCurrencies(sorting: CurrencySorting) async -> Result<[Currency], DataError> {
+  private func getAllCurrencies(sorting: CurrencySorting) async -> DataResult<[Currency]> {
     let updatedAt = await storage.getUpdateDate().updatedAt
     let updateDelta = getCurrentDate.run() % updatedAt
     let shouldRefresh = updateDelta > 1.days()

@@ -22,7 +22,7 @@ private protocol TestModule: Module {
   var initialized: Bool { get }
 }
 
-private var initializedModulesToCount = [ObjectIdentifier: Int]()
+nonisolated(unsafe) private var initializedModulesToCount = [ObjectIdentifier: Int]()
 
 private func getCount(type: any Module.Type) -> Int {
   getCount(id: ObjectIdentifier(type))
