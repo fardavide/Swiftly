@@ -74,6 +74,18 @@ public struct ConverterView: View {
             }
           }
         }
+        .overlay(alignment: .bottom) {
+          if let refreshError = state.refreshError {
+            Text(refreshError.title)
+              .font(.footnote)
+              .padding()
+              .frame(maxWidth: .infinity)
+              .background(.red.opacity(0.9))
+              .foregroundStyle(.white)
+              .transition(.move(edge: .bottom))
+          }
+        }
+        .animation(.easeInOut, value: state.refreshError != nil)
         .sheet(isPresented: $viewModel.state.isSelectCurrencyOpen) {
           SelectCurrencySheet(
             uiModel: SelectCurrenciesUiModel(

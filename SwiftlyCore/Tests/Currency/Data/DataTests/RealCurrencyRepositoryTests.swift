@@ -133,19 +133,22 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success(CurrencyRates.samples.eurOnly))
   }
   
-  func testLastRates_whenCacheExpired_ifApiError_returnsResultFromStorage() async {
+  func testLastRates_whenCacheExpired_ifApiError_returnsSuccessWithError() async {
     // given
     let scenario = Scenario(
       latestRatesApiResult: .failure(.unknown),
       fetchAllRatesStorageResult: .success([CurrencyRateStorageModel.samples.usd]),
       updateDate: currentDate - 3.days()
     )
-    
+
     // when
     let result = await scenario.sut.getLatestRates(forceRefresh: false)
-    
+
     // then
-    #expect(result == .success(CurrencyRates.samples.usdOnly.updatedAt(date: currentDate - 3.days())))
+    #expect(result == .successWithError(
+      data: CurrencyRates.samples.usdOnly.updatedAt(date: currentDate - 3.days()),
+      error: .network(cause: .unknown)
+    ))
   }
 
   // MARK: - all currencies
@@ -262,19 +265,22 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.usd]))
   }
   
-  func testCurrencies_whenExpiredCache_ifApiError_returnsFromStorage() async {
+  func testCurrencies_whenExpiredCache_ifApiError_returnsSuccessWithError() async {
     // given
     let scenario = Scenario(
       currenciesApiResult: .failure(.unknown),
       fetchAllCurrenciesStorageResult: .success([CurrencyStorageModel.samples.eur]),
       updateDate: currentDate - 25.hours()
     )
-    
+
     // when
     let result = await scenario.sut.getCurrencies()
-    
+
     // then
-    #expect(result == .success([Currency.samples.eur]))
+    #expect(result == .successWithError(
+      data: [Currency.samples.eur],
+      error: .network(cause: .unknown)
+    ))
   }
 
   // MARK: - search currencies

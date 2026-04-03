@@ -5,6 +5,7 @@ import SwiftlyUtils
 
 public struct ConverterState {
   var error: ErrorModel?
+  var refreshError: ErrorModel?
   var isLoading: Bool
   var isSelectCurrencyOpen: Bool
   var searchCurrencies: [Currency]

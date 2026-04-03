@@ -77,7 +77,7 @@ public final class ConverterViewModel: ViewModel {
           sorting: state.sorting
         )
         emit {
-          self.state.searchCurrencies = searchResult.or(default: [])
+          self.state.searchCurrencies = searchResult.data ?? []
         }
       }
 
@@ -88,7 +88,7 @@ public final class ConverterViewModel: ViewModel {
           sorting: sorting
         )
         emit {
-          self.state.searchCurrencies = searchResult.or(default: [])
+          self.state.searchCurrencies = searchResult.data ?? []
           self.state.sorting = sorting
         }
       }
@@ -109,15 +109,18 @@ public final class ConverterViewModel: ViewModel {
       self.state.isLoading = true
     }
 
+    var refreshError: DataError?
+
     let currenciesResult = await currencyRepository.getCurrencies(sorting: state.sorting)
-    guard let currencies = currenciesResult.orNil() else {
+    guard let currencies = currenciesResult.data else {
       emit {
         self.state.isLoading = false
-        self.state.error = currenciesResult.requireFailure()
+        self.state.error = currenciesResult.error!
           .toErrorModel(message: "Cannot load currencies")
       }
       return
     }
+    if let error = currenciesResult.error { refreshError = error }
     self.currencies = currencies
 
     let selectedCurrenciesResult = await converterRepository.getSelectedCurrencies()
@@ -131,14 +134,15 @@ public final class ConverterViewModel: ViewModel {
     }
 
     let ratesResult = await currencyRepository.getLatestRates(forceRefresh: forceRefresh)
-    guard let rates = ratesResult.orNil() else {
+    guard let rates = ratesResult.data else {
       emit {
         self.state.isLoading = false
-        self.state.error = ratesResult.requireFailure()
+        self.state.error = ratesResult.error!
           .toErrorModel(message: "Cannot load rates")
       }
       return
     }
+    if let error = ratesResult.error { refreshError = error }
     self.rates = rates.items
     self.updatedAt = rates.updatedAt
 
@@ -148,6 +152,7 @@ public final class ConverterViewModel: ViewModel {
     emit {
       self.state.isLoading = false
       self.state.error = nil
+      self.state.refreshError = refreshError?.toErrorModel(message: "Refresh failed")
       self.state.searchCurrencies = currencies
       self.state.values = selectedCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
@@ -223,7 +228,7 @@ public class ConverterViewModelSamples {
       selectedCurrencies: .initial
     ),
     currencyRepository: FakeCurrencyRepository(
-      currenciesResult: .failure(.network(cause: .unknown))
+      currenciesResult: .error(.network(cause: .unknown))
     )
   )
   let storageError = ConverterViewModel(
@@ -231,7 +236,7 @@ public class ConverterViewModelSamples {
       selectedCurrencies: .initial
     ),
     currencyRepository: FakeCurrencyRepository(
-      currenciesResult: .failure(.storage(cause: .unknown))
+      currenciesResult: .error(.storage(cause: .unknown))
     )
   )
 }
