@@ -1,4 +1,4 @@
-// swiftlint:disable file_length
+// swiftlint:disable file_length type_body_length
 import Testing
 
 import CurrencyApi
@@ -14,6 +14,7 @@ import SwiftlyUtils
 struct RealCurrencyRepositoryTests {
 
   // MARK: - latest rates
+  @Test
   func testLatestRates_whenEmptyCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -28,6 +29,7 @@ struct RealCurrencyRepositoryTests {
     #expect(scenario.api.didFetchLatestRates)
   }
 
+  @Test
   func testLatestRates_whenEmptyCache_returnsResultFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -42,6 +44,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([CurrencyRate.samples.eur].updatedAt(currentDate)))
   }
 
+  @Test
   func testLatestRates_whenErrorFromCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -57,6 +60,7 @@ struct RealCurrencyRepositoryTests {
     #expect(scenario.api.didFetchLatestRates)
   }
 
+  @Test
   func testLatestRates_whenErrorFromCache_returnsResultFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -72,6 +76,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([CurrencyRate.samples.eur].updatedAt(currentDate)))
   }
 
+  @Test
   func testLatestRates_whenCacheNotExpired_dontFetchFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -87,6 +92,7 @@ struct RealCurrencyRepositoryTests {
     #expect(scenario.api.didFetchLatestRates.not())
   }
 
+  @Test
   func testLatestRates_whenCacheNotExpired_returnsResultFromStorage() async throws {
     // given
     let updateDate = currentDate - 2.hours()
@@ -103,6 +109,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([CurrencyRate.samples.eur].updatedAt(updateDate)))
   }
 
+  @Test
   func testLatestRates_whenCacheExpired_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -118,6 +125,7 @@ struct RealCurrencyRepositoryTests {
     #expect(scenario.api.didFetchLatestRates)
   }
 
+  @Test
   func testLatestRates_whenCacheExpired_returnsResultFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -133,6 +141,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success(CurrencyRates.samples.eurOnly))
   }
   
+  @Test
   func testLastRates_whenCacheExpired_ifApiError_returnsResultFromStorage() async {
     // given
     let scenario = Scenario(
@@ -152,6 +161,7 @@ struct RealCurrencyRepositoryTests {
   }
 
   // MARK: - all currencies
+  @Test
   func testCurrencies_whenEmptyCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -166,6 +176,7 @@ struct RealCurrencyRepositoryTests {
     #expect(scenario.api.didFetchCurrencies)
   }
 
+  @Test
   func testCurrencies_whenEmptyCache_returnsResultFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -180,6 +191,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.eur]))
   }
 
+  @Test
   func testCurrencies_whenErrorFromCache_fetchFromApi() async throws {
     // given
     let scenario = Scenario(
@@ -194,6 +206,7 @@ struct RealCurrencyRepositoryTests {
     #expect(scenario.api.didFetchCurrencies)
   }
 
+  @Test
   func testCurrencies_whenErrorFromCache_returnsResultFromApi() async {
     // given
     let scenario = Scenario(
@@ -208,6 +221,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.eur]))
   }
   
+  @Test
   func testCurrencies_whenNotExpiredCache_fetchFromStorage() async {
     // given
     let scenario = Scenario(
@@ -222,6 +236,7 @@ struct RealCurrencyRepositoryTests {
     #expect(scenario.api.didFetchCurrencies.not())
   }
   
+  @Test
   func testCurrencies_whenNotExpiredCache_returnsResultFromStorage() async {
     // given
     let scenario = Scenario(
@@ -236,6 +251,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success(Currency.samples.all()))
   }
   
+  @Test
   func testCurrencies_whenExpiredCache_fetchFromApi() async {
     // given
     let scenario = Scenario(
@@ -250,6 +266,7 @@ struct RealCurrencyRepositoryTests {
     #expect(scenario.api.didFetchCurrencies)
   }
   
+  @Test
   func testCurrencies_whenExpiredCache_returnsResultFromApi() async {
     // given
     let scenario = Scenario(
@@ -265,6 +282,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.usd]))
   }
   
+  @Test
   func testCurrencies_whenExpiredCache_ifApiError_returnsFromStorage() async {
     // given
     let scenario = Scenario(
@@ -284,6 +302,7 @@ struct RealCurrencyRepositoryTests {
   }
 
   // MARK: - search currencies
+  @Test
   func testSearchCurrencies_whenEmpty_returnsAllCurrencies() async {
     // given
     let scenario = Scenario(
@@ -297,6 +316,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success(Currency.samples.all()))
   }
   
+  @Test
   func testSearchCurrencies_whenMatchFullNameSameCase_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -310,6 +330,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.eur]))
   }
 
+  @Test
   func testSearchCurrencies_whenMatchFullNameDifferentCase_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -323,6 +344,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.eur]))
   }
 
+  @Test
   func testSearchCurrencies_whenMatchPartialName_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -336,6 +358,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.eur]))
   }
 
+  @Test
   func testSearchCurrencies_whenMatchFullCodeSameCase_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -349,6 +372,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.cny]))
   }
 
+  @Test
   func testSearchCurrencies_whenMatchFullCodeDifferentCase_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -362,6 +386,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.cny]))
   }
 
+  @Test
   func testSearchCurrencies_whenMatchPartialCode_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -375,6 +400,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.cny, Currency.samples.jpy]))
   }
 
+  @Test
   func testSearchCurrencies_whenMatchFullSymbolSameCase_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -388,6 +414,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.cny]))
   }
 
+  @Test
   func testSearchCurrencies_whenMatchFullSymbolDifferentCase_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -401,6 +428,7 @@ struct RealCurrencyRepositoryTests {
     #expect(result == .success([Currency.samples.cny]))
   }
 
+  @Test
   func testSearchCurrencies_whenMatchPartialSymbol_returnsFilteredResults() async {
     // given
     let scenario = Scenario(
@@ -477,4 +505,4 @@ private final class Scenario {
     )
   }
 }
-// swiftlint:enable file_length
+// swiftlint:enable file_length type_body_length
