@@ -15,9 +15,9 @@ public func test<Value: Equatable & Sendable>(
       .removeDuplicates()
       .eraseToAnyPublisher()
   )
-  
+
   await block(turbine)
-  
+
   turbine.complete()
 }
 
@@ -26,80 +26,76 @@ public func test<Value: Equatable & Sendable>(
 public protocol Turbine<Value>: Sendable {
   associatedtype Value
 
+  /// The oldest unconsumed emission, suspending until one arrives if none is buffered.
   func value() async -> Value
+
+  /// Consumes the first emission when it equals `value`; otherwise puts it back for the next `value()` call.
+  ///
+  /// A `@Published` publisher replays the current state on subscribe, so what arrives first depends on
+  /// timing: subscribe before the view model's startup work lands and it is the initial state; subscribe
+  /// after and the initial state was never seen, only the progressed one. Both orders are legitimate, which
+  /// is why a mismatch is put back rather than reported as a failure.
   func expectInitial(value: Value) async
 }
 
-/// `@unchecked` because the compiler cannot see that the only mutable state is a `CurrentValueSubject`
-/// (safe to send and read concurrently) and a `cancellables` array written once, during `init`.
-final class RealTurbine<Value: Equatable & Sendable>: Turbine, @unchecked Sendable {
+/// Buffers every emission into an `AsyncStream` and hands them out oldest-first, so waiting for the next
+/// value is a genuine suspension.
+///
+/// The previous implementation kept only the latest emission and, when `expectInitial` saw the expected
+/// value, recursed on unchanged state until something new arrived. That recursion has no suspension point,
+/// so it never yields its cooperative-pool thread and allocates async frames without bound. On a many-core
+/// dev machine the view model's next emission lands in milliseconds and the spin goes unnoticed; on a small
+/// CI runner a handful of tests spinning together occupy the whole pool, the work that would produce those
+/// emissions can never run, and the process starves until it dies — taking every suite's results with it.
+///
+/// `@MainActor` rather than `@unchecked Sendable`: every touchpoint already lives there — the publisher is
+/// subscribed and emits on the main actor, and the test body consuming the turbine runs on it too. Single
+/// consumer by contract, matching the sequential test bodies: two concurrent `value()` calls would race on
+/// the iterator.
+@MainActor
+final class RealTurbine<Value: Equatable & Sendable>: Turbine {
 
-  private let subject = CurrentValueSubject<TurbineValue<Value>, Never>(.notReady)
+  private var iterator: AsyncStream<Value>.Iterator
+  private let continuation: AsyncStream<Value>.Continuation
+  private var pushedBack: Value?
   private var cancellables: [AnyCancellable] = []
 
   init(publisher: AnyPublisher<Value, Never>) {
-    publisher.removeDuplicates()
-      .sink { value in self.subject.value = .ready(value) }
+    let (stream, continuation) = AsyncStream.makeStream(of: Value.self)
+    iterator = stream.makeAsyncIterator()
+    self.continuation = continuation
+    publisher
+      .removeDuplicates()
+      .sink { continuation.yield($0) }
       .store(in: &cancellables)
   }
 
   func value() async -> Value {
-    let value = switch subject.value {
-    case .notReady: await awaitFirst()
-    case let .ready(ready): ready
-    }
-    subject.value = .notReady
-    return value
+    await next()
   }
 
   func expectInitial(value: Value) async {
-    switch subject.value {
-    case .notReady:
-      let v = await awaitFirst()
-      if v == value {
-        await expectInitial(value: v)
-      }
-      subject.value = .notReady
-    case let .ready(v):
-      if v == value {
-        await expectInitial(value: v)
-      }
+    let first = await next()
+    if first != value {
+      pushedBack = first
     }
   }
 
   func complete() {
-    subject.send(completion: .finished)
+    continuation.finish()
     for cancellable in cancellables {
       cancellable.cancel()
     }
   }
 
-  private func awaitFirst() async -> Value {
-    await withUnsafeContinuation { continuation in
-      var cancellable: AnyCancellable?
-
-      // Unwrap to `.ready` values *before* `first()`. `subject` replays its current value on subscribe, and
-      // `awaitFirst` is only reached when that value is `.notReady` — so a bare `first()` delivers `.notReady`,
-      // takes the `break`, and completes without ever resuming the continuation. The awaiting task then stays
-      // suspended forever: the assertions still pass, but the process can never exit.
-      cancellable = subject
-        .compactMap { value -> Value? in
-          switch value {
-          case .notReady: nil
-          case let .ready(value): value
-          }
-        }
-        .first()
-        .sink { _ in
-          cancellable?.cancel()
-        } receiveValue: { value in
-          continuation.resume(returning: value)
-        }
+  private func next() async -> Value {
+    if let pushedBack {
+      self.pushedBack = nil
+      return pushedBack
     }
+    guard let value = await iterator.next() else {
+      fatalError("Turbine completed while a test was still awaiting a value")
+    }
+    return value
   }
-}
-
-enum TurbineValue<V> {
-  case notReady
-  case ready(_ value: V)
 }
