@@ -1,9 +1,13 @@
 import Combine
 import Foundation
 
+/// `@MainActor` because `ViewModel` is: reading a view model's `$state` publisher and driving its actions
+/// both happen on the main actor, and `Published.Publisher` is not `Sendable`, so the whole helper has to
+/// stay on that actor rather than hand the publisher across an isolation boundary.
+@MainActor
 public func test<Value: Equatable & Sendable>(
   _ publisher: any Publisher<Value, Never>,
-  block: @escaping (any Turbine<Value>) async -> Void
+  block: @escaping @MainActor (any Turbine<Value>) async -> Void
 ) async {
   let turbine = RealTurbine<Value>(
     publisher: publisher
@@ -17,14 +21,18 @@ public func test<Value: Equatable & Sendable>(
   turbine.complete()
 }
 
-public protocol Turbine<Value> {
+/// `Sendable` so a turbine can be awaited from the `@MainActor` test body without the compiler treating
+/// each `await` as sending it across an isolation boundary.
+public protocol Turbine<Value>: Sendable {
   associatedtype Value
 
   func value() async -> Value
   func expectInitial(value: Value) async
 }
 
-class RealTurbine<Value: Equatable & Sendable>: Turbine {
+/// `@unchecked` because the compiler cannot see that the only mutable state is a `CurrentValueSubject`
+/// (safe to send and read concurrently) and a `cancellables` array written once, during `init`.
+final class RealTurbine<Value: Equatable & Sendable>: Turbine, @unchecked Sendable {
 
   private let subject = CurrentValueSubject<TurbineValue<Value>, Never>(.notReady)
   private var cancellables: [AnyCancellable] = []

@@ -5,6 +5,7 @@ import SwiftlyTest
 @testable import AboutPresentation
 
 @Suite("AboutViewModelTests")
+@MainActor
 struct AboutViewModelTests {
   
   @Test
@@ -53,8 +54,9 @@ struct AboutViewModelTests {
   }
 }
 
+@MainActor
 private class Scenario {
-  
+
   let sut: AboutViewModel
   
   init(

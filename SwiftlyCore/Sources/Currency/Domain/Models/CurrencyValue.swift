@@ -1,4 +1,4 @@
-public struct CurrencyValue: Identifiable, Equatable {
+public struct CurrencyValue: Identifiable, Equatable, Sendable {
   public let value: Double
   public let currencyWithRate: CurrencyWithRate
 

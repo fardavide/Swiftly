@@ -5,6 +5,8 @@ public enum Lce<C, E: Error>: Equatable where C: Equatable, E: Equatable {
   case loading
 }
 
+extension Lce: Sendable where C: Sendable, E: Sendable {}
+
 /// Lce with GenericError
 public typealias GenericLce<C: Equatable> = Lce<C, GenericError>
 

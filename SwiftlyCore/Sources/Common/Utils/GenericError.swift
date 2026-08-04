@@ -1,1 +1,1 @@
-public struct GenericError: Error, Equatable {}
+public struct GenericError: Error, Equatable, Sendable {}
