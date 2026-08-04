@@ -5,7 +5,8 @@ import SwiftlyStorage
 public class FakeCurrencyStorage: CurrencyStorage {
 
   public var usedCurrencies = [CurrencyCode: Int]()
-  
+  public private(set) var lastInsertedUpdateDate: Date?
+
   private let fetchAllCurrenciesResult: Result<[CurrencyStorageModel], StorageError>
   private let fetchAllRatesResult: Result<[CurrencyRateStorageModel], StorageError>
   private let updateDate: CurrencyDateStorageModel
@@ -36,7 +37,9 @@ public class FakeCurrencyStorage: CurrencyStorage {
 
   public func insertAllRates(_ models: [CurrencyRateStorageModel]) async {}
 
-  public func insertUpdateDate(_ model: CurrencyDateStorageModel) async {}
+  public func insertUpdateDate(_ model: CurrencyDateStorageModel) async {
+    lastInsertedUpdateDate = model.updatedAt
+  }
 
   public func fetchAllCurrencies(sorting: CurrencySorting) async -> Result<[CurrencyStorageModel], StorageError> {
     fetchAllCurrenciesResult

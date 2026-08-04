@@ -160,6 +160,147 @@ struct RealCurrencyRepositoryTests {
     ))
   }
 
+  // MARK: - force refresh
+  @Test
+  func testLatestRates_whenForceRefresh_andCacheOlderThanOneMinute_fetchFromApi() async {
+    // given
+    let scenario = Scenario(
+      latestRatesApiModel: AnyCurrencyRatesApiModel.samples.all,
+      fetchAllRatesStorageModels: CurrencyRateStorageModel.samples.all(),
+      updateDate: currentDate - 2.minutes()
+    )
+
+    // when
+    _ = await scenario.sut.getLatestRates(forceRefresh: true)
+
+    // then
+    #expect(scenario.api.didFetchLatestRates)
+  }
+
+  /// Pairs with the test above: same cache age, only `forceRefresh` differs.
+  /// Without this, the `forceRefresh &&` sub-expression could be deleted and nothing would fail.
+  @Test
+  func testLatestRates_whenNotForceRefresh_andCacheOlderThanOneMinute_dontFetchFromApi() async {
+    // given
+    let scenario = Scenario(
+      latestRatesApiModel: AnyCurrencyRatesApiModel.samples.all,
+      fetchAllRatesStorageModels: CurrencyRateStorageModel.samples.all(),
+      updateDate: currentDate - 2.minutes()
+    )
+
+    // when
+    _ = await scenario.sut.getLatestRates(forceRefresh: false)
+
+    // then
+    #expect(scenario.api.didFetchLatestRates.not())
+  }
+
+  @Test
+  func testLatestRates_whenForceRefresh_andCacheYoungerThanOneMinute_dontFetchFromApi() async {
+    // given
+    let scenario = Scenario(
+      latestRatesApiModel: AnyCurrencyRatesApiModel.samples.all,
+      fetchAllRatesStorageModels: CurrencyRateStorageModel.samples.all(),
+      updateDate: currentDate - 30.seconds()
+    )
+
+    // when
+    _ = await scenario.sut.getLatestRates(forceRefresh: true)
+
+    // then
+    #expect(scenario.api.didFetchLatestRates.not())
+  }
+
+  @Test
+  func testLatestRates_whenForceRefresh_andCacheYoungerThanOneMinute_returnsResultFromStorage() async {
+    // given
+    let updateDate = currentDate - 30.seconds()
+    let scenario = Scenario(
+      latestRatesApiModel: AnyCurrencyRatesApiModel.samples.all,
+      fetchAllRatesStorageModels: [CurrencyRateStorageModel.samples.eur],
+      updateDate: updateDate
+    )
+
+    // when
+    let result = await scenario.sut.getLatestRates(forceRefresh: true)
+
+    // then
+    #expect(result == .success([CurrencyRate.samples.eur].updatedAt(updateDate)))
+  }
+
+  @Test
+  func testLatestRates_whenForceRefresh_ifApiError_returnsResultFromStorageWithError() async {
+    // given
+    let updateDate = currentDate - 2.minutes()
+    let scenario = Scenario(
+      latestRatesApiResult: .failure(.unknown),
+      fetchAllRatesStorageResult: .success([CurrencyRateStorageModel.samples.usd]),
+      updateDate: updateDate
+    )
+
+    // when
+    let result = await scenario.sut.getLatestRates(forceRefresh: true)
+
+    // then
+    #expect(result == .successWithError(
+      data: CurrencyRates.samples.usdOnly.updatedAt(date: updateDate),
+      error: .network(cause: .unknown)
+    ))
+  }
+
+  @Test
+  func testLatestRates_whenForceRefresh_ifApiError_andEmptyCache_returnsError() async {
+    // given
+    let scenario = Scenario(
+      latestRatesApiResult: .failure(.unknown),
+      fetchAllRatesStorageResult: .success([]),
+      updateDate: currentDate - 2.minutes()
+    )
+
+    // when
+    let result = await scenario.sut.getLatestRates(forceRefresh: true)
+
+    // then
+    #expect(result == .error(.network(cause: .unknown)))
+  }
+
+  @Test
+  func testLatestRates_whenForceRefresh_succeeds_storesUpdateDateFromApi() async {
+    // given
+    let scenario = Scenario(
+      latestRatesApiModel: AnyCurrencyRatesApiModel.samples.eurOnly,
+      fetchAllRatesStorageModels: [CurrencyRateStorageModel.samples.usd],
+      updateDate: currentDate - 2.minutes()
+    )
+
+    // when
+    _ = await scenario.sut.getLatestRates(forceRefresh: true)
+
+    // then
+    #expect(scenario.storage.lastInsertedUpdateDate == currentDate)
+  }
+
+  /// Documents a known gap: `forceRefresh` is plumbed into the rates path only, so pull-to-refresh
+  /// can never force a refresh of the currency list. Change this test deliberately, not by accident.
+  @Test
+  func testLatestCurrenciesWithRates_whenForceRefresh_doesNotRefreshCurrencyList() async {
+    // given
+    let scenario = Scenario(
+      currenciesApiResult: .success(AnyCurrenciesApiModel.samples.all),
+      fetchAllCurrenciesStorageResult: .success(CurrencyStorageModel.samples.all()),
+      latestRatesApiResult: .success(AnyCurrencyRatesApiModel.samples.all),
+      fetchAllRatesStorageResult: .success(CurrencyRateStorageModel.samples.all()),
+      updateDate: currentDate - 2.minutes()
+    )
+
+    // when
+    _ = await scenario.sut.getLatestCurrenciesWithRates(forceRefresh: true)
+
+    // then
+    #expect(scenario.api.didFetchLatestRates)
+    #expect(scenario.api.didFetchCurrencies.not())
+  }
+
   // MARK: - all currencies
   @Test
   func testCurrencies_whenEmptyCache_fetchFromApi() async throws {
@@ -447,11 +588,12 @@ private let currentDate = Date.samples.xmas2023noon
 
 private final class Scenario {
   let api: FakeCurrencyApi
+  let storage: FakeCurrencyStorage
   let sut: RealCurrencyRepository
 
   init(
     api: FakeCurrencyApi = FakeCurrencyApi(),
-    storage: CurrencyStorage = FakeCurrencyStorage()
+    storage: FakeCurrencyStorage = FakeCurrencyStorage()
   ) {
     self.sut = RealCurrencyRepository(
       api: api,
@@ -459,6 +601,7 @@ private final class Scenario {
       storage: storage
     )
     self.api = api
+    self.storage = storage
   }
 
   convenience init(
