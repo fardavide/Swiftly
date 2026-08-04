@@ -156,3 +156,32 @@ jobs:
           path: snapshot-report
           retention-days: 7
           if-no-files-found: warn
+
+  # Aggregate gate over every job above, meant to be the ONE required status check in the branch
+  # protection ruleset for main. Requiring the single stable name "CI passed" instead of the four
+  # job names means adding, renaming or re-matrixing jobs can never desync the ruleset — a stale
+  # required name would otherwise sit "Expected" forever and block every merge, while a new job
+  # missing from the list simply wouldn't gate. Runs on the cheap Linux runner: it only inspects
+  # results.
+  ci-passed:
+    name: CI passed
+    # always() keeps the gate reporting when an upstream job fails or is cancelled. Without it the
+    # gate would be SKIPPED in those runs, and GitHub counts a skipped required check as satisfied
+    # — the merge would sail through on red CI, which is the exact hole this job closes.
+    if: always()
+    needs: [unit-tests, build, snapshot-tests]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every job to have succeeded
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          set -euo pipefail
+          echo "Job results: $RESULTS"
+          for result in $RESULTS; do
+            if [ "$result" != "success" ]; then
+              echo "::error::A required job finished with result '$result'."
+              exit 1
+            fi
+          done
