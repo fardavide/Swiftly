@@ -1,0 +1,29 @@
+name: Select Xcode
+description: >
+  Activate the Xcode 26.6 toolchain on the runner — the version Swiftly is developed against and that the
+  snapshot baselines are recorded on — falling back to the newest installed Xcode 26.x with a warning.
+  Pinning the minor version keeps the env-sensitive snapshot tests reproducible; bump it deliberately
+  alongside re-recording baselines. Requires the repo to be checked out first (composite local action).
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        set -euo pipefail
+        # The image default Xcode drifts release-to-release, so select explicitly. Prefer 26.6
+        # (matches local dev + the recorded snapshot pixels); only if it's absent fall back to the
+        # newest 26.x so the build/unit jobs stay green (snapshots may then drift — hence the warning).
+        xcode="$(ls -d /Applications/Xcode_26.6*.app 2>/dev/null | sort -V | tail -1 || true)"
+        if [ -z "$xcode" ]; then
+          xcode="$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1 || true)"
+          if [ -n "$xcode" ]; then
+            echo "::warning::Xcode 26.6 not found on this image; using $xcode — snapshot baselines may drift."
+          fi
+        fi
+        if [ -z "$xcode" ]; then
+          echo "::error::No Xcode 26.x found under /Applications on this runner image."
+          exit 1
+        fi
+        sudo xcode-select -s "$xcode"
+        xcodebuild -version

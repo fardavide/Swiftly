@@ -49,3 +49,6 @@ fastlane/test_output
 
 # Api keys
 ApiKey.swift
+
+# Snapshot test failure artifacts (freshly-rendered mismatches, written per failing run)
+SwiftlyTests/__SnapshotFailures__/

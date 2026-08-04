@@ -8,6 +8,7 @@ import DateUtils
 import SwiftlyTest
 @testable import ConverterPresentation
 
+@MainActor
 struct ConverterViewModelTests {
   
   @Test
@@ -112,7 +113,7 @@ struct ConverterViewModelTests {
       #expect(before[5] ~= 11)
       
       // when
-      scenario.sut.send(
+      await scenario.sut.send(
         .updateValue(
           currencyValue: CurrencyValue(value: 20, currencyWithRate: CurrencyWithRate.samples.usd)
         )
@@ -187,7 +188,7 @@ struct ConverterViewModelTests {
       #expect(before[5] ~= 11)
       
       // when
-      scenario.sut.send(
+      await scenario.sut.send(
         .changeCurrency(
           prev: Currency.samples.eur,
           new: Currency.samples.cny
@@ -234,7 +235,7 @@ struct ConverterViewModelTests {
       #expect(notFiltered == Currency.samples.all())
       
       // when
-      scenario.sut.send(.searchCurrencies(query: "Eur"))
+      await scenario.sut.send(.searchCurrencies(query: "Eur"))
       
       // then
       let filtered = await turbine.value()
@@ -248,7 +249,7 @@ struct ConverterViewModelTests {
     let scenario = Scenario()
     
     // when
-    scenario.sut.send(.searchCurrencies(query: "Eur"))
+    await scenario.sut.send(.searchCurrencies(query: "Eur"))
     
     // then
     await test(scenario.sut.$state.map(\.searchQuery)) { turbine in
@@ -259,8 +260,9 @@ struct ConverterViewModelTests {
   }
 }
   
+@MainActor
 private class Scenario {
-  
+
   let sut: ConverterViewModel
   
   let converterRepository: FakeConverterRepository

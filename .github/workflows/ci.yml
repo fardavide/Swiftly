@@ -1,0 +1,158 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# A newer push to the same ref cancels an in-flight run (saves the 10x-billed macOS minutes).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # SwiftlyCore is the SPM package holding everything that isn't the app shell — domain, data and
+  # presentation modules — together with their unit tests. They run on the macOS host via
+  # `swift test`: no simulator, no app bundle, the same command as locally.
+  unit-tests:
+    name: Unit tests (SwiftlyCore)
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/select-xcode
+      - name: Run package tests
+        working-directory: SwiftlyCore
+        run: swift test
+
+  # Compile-check the app on BOTH platforms — the Swiftly target supports iphoneos, iphonesimulator
+  # and macosx from a single set of sources, so a change can build on one and break the other.
+  # Separate jobs (separate runners) keep them off each other's critical path and make a red check
+  # name the platform that broke.
+  build:
+    name: Build app (${{ matrix.platform.name }})
+    runs-on: macos-26
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { name: iOS, destination: 'generic/platform=iOS Simulator' }
+          - { name: macOS, destination: 'generic/platform=macOS' }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/select-xcode
+      # Build unsigned — a compile-check needs no signed binary, and the runner has no signing
+      # identity (the native macOS build otherwise fails resolving a development certificate; the
+      # iOS Simulator build never signs, so these settings are a harmless no-op there).
+      - name: Build
+        run: xcodebuild build -scheme Swiftly -destination '${{ matrix.platform.destination }}' -quiet CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+
+  # Screenshot tests for the SwiftUI screens (the app-hosted SwiftlyTests target, iOS only — the
+  # captures are taken through a real key window). Isolated in its own job on purpose: the reference
+  # PNGs are recorded locally and their rendering is environment-sensitive, so a pixel diff here can
+  # never masquerade as a unit or build failure. This job GATES the PR; when it goes red, download
+  # the diff report artifact and look at the screens before re-recording anything.
+  snapshot-tests:
+    name: Snapshot tests (iOS)
+    runs-on: macos-26
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/select-xcode
+      # swift-snapshot-testing pulls swift-syntax (a heavy macro dependency), so cache the resolved
+      # source clones keyed on the committed pins. They deliberately live OUTSIDE the checkout: the
+      # app target runs `swiftlint` over the whole repository from a build phase and .swiftlint.yml
+      # sets `strict: true`, so dependency sources dropped inside the working directory would be
+      # linted as if they were ours and fail every job that builds the app. The build/unit jobs are
+      # left uncached — this is the only one that links snapshot-testing.
+      - name: Cache SwiftPM source packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/SourcePackages
+          key: spm-${{ runner.os }}-${{ hashFiles('Swiftly.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: spm-${{ runner.os }}-
+      - name: Resolve packages
+        run: |
+          set -euo pipefail
+          xcodebuild -resolvePackageDependencies \
+            -project Swiftly.xcodeproj \
+            -scheme SwiftlySnapshotTests \
+            -clonedSourcePackagesDirPath '${{ runner.temp }}/SourcePackages'
+      # Fail early with a readable message if the pinned simulator is missing on this image release
+      # (iOS 26 devices have had transient per-release gaps on the hosted runners). The device grep
+      # is anchored because "iPhone 17 Pro", "iPhone 17 Pro Max" and "iPhone 17e" are all separate
+      # devices that would otherwise satisfy a loose match for the one the destination names.
+      - name: Verify an iOS 26 iPhone 17 simulator is available
+        run: |
+          set -euo pipefail
+          runtimes="$(xcrun simctl list runtimes available)"
+          devices="$(xcrun simctl list devices available)"
+          if ! grep -q 'iOS 26' <<< "$runtimes"; then
+            echo "::error::No iOS 26 simulator runtime available on this runner image"
+            echo "$runtimes"
+            exit 1
+          fi
+          if ! grep -qE '^ *iPhone 17 \(' <<< "$devices"; then
+            echo "::error::iPhone 17 simulator not available on this runner image"
+            echo "$devices"
+            exit 1
+          fi
+      # SwiftlySnapshotTests is a shared scheme whose only testable is SwiftlyTests and which
+      # declares no test plan, so this builds the app plus that one bundle rather than the 22
+      # targets of CoreTestPlan — the snapshot check then measures only what it claims to.
+      #
+      # The log is long because the hosted app boots in the simulator. Triage from the test summary
+      # rather than from the first `error:` match — a hosted run can print noise the build did not.
+      - name: Run snapshot tests
+        run: |
+          set -euo pipefail
+          xcodebuild test \
+            -scheme SwiftlySnapshotTests \
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -clonedSourcePackagesDirPath '${{ runner.temp }}/SourcePackages' \
+            2>&1 | tee '${{ runner.temp }}/snapshot-tests.log'
+      # `xcodebuild test` reports ** TEST SUCCEEDED ** for a bundle that ran nothing, so a required
+      # check gated on its exit code alone would stay green while asserting nothing — exactly what
+      # happens if the snapshot sources ever stop being compiled into SwiftlyTests. Demand positive
+      # evidence instead: a non-zero count from swift-testing's or XCTest's own summary line.
+      - name: Verify the snapshot suite executed tests
+        run: |
+          set -euo pipefail
+          executed="$(awk '
+            /Test run with [0-9]+ test/ {
+              for (i = 1; i < NF; i++) if ($i == "with") { n = $(i + 1) + 0; if (n > max) max = n }
+            }
+            /Executed [0-9]+ test/ {
+              for (i = 1; i < NF; i++) if ($i == "Executed") { n = $(i + 1) + 0; if (n > max) max = n }
+            }
+            END { print max + 0 }
+          ' '${{ runner.temp }}/snapshot-tests.log')"
+          if [ "$executed" -eq 0 ]; then
+            echo "::error::The snapshot run executed 0 tests — the suite is not being compiled into SwiftlyTests, so this check proves nothing."
+            exit 1
+          fi
+          echo "Snapshot run executed $executed tests."
+      # On a mismatch the suite writes each freshly-rendered screen to SwiftlyTests/__SnapshotFailures__/
+      # (SnapshotSupport.swift pins SNAPSHOT_ARTIFACTS there). Pair each with its committed baseline and
+      # emit a small self-contained HTML report — expected vs actual side by side plus an in-browser
+      # difference blend — so a red run is reviewable by eye instead of by spelunking a .xcresult. The
+      # fix is always the same: inspect, then re-record the baselines locally and commit them. CI never
+      # records.
+      - name: Build snapshot diff report
+        if: failure()
+        run: |
+          python3 .github/scripts/snapshot-report.py \
+            SwiftlyTests/__SnapshotFailures__ \
+            SwiftlyTests/__Snapshots__ \
+            snapshot-report
+      - name: Upload snapshot diff report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-diffs
+          path: snapshot-report
+          retention-days: 7
+          if-no-files-found: warn

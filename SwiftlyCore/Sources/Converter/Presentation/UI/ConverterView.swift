@@ -35,6 +35,11 @@ public struct ConverterView: View {
         .refreshable {
           await viewModel.send(.refresh)
         }
+        // Ticks the relative "Updated N ago" label. SwiftUI cancels this when the view goes away, which is
+        // what keeps the ticker from outliving the screen.
+        .task {
+          await viewModel.syncUpdatedAt()
+        }
         .toolbar {
           // Add Currency
           if state.canAddCurrency {
