@@ -78,20 +78,22 @@ final class RealTurbine<Value: Equatable & Sendable>: Turbine, @unchecked Sendab
     await withUnsafeContinuation { continuation in
       var cancellable: AnyCancellable?
 
-      cancellable = subject.print().first()
-        .sink { result in
-          switch result {
-          case .finished:
-            break
-          case let .failure(error):
-            fatalError(error.localizedDescription)
+      // Unwrap to `.ready` values *before* `first()`. `subject` replays its current value on subscribe, and
+      // `awaitFirst` is only reached when that value is `.notReady` — so a bare `first()` delivers `.notReady`,
+      // takes the `break`, and completes without ever resuming the continuation. The awaiting task then stays
+      // suspended forever: the assertions still pass, but the process can never exit.
+      cancellable = subject
+        .compactMap { value -> Value? in
+          switch value {
+          case .notReady: nil
+          case let .ready(value): value
           }
+        }
+        .first()
+        .sink { _ in
           cancellable?.cancel()
         } receiveValue: { value in
-          switch value {
-          case .notReady: break
-          case let .ready(value): continuation.resume(with: .success(value))
-          }
+          continuation.resume(returning: value)
         }
     }
   }

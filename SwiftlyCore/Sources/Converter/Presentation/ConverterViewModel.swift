@@ -24,7 +24,20 @@ public final class ConverterViewModel: ViewModel {
     self.currencyRepository = currencyRepository
     state = initialState
     Task { await load(forceRefresh: false) }
-    syncUpdatedAt()
+  }
+
+  /// Keeps the relative "Updated N ago" label current.
+  ///
+  /// Driven by the view's `.task`, which SwiftUI cancels when the view goes away, so the ticker never outlives
+  /// the screen. Starting it from `init` instead — as this used to — leaves an uncancellable periodic job on the
+  /// main actor for the lifetime of the process: a leak in the app, and a hang in any test that builds a view
+  /// model, because the main actor never runs out of work and the process never exits.
+  public func syncUpdatedAt() async {
+    while !Task.isCancelled {
+      try? await Task.sleep(for: .seconds(1))
+      guard let updatedAt else { continue }
+      state.updatedAt = updatedAt.formatted(.relative(presentation: .named))
+    }
   }
 
   // swiftlint:disable function_body_length
@@ -192,16 +205,6 @@ public final class ConverterViewModel: ViewModel {
 
   private func storeSelectedCurrencies() async {
     await converterRepository.setSelectedCurrencies(state.values.map(\.currency.code))
-  }
-
-  private func syncUpdatedAt() {
-    let timer = Timer(timeInterval: 1, repeats: true) { [weak self] _ in
-      Task { @MainActor [weak self] in
-        guard let self, let updatedAt = self.updatedAt else { return }
-        self.state.updatedAt = updatedAt.formatted(.relative(presentation: .named))
-      }
-    }
-    RunLoop.current.add(timer, forMode: .common)
   }
 }
 
