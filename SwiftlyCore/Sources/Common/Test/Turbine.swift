@@ -97,10 +97,13 @@ final class RealTurbine<Value: Equatable & Sendable>: Turbine {
       return pushedBack
     }
     // A `mutating async` call on an isolated stored property is rejected — the exclusive access would
-    // span the suspension. The iterator struct is only a handle to the stream's shared storage, so
-    // advancing a local copy is equivalent; the write-back keeps the stored handle current.
+    // span the suspension — so advance a local copy; the iterator struct is only a handle to the
+    // stream's shared storage, and the write-back keeps the stored handle current. The advance goes
+    // through `next(isolation:)` because the plain `next()` is nonisolated and calling it would send
+    // this non-Sendable, main-actor-region iterator across an isolation boundary; passing the current
+    // isolation keeps the whole step on the main actor.
     var iterator = self.iterator
-    guard let value = await iterator.next() else {
+    guard let value = await iterator.next(isolation: #isolation) else {
       fatalError("Turbine completed while a test was still awaiting a value")
     }
     self.iterator = iterator
