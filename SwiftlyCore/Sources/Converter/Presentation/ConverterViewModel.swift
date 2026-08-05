@@ -162,7 +162,9 @@ public final class ConverterViewModel: ViewModel {
     emit {
       self.state.isLoading = false
       self.state.error = nil
-      self.state.refreshError = refreshError?.toErrorModel(message: "Refresh failed, showing cached data")
+      // No `message:` here on purpose: the banner is one line, and the line worth showing is the reason
+      // the refresh failed. "Showing cached data" is the banner's own subtitle.
+      self.state.refreshError = refreshError?.toErrorModel()
       self.state.searchCurrencies = currencies
       self.state.values = selectedCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
@@ -237,6 +239,19 @@ public class ConverterViewModelSamples {
     ),
     currencyRepository: FakeCurrencyRepository(
       currenciesResult: .error(.storage(cause: .unknown))
+    )
+  )
+  /// Rates on screen, but the last refresh failed — the state the banner exists for.
+  let refreshError = ConverterViewModel(
+    converterRepository: FakeConverterRepository(
+      selectedCurrencies: .samples.alphabetical
+    ),
+    currencyRepository: FakeCurrencyRepository(
+      currenciesResult: .success(Currency.samples.all()),
+      currencyRatesResult: .successWithError(
+        data: .samples.all,
+        error: .network(cause: .noConnection)
+      )
     )
   )
 }
