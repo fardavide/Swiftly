@@ -24,7 +24,10 @@ public func test<Value: Equatable & Sendable>(
 /// `Sendable` so a turbine can be awaited from the `@MainActor` test body without the compiler treating
 /// each `await` as sending it across an isolation boundary.
 public protocol Turbine<Value>: Sendable {
-  associatedtype Value
+  /// `Sendable` because values cross from the caller of these requirements into the main-actor-isolated
+  /// implementation; without the constraint the compiler rejects that hop for `any Turbine`. `test()`
+  /// already demands it of every value type.
+  associatedtype Value: Sendable
 
   /// The oldest unconsumed emission, suspending until one arrives if none is buffered.
   func value() async -> Value
@@ -93,9 +96,14 @@ final class RealTurbine<Value: Equatable & Sendable>: Turbine {
       self.pushedBack = nil
       return pushedBack
     }
+    // A `mutating async` call on an isolated stored property is rejected — the exclusive access would
+    // span the suspension. The iterator struct is only a handle to the stream's shared storage, so
+    // advancing a local copy is equivalent; the write-back keeps the stored handle current.
+    var iterator = self.iterator
     guard let value = await iterator.next() else {
       fatalError("Turbine completed while a test was still awaiting a value")
     }
+    self.iterator = iterator
     return value
   }
 }
