@@ -5,7 +5,9 @@ import Combine
 import ConverterDomain
 import CurrencyDomain
 import DateUtils
+import Design
 import SwiftlyTest
+import SwiftlyUtils
 @testable import ConverterPresentation
 
 @MainActor
@@ -243,6 +245,54 @@ struct ConverterViewModelTests {
     }
   }
   
+  /// The banner is the only place a failed refresh is reported, so it has to name the cause rather than
+  /// repeat "refresh failed" for every one of them.
+  @Test
+  func whenRefreshFails_refreshErrorCarriesTheTypedCause() async {
+    // given
+    let scenario = Scenario(
+      converterRepository: FakeConverterRepository(
+        selectedCurrencies: .samples.alphabetical
+      ),
+      currencyRepository: FakeCurrencyRepository(
+        currenciesResult: .success(Currency.samples.all()),
+        currencyRatesResult: .successWithError(
+          data: .samples.all,
+          error: .network(cause: .noConnection)
+        )
+      )
+    )
+
+    // when
+    await test(scenario.sut.$state.map(\.refreshError)) { turbine in
+      await turbine.expectInitial(value: nil)
+
+      // then
+      let result = await turbine.value()
+      #expect(result == DataError.network(cause: .noConnection).toErrorModel())
+    }
+  }
+
+  /// The counterpart: nothing failed, so nothing is reported.
+  @Test
+  func whenRefreshSucceeds_thereIsNoRefreshError() async {
+    // given
+    let scenario = Scenario(
+      currencies: Currency.samples.all(),
+      currencyRates: .samples.all,
+      selectedCurrencies: .samples.alphabetical
+    )
+
+    // when
+    await test(scenario.sut.$state.map(\.values.isEmpty)) { turbine in
+      await turbine.expectInitial(value: true)
+      _ = await turbine.value()
+    }
+
+    // then
+    #expect(scenario.sut.state.refreshError == nil)
+  }
+
   @Test
   func whenSearch_queryIsSaved() async {
     // given

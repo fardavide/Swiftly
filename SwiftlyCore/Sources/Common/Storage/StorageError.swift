@@ -1,8 +1,16 @@
 import SwiftData
 import SwiftlyUtils
 
+/// A failed read from the local cache.
 public enum StorageError: Error {
+
+  /// Nothing has been cached yet, so there is nothing to fall back on.
   case noCache
+
+  /// The store is there but refused the read.
+  case readFailed
+
+  /// Anything that couldn't be classified.
   case unknown
 }
 
@@ -10,6 +18,7 @@ public extension StorageError {
   func toDataError() -> DataError {
     let cause: DataError.StorageCause = switch self {
     case .noCache: .noCache
+    case .readFailed: .readFailed
     case .unknown: .unknown
     }
     return .storage(cause: cause)
@@ -29,7 +38,7 @@ public extension ModelContext {
     do {
       return try .success(fetch(descriptor))
     } catch {
-      return .failure(.unknown)
+      return .failure(.readFailed)
     }
   }
   

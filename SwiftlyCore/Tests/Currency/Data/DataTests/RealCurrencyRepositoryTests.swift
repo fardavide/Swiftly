@@ -151,6 +151,25 @@ struct RealCurrencyRepositoryTests {
     ))
   }
 
+  /// The typed cause has to survive the fall back to cache: it is the only thing the refresh banner has
+  /// to tell the user why the rates on screen are stale.
+  @Test
+  func latestRates_whenApiFailsAndCacheAnswers_keepsTheTypedCause() async {
+    // given
+    let scenario = Scenario(
+      latestRatesApiResult: .failure(.unauthorized),
+      fetchAllRatesStorageResult: .success([CurrencyRateStorageModel.samples.usd]),
+      updateDate: currentDate - 3.days()
+    )
+
+    // when
+    let result = await scenario.sut.getLatestRates(forceRefresh: false)
+
+    // then
+    #expect(result.error == DataError.network(cause: .unauthorized))
+    #expect(result.data != nil)
+  }
+
   // MARK: - all currencies
   func testCurrencies_whenEmptyCache_fetchFromApi() async throws {
     // given

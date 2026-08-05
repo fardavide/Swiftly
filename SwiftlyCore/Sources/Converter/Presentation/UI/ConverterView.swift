@@ -2,6 +2,7 @@ import CurrencyDomain
 import Design
 import NukeUI
 import Provider
+import SFSafeSymbols
 import SwiftUI
 import SwiftlyUtils
 
@@ -29,7 +30,9 @@ public struct ConverterView: View {
         )
         .overlay(alignment: .bottom) {
           if let refreshError = state.refreshError {
-            RefreshErrorBanner(error: refreshError)
+            RefreshErrorBanner(error: refreshError) {
+              viewModel.send(.refresh)
+            }
           }
         }
         .refreshable {
@@ -196,18 +199,41 @@ private struct CurrencyValueRow: View {
   }
 }
 
+/// Shown when the rates on screen are the cached ones because the refresh failed.
+///
+/// The banner used to read "Refresh failed, showing cached data" whatever had gone wrong, which told the
+/// user only that something had. The headline is now the typed reason — no connection, a refused API
+/// key, an exhausted quota — and the fallback is demoted to the second line, where it belongs.
 private struct RefreshErrorBanner: View {
   let error: ErrorModel
+  let retry: () -> Void
 
   var body: some View {
-    Text("Refresh failed, showing cached data")
-      .font(.footnote)
-      .padding(.horizontal, 16)
-      .padding(.vertical, 10)
-      .frame(maxWidth: .infinity)
-      .background(.red.opacity(0.9))
-      .foregroundStyle(.white)
-      .transition(.move(edge: .bottom).combined(with: .opacity))
+    HStack(spacing: 12) {
+      Image(systemSymbol: error.image)
+        .imageScale(.large)
+
+      VStack(alignment: .leading, spacing: 2) {
+        Text(error.title)
+          .font(.footnote.weight(.semibold))
+        Text("Showing the rates saved on this device")
+          .font(.caption2)
+          .opacity(0.9)
+      }
+      .multilineTextAlignment(.leading)
+
+      Spacer(minLength: 0)
+
+      Button("Retry", action: retry)
+        .font(.footnote.weight(.semibold))
+        .buttonStyle(.plain)
+    }
+    .padding(.horizontal, 16)
+    .padding(.vertical, 10)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(.red.opacity(0.9))
+    .foregroundStyle(.white)
+    .transition(.move(edge: .bottom).combined(with: .opacity))
   }
 }
 
@@ -224,4 +250,9 @@ private struct RefreshErrorBanner: View {
 #Preview("Storage error") {
   Provider.setupPreview(viewModel: ConverterViewModel.samples.storageError)
   return ConverterView()
+}
+
+#Preview("Refresh error") {
+  Provider.setupPreview(viewModel: ConverterViewModel.samples.refreshError)
+  return NavigationStack { ConverterView() }
 }

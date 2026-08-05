@@ -166,7 +166,8 @@ let package = Package(
     .testTarget(
       name: "NetworkTests",
       dependencies: [
-        "SwiftlyNetwork"
+        "SwiftlyNetwork",
+        "SwiftlyUtils"
       ],
       path: "Tests/Common/NetworkTests"
     ),
@@ -306,7 +307,9 @@ let package = Package(
       dependencies: [
         "ConverterDomain",
         "ConverterPresentation",
-        "SwiftlyTest"
+        "Design",
+        "SwiftlyTest",
+        "SwiftlyUtils"
       ],
       path: "Tests/Converter/PresentationTests"
     ),
