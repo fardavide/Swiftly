@@ -1,8 +1,25 @@
 import Foundation
 
-final class CurrencyApiComEndpoints {
-  private let apiKey: String
-  
+/// The URLs of one currency provider.
+///
+/// The protocol earns its keep with `hasApiKey`. `ApiKey.swift` is committed empty and filled from CI
+/// secrets at build time, so a build made outside that pipeline calls every provider with `apikey=` and
+/// gets a `401` back — indistinguishable, from the outside, from a key that expired. Asking before we call
+/// turns the guess into a fact the app can state.
+protocol ApiEndpoints {
+  var apiKey: String { get }
+}
+
+extension ApiEndpoints {
+
+  var hasApiKey: Bool {
+    !apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+  }
+}
+
+final class CurrencyApiComEndpoints: ApiEndpoints {
+  let apiKey: String
+
   init(apiKey: String) {
     self.apiKey = apiKey
   }
@@ -30,9 +47,9 @@ final class CurrencyApiComEndpoints {
   }
 }
 
-final class CurrencyBeaconComEndpoints {
-  private let apiKey: String
-  
+final class CurrencyBeaconComEndpoints: ApiEndpoints {
+  let apiKey: String
+
   init(apiKey: String) {
     self.apiKey = apiKey
   }
@@ -63,9 +80,9 @@ final class CurrencyBeaconComEndpoints {
   }
 }
 
-final class ExchangeRatesIoEndpoints {
-  private let apiKey: String
-  
+final class ExchangeRatesIoEndpoints: ApiEndpoints {
+  let apiKey: String
+
   init(apiKey: String) {
     self.apiKey = apiKey
   }

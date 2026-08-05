@@ -1,8 +1,17 @@
 import SwiftData
 import SwiftlyUtils
 
-public enum StorageError: Error {
+/// Everything that can go wrong reading the on-device cache.
+public enum StorageError: Error, Equatable, Sendable {
+
+  /// The query ran, and there is nothing stored yet.
+  ///
+  /// Not a malfunction: it is what a first launch, or a launch after the store was reset, looks like.
   case noCache
+
+  /// SwiftData refused the read.
+  case readFailed
+
   case unknown
 }
 
@@ -10,6 +19,7 @@ public extension StorageError {
   func toDataError() -> DataError {
     let cause: DataError.StorageCause = switch self {
     case .noCache: .noCache
+    case .readFailed: .readFailed
     case .unknown: .unknown
     }
     return .storage(cause: cause)
@@ -29,7 +39,7 @@ public extension ModelContext {
     do {
       return try .success(fetch(descriptor))
     } catch {
-      return .failure(.unknown)
+      return .failure(.readFailed)
     }
   }
   

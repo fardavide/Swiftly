@@ -148,6 +148,13 @@
     {
       "target" : {
         "containerPath" : "container:",
+        "identifier" : "DesignTests",
+        "name" : "DesignTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
         "identifier" : "ConverterDomainTests",
         "name" : "ConverterDomainTests"
       }

@@ -60,67 +60,6 @@ public struct ErrorView: View {
   }
 }
 
-public struct ErrorModel {
-  let title: LocalizedStringKey
-  let subtitle: LocalizedStringKey?
-  let image: SFSymbol
-  
-  public init(
-    title: LocalizedStringKey,
-    subtitle: LocalizedStringKey? = nil,
-    image: SFSymbol
-  ) {
-    self.title = title
-    self.subtitle = subtitle
-    self.image = image
-  }
-  
-  func withMessage(message: LocalizedStringKey?) -> ErrorModel {
-    ErrorModel(
-      title: message ?? title,
-      subtitle: message != nil ? title : nil,
-      image: image
-    )
-  }
-}
-
-public extension DataError {
-  
-  /// Creates an `ErrorModel` for `ErrorView`
-  /// - Returns: `ErrorModel`
-  func toErrorModel(message: LocalizedStringKey? = nil) -> ErrorModel {
-    let baseModel = switch self {
-    case let .network(cause):
-      switch cause {
-      case .json: ErrorModel(
-        title: "Cannot process network response, please contact the developer",
-        image: .exclamationmarkCircle
-      )
-      case .unknown: ErrorModel(
-        title: "Unknown network error",
-        image: .network
-      )
-      }
-    case let .storage(cause):
-      switch cause {
-      case .noCache: ErrorModel(
-        title: "Missing cached data, refresh from network is necessary",
-        image: .externaldriveBadgeExclamationmark
-      )
-      case .unknown: ErrorModel(
-        title: "Unknown cache error, contact the developer, in case refreshing from network won't fix this",
-        image: .externaldriveTrianglebadgeExclamationmark
-      )
-      }
-    case .unknown: ErrorModel(
-      title: "Unknown error, please contact the developer",
-      image: .exclamationmarkTriangle
-    )
-    }
-    return baseModel.withMessage(message: message)
-  }
-}
-
 // For preview only
 private extension ErrorView {
   init(
@@ -133,6 +72,26 @@ private extension ErrorView {
       retry: retry
     )
   }
+}
+
+#Preview("Network.missingApiKey") {
+  ErrorView(.network(cause: .missingApiKey), message: "Can't fetch currencies") {}
+}
+
+#Preview("Network.invalidApiKey") {
+  ErrorView(.network(cause: .invalidApiKey), message: "Can't fetch currencies") {}
+}
+
+#Preview("Network.rateLimit") {
+  ErrorView(.network(cause: .rateLimit), message: "Can't fetch currencies") {}
+}
+
+#Preview("Network.noConnection") {
+  ErrorView(.network(cause: .noConnection), message: "Can't fetch currencies") {}
+}
+
+#Preview("Network.server") {
+  ErrorView(.network(cause: .server(statusCode: 503)), message: "Can't fetch currencies") {}
 }
 
 #Preview("Network.json") {

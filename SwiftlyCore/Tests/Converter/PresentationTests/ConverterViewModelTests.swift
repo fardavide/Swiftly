@@ -5,7 +5,9 @@ import Combine
 import ConverterDomain
 import CurrencyDomain
 import DateUtils
+import Design
 import SwiftlyTest
+import SwiftlyUtils
 @testable import ConverterPresentation
 
 @MainActor
@@ -258,6 +260,54 @@ struct ConverterViewModelTests {
       #expect(query == "Eur")
     }
   }
+
+  /// A refresh that failed over cached data gets a banner, and the banner gets the typed reason: the whole
+  /// point of `DataError`'s causes is that the user is told *which* failure they are looking at.
+  @Test
+  func whenRefreshFails_overCachedData_theBannerCarriesTheCause() async {
+    // given
+    let scenario = Scenario(
+      currencyRatesResult: .successWithError(
+        data: .samples.all,
+        error: .network(cause: .noConnection)
+      )
+    )
+
+    // when
+    // `ErrorModel` carries an `SFSymbol`, which is a class and not `Sendable`, so it cannot be the value a
+    // turbine hands across. Waiting on the values — set in the same `emit` block, right after the banner —
+    // and then reading the state is the same instant, without the isolation problem.
+    await test(scenario.sut.$state.map(\.values)) { turbine in
+      await turbine.expectInitial(value: [])
+      _ = await turbine.value()
+
+      // then
+      let expected = DataError.network(cause: .noConnection).toErrorModel()
+      #expect(scenario.sut.state.refreshError == expected)
+    }
+  }
+
+  /// A cancelled refresh is the app's own doing — the screen went away, or a newer refresh replaced this
+  /// one — so there is nothing to tell the user about it.
+  @Test
+  func whenRefreshIsCancelled_thereIsNoBanner() async {
+    // given
+    let scenario = Scenario(
+      currencyRatesResult: .successWithError(
+        data: .samples.all,
+        error: .network(cause: .cancelled)
+      )
+    )
+
+    // when
+    await test(scenario.sut.$state.map(\.values)) { turbine in
+      await turbine.expectInitial(value: [])
+      _ = await turbine.value()
+
+      // then
+      #expect(scenario.sut.state.refreshError == nil)
+    }
+  }
 }
   
 @MainActor
@@ -295,6 +345,24 @@ private class Scenario {
         currencyRates: currencyRates
       ),
       initialState: initialState
+    )
+  }
+
+  /// For the partial-failure cases: data *and* an error, which is what a repository returns when the
+  /// network refused but the cache had something to show.
+  convenience init(
+    currenciesResult: DataResult<[Currency]> = .success(Currency.samples.all()),
+    currencyRatesResult: DataResult<CurrencyRates>,
+    selectedCurrencies: SelectedCurrencies = .samples.alphabetical
+  ) {
+    self.init(
+      converterRepository: FakeConverterRepository(
+        selectedCurrencies: selectedCurrencies
+      ),
+      currencyRepository: FakeCurrencyRepository(
+        currenciesResult: currenciesResult,
+        currencyRatesResult: currencyRatesResult
+      )
     )
   }
 }

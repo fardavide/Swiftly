@@ -155,14 +155,17 @@ public final class ConverterViewModel: ViewModel {
     self.rates = rates.items
     self.updatedAt = rates.updatedAt
 
-    let refreshError = currenciesResult.error ?? ratesResult.error
+    let refreshError = reportableError(currenciesResult.error, ratesResult.error)
     let baseCurrencyValue = getCurrencyWithRate(for: selectedCurrencies.currencyCodes.first!)
       .withValue(10)
 
     emit {
       self.state.isLoading = false
       self.state.error = nil
-      self.state.refreshError = refreshError?.toErrorModel(message: "Refresh failed, showing cached data")
+      // No `message:` here: the banner has one line to explain itself, and the typed cause — "No internet
+      // connection", "the key expired" — is the half worth showing. `ErrorView` keeps the framing message
+      // because it has the room for both.
+      self.state.refreshError = refreshError?.toErrorModel()
       self.state.searchCurrencies = currencies
       self.state.values = selectedCurrencies.currencyCodes.map { currencyCode in
         currencyCode == baseCurrencyValue.currency.code
@@ -170,6 +173,16 @@ public final class ConverterViewModel: ViewModel {
           : baseCurrencyValue.convert(to: self.getCurrencyWithRate(for: currencyCode))
       }
     }
+  }
+
+  /// The first failure worth putting in front of the user, if any.
+  ///
+  /// A cancelled request is skipped: it means the screen went away or a newer refresh replaced this one,
+  /// so the only thing a banner would tell the user is that the app changed its mind.
+  private func reportableError(_ errors: DataError?...) -> DataError? {
+    errors
+      .compactMap { $0 }
+      .first { $0.isCancellation.not() }
   }
 
   private func getCurrencyWithRate(for code: CurrencyCode) -> CurrencyWithRate {

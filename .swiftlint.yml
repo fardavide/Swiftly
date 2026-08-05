@@ -12,3 +12,9 @@ nesting:
   type_level: 2
 
 function_parameter_count: 6
+
+# An exhaustive `switch` over a typed error is one decision, not one per case: counting every `case` as a
+# branch would push us to collapse the error enums back into the vague `unknown` this codebase is trying to
+# get away from. Genuine branching — `if`, `guard`, `&&` — still counts.
+cyclomatic_complexity:
+  ignores_case_statements: true

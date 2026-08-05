@@ -154,6 +154,15 @@ let package = Package(
       ],
       path: "Sources/Common/Design"
     ),
+    .testTarget(
+      name: "DesignTests",
+      dependencies: [
+        "Design",
+        "SFSafeSymbols",
+        "SwiftlyUtils"
+      ],
+      path: "Tests/Common/DesignTests"
+    ),
 
     // MARK: Network
     .target(
@@ -166,7 +175,8 @@ let package = Package(
     .testTarget(
       name: "NetworkTests",
       dependencies: [
-        "SwiftlyNetwork"
+        "SwiftlyNetwork",
+        "SwiftlyUtils"
       ],
       path: "Tests/Common/NetworkTests"
     ),
@@ -306,6 +316,7 @@ let package = Package(
       dependencies: [
         "ConverterDomain",
         "ConverterPresentation",
+        "Design",
         "SwiftlyTest"
       ],
       path: "Tests/Converter/PresentationTests"

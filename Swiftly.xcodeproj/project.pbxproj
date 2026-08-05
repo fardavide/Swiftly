@@ -408,7 +408,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nsource ~/.bash_profile\necho \"Adding API keys\"\n\n# Navigate to the directory containing ApiKey.swift\ncd Core/Sources/Currency/Data/Api\n\n# Rewrite ApiKey.swift with the new content\ncat > ApiKey.swift <<EOF\nclass ApiKey {\n  static let currencyApiCom = \"$CurrencyApiComKey\"\n  static let currencyBeaconCom = \"$CurrencyBeaconComKey\"\n  static let exchangeRatesIo = \"$ExchangeRatesIoKey\"\n}\nEOF\n\n# Display the updated file for verification (optional)\ncat ApiKey.swift\n\nexit 0\n";
+			shellScript = "#!/bin/sh\nsource ~/.bash_profile\necho \"Adding API keys\"\n\n# Navigate to the directory containing ApiKey.swift — the copy inside the SwiftlyCore package, which is\n# the one the CurrencyApi target compiles. The old Core/Sources path was left behind by the Core ->\n# SwiftlyCore move and is compiled by nothing, so writing the keys there shipped a build with empty keys.\ncd SwiftlyCore/Sources/Currency/Data/Api || { echo \"error: cannot find the directory holding ApiKey.swift\"; exit 1; }\n\n# Rewrite ApiKey.swift with the new content\ncat > ApiKey.swift <<EOF\nclass ApiKey {\n  static let currencyApiCom = \"$CurrencyApiComKey\"\n  static let currencyBeaconCom = \"$CurrencyBeaconComKey\"\n  static let exchangeRatesIo = \"$ExchangeRatesIoKey\"\n}\nEOF\n\n# Display the updated file for verification (optional)\ncat ApiKey.swift\n\nexit 0\n";
 		};
 		6BE4BFB32AF8CEDB00B6BF57 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
