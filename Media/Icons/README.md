@@ -62,23 +62,28 @@ Give the S the euro's double bar and you get one glyph that carries both — and
 the double bar is an equals sign, which is the thing a converter asserts. It also
 names no single currency, which is the problem the redesign started on.
 
-Three placements were tried; the geometry decided which one survived.
+The rules have to be seen crossing the letter. Three placements were tried and
+two of them fail, both for reasons the row profile of the glyph makes obvious.
 
-- **Bars centred on the letter.** At mid-height Inter's S is a solid diagonal band
-  about 380 units wide, so each bar disappears into it and re-emerges at a
-  different x on each side. The pair reads as a staircase, not an equals sign.
-- **Bars crossing with a clearance cut out of the letter.** The S's stroke runs
-  almost horizontally through that band, so the clearance removes the middle of
-  the letter and what is left reads as an O.
-- **Bars crossing the left edge**, which is vertical (x = 267..274 at cap 620)
-  from y=340 to y=445 and barely moves — 274..291 — across the wider y=305..480.
-  Both stubs come out the same length, which is what makes an equals sign read as
-  one. This is how the euro does it too.
+- **Rules stopping inside the letter.** Running them in from the left and ending
+  them within the stroke keeps every edge tidy, and it is exactly what the euro
+  does — the euro's bowl is a C, so a bar crosses one narrow vertical stroke and
+  then runs free across the opening. An S has no opening there. What shows is two
+  tabs beside a letter, and two tabs assert nothing.
+- **Rules crossing with a clearance cut out of the letter.** Keeps the rules
+  unbroken, but the S's stroke runs almost horizontally through that band, so the
+  clearance takes the middle of the letter with it. What survives reads as an O.
+- **Rules crossing the waist, aligned at their ends.** This is the one. The S is
+  a diagonal band up to 404 units wide at mid-height, so it buries each rule and
+  releases it at a different x on each side — but once the rules start and stop
+  together, that reads as the letter sitting in front of them rather than as a
+  stagger.
 
-Each bar stops inside the letter's solid stroke; run it further and it reappears
-in the counter as a floating segment. That cut-off is measured off a rasterised
-silhouette rather than eyeballed, so it stays correct if the weight or cap
-changes.
+Two details make it work. The letter is set one weight lighter than elsewhere in
+the set: Inter's Black S has open bands only at y 335..395 and y 620..680, where
+Bold's are 90 units tall instead of 60, so a rule has more aperture to show
+through. And the rules run past the letter on both sides by the same amount,
+because equal length is what the eye uses to pair them.
 
 | File | Treatment |
 | --- | --- |
