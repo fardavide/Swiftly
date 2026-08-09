@@ -31,7 +31,13 @@ const LAUNCH_COLOURS = {
   '03-duo': '#26309A',
   '04-coin': '#26309A',
   '05-ring': '#16191F',
-  '06-glass': '#2A2596',
+  // The 06-* set are all the same glass field with a different lens shape.
+  '06-letter': '#2A2596',
+  '06-blade': '#2A2596',
+  '06-dollar': '#2A2596',
+  '06-arrows': '#2A2596',
+  '06-loop': '#2A2596',
+  '06-euro': '#2A2596',
   '07-light': '#F4F6FA',
 }
 

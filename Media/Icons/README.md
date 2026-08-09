@@ -27,10 +27,32 @@ shape, which is what keeps them legible once they are 16 pixels wide.
 | `03-duo` | Two coins, two currencies | Money, and visibly more than one kind of it. |
 | `04-coin` | Today's idea, rebuilt | Same motif, real rim, no clip-art shine. The conservative pick. |
 | `05-ring` | A currency inside an exchange loop | The most explicit "this app converts currencies". |
-| `06-glass` | `01`'s mark under a Liquid Glass lens | Same geometry as `01`, different finish. |
+| `06-*` | Six lens shapes under one Liquid Glass field | See below. |
 | `07-light` | `01`'s mark on a light tile | Same geometry as `01`, inverted ground. |
 
-`01`, `06` and `07` are three finishes of one mark, not three separate ideas.
+### The `06-*` glass set
+
+The first glass attempt bent a constant-width stroke into an S-ish path and
+attached two triangles to it. A drawn S has modulated weight — it swells through
+the curves and narrows at the joints — and that modulation is what makes the eye
+file a shape as a letter. Without it the mark read as a bent pipe wearing
+triangles: not convincing as a letter, not convincing as a symbol.
+
+These six replace it. The colour field is identical across all of them, so the
+only variable is the shape of the lens. They are sorted by how much letter is
+left in them, and none of them sits halfway.
+
+| File | Shape | Reads as |
+| --- | --- | --- |
+| `06-letter` | Inter Display Black's S, untouched | A letter |
+| `06-blade` | The same S, terminals carried on into arrow points | A letter that moves |
+| `06-dollar` | The drawn `$` glyph | A letter that is money — and specifically USD |
+| `06-arrows` | Two arrows, opposite directions | Convert. Survives smallest of the six |
+| `06-loop` | A closed exchange cycle | Convert — and also refresh |
+| `06-euro` | The `€` glyph | Money, in one currency |
+
+Whichever wins should also replace the mark in `01-swap` and `07-light`, which
+carry the same rejected geometry.
 
 ## Applying one
 
