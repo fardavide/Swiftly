@@ -27,6 +27,9 @@ const LAUNCHCOLOR = join(REPO, 'Swiftly/Assets.xcassets/LaunchColor.colorset')
 // background so the splash reads as an extension of the icon rather than a clash.
 const LAUNCH_COLOURS = {
   '01-swap': '#2A32A8',
+  '01-equals': '#2A32A8',
+  '07-equals-light': '#F4F6FA',
+  '06-equals': '#2A2596',
   '02-split': '#0E4A50',
   '03-duo': '#26309A',
   '04-coin': '#26309A',

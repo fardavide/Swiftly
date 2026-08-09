@@ -50,9 +50,45 @@ left in them, and none of them sits halfway.
 | `06-arrows` | Two arrows, opposite directions | Convert. Survives smallest of the six |
 | `06-loop` | A closed exchange cycle | Convert — and also refresh |
 | `06-euro` | The `€` glyph | Money, in one currency |
+| `06-equals` | The two merged — see below | Money, no currency named |
 
 Whichever wins should also replace the mark in `01-swap` and `07-light`, which
 carry the same rejected geometry.
+
+### The merged mark (`*-equals`)
+
+`$` is an S with a bar through it; `€` is a bowl with a double bar through it.
+Give the S the euro's double bar and you get one glyph that carries both — and
+the double bar is an equals sign, which is the thing a converter asserts. It also
+names no single currency, which is the problem the redesign started on.
+
+Three placements were tried; the geometry decided which one survived.
+
+- **Bars centred on the letter.** At mid-height Inter's S is a solid diagonal band
+  about 380 units wide, so each bar disappears into it and re-emerges at a
+  different x on each side. The pair reads as a staircase, not an equals sign.
+- **Bars crossing with a clearance cut out of the letter.** The S's stroke runs
+  almost horizontally through that band, so the clearance removes the middle of
+  the letter and what is left reads as an O.
+- **Bars crossing the left edge**, which is vertical (x = 267..274 at cap 620)
+  from y=340 to y=445 and barely moves — 274..291 — across the wider y=305..480.
+  Both stubs come out the same length, which is what makes an equals sign read as
+  one. This is how the euro does it too.
+
+Each bar stops inside the letter's solid stroke; run it further and it reappears
+in the counter as a floating segment. That cut-off is measured off a rasterised
+silhouette rather than eyeballed, so it stays correct if the weight or cap
+changes.
+
+| File | Treatment |
+| --- | --- |
+| `06-equals` | Liquid Glass |
+| `01-equals` | Flat, indigo ground |
+| `07-equals-light` | Flat, light ground |
+
+The glass version carries a wider bar gap than the flat ones. Its rim dilates
+every edge by 13 units, so a gap tuned on the flat mark closes to a slot; both
+are set to leave the same visible opening.
 
 ## Applying one
 
