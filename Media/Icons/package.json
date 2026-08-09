@@ -1,0 +1,12 @@
+{
+  "name": "swiftly-icons",
+  "private": true,
+  "type": "module",
+  "description": "App icon concepts and the script that installs one into the asset catalog",
+  "scripts": {
+    "apply": "node apply_icon.mjs"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}
