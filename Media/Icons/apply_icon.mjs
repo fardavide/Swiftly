@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Install one of the concepts in Media/Icons/concepts into the asset catalog.
 //
-//   cd Media/Icons && npm install && node apply_icon.mjs 01-swap
+//   cd Media/Icons && npm install && node apply_icon.mjs 02-split
 //
 // Rasterises the chosen SVG into every slot AppIcon.appiconset declares, refreshes
 // the launch imageset, and repoints LaunchColor at the concept's own background so
@@ -26,22 +26,10 @@ const LAUNCHCOLOR = join(REPO, 'Swiftly/Assets.xcassets/LaunchColor.colorset')
 // The colour the launch screen sits on, per concept. Picked from each icon's own
 // background so the splash reads as an extension of the icon rather than a clash.
 const LAUNCH_COLOURS = {
-  '01-swap': '#2A32A8',
-  '01-equals': '#2A32A8',
-  '07-equals-light': '#F4F6FA',
-  '06-equals': '#2A2596',
   '02-split': '#0E4A50',
   '03-duo': '#26309A',
   '04-coin': '#26309A',
   '05-ring': '#16191F',
-  // The 06-* set are all the same glass field with a different lens shape.
-  '06-letter': '#2A2596',
-  '06-blade': '#2A2596',
-  '06-dollar': '#2A2596',
-  '06-arrows': '#2A2596',
-  '06-loop': '#2A2596',
-  '06-euro': '#2A2596',
-  '07-light': '#F4F6FA',
 }
 
 const name = process.argv[2]
