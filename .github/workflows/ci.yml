@@ -150,7 +150,7 @@ jobs:
             snapshot-report
       - name: Upload snapshot diff report on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: snapshot-diffs
           path: snapshot-report
