@@ -69,7 +69,7 @@ jobs:
       # linted as if they were ours and fail every job that builds the app. The build/unit jobs are
       # left uncached — this is the only one that links snapshot-testing.
       - name: Cache SwiftPM source packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ runner.temp }}/SourcePackages
           key: spm-${{ runner.os }}-${{ hashFiles('Swiftly.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
