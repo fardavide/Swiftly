@@ -21,7 +21,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/select-xcode
       - name: Run package tests
         working-directory: SwiftlyCore
@@ -42,7 +42,7 @@ jobs:
           - { name: iOS, destination: 'generic/platform=iOS Simulator' }
           - { name: macOS, destination: 'generic/platform=macOS' }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/select-xcode
       # Build unsigned — a compile-check needs no signed binary, and the runner has no signing
       # identity (the native macOS build otherwise fails resolving a development certificate; the
@@ -60,7 +60,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/select-xcode
       # swift-snapshot-testing pulls swift-syntax (a heavy macro dependency), so cache the resolved
       # source clones keyed on the committed pins. They deliberately live OUTSIDE the checkout: the
